@@ -3,27 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Connexion sécurisée</title>
-
+  <title>Site sécurisé</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: white;
+      font-family: 'Arial', sans-serif;
+      background-color: #ffe6f0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    .centered-box {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
 
     .login-box {
       background-color: #1f1f1f;
+      color: white;
       padding: 40px;
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       text-align: center;
-      width: 100%;
+      width: 90%;
       max-width: 400px;
     }
 
@@ -39,7 +43,7 @@
       width: 100%;
       border-radius: 5px;
       border: none;
-      padding-right: 32px; /* ➖ espace à droite pour l'icône */
+      padding-right: 32px;
     }
 
     .toggle-eye {
@@ -67,24 +71,83 @@
       color: #ff4d4d;
       margin-top: 15px;
     }
+
+    /* === MENU === */
+    .menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 30px 0;
+    }
+
+    .menu button {
+      background-color: white;
+      border: none;
+      border-radius: 20px;
+      padding: 15px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .menu button:hover {
+      transform: translateY(-3px);
+      background-color: #ffe6ea;
+    }
+
+    .content {
+      text-align: center;
+      padding: 30px;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
 
-  <div class="login-box">
-    <h2>Connexion</h2>
-    <p>Entrez le mot de passe pour accéder au site :</p>
+  <!-- === ÉCRAN DE CONNEXION === -->
+  <div class="centered-box" id="loginSection">
+    <div class="login-box">
+      <h2>Connexion</h2>
+      <p>Entrez le mot de passe pour accéder au site :</p>
 
-    <div class="password-container">
-      <input type="password" id="passwordInput" placeholder="Mot de passe" />
-      <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
+      <div class="password-container">
+        <input type="password" id="passwordInput" placeholder="Mot de passe" />
+        <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
+      </div>
+
+      <button onclick="checkPassword()">Valider</button>
+
+      <p class="error" id="errorMessage"></p>
     </div>
-
-    <button onclick="checkPassword()">Valider</button>
-
-    <p class="error" id="errorMessage"></p>
   </div>
 
+  <!-- === MENU INTERACTIF CACHÉ AU DÉBUT === -->
+  <div class="hidden" id="menuSection">
+    <header style="background-color:#ffb6c1;padding:20px;text-align:center;">
+      <h1>Bienvenue sur ton espace secret !</h1>
+    </header>
+
+    <div class="menu">
+      <button onclick="showContent('letter')">Love Letter</button>
+      <button onclick="showContent('music')">Music</button>
+      <button onclick="showContent('notes')">Notes</button>
+      <button onclick="showContent('gallery')">Gallery</button>
+    </div>
+
+    <div class="content" id="mainContent">
+      <p>Clique sur un bouton ci-dessus pour afficher le contenu ✨</p>
+    </div>
+  </div>
+
+  <!-- === SCRIPT === -->
   <script>
     const correctPassword = "Pigeon";
 
@@ -106,105 +169,24 @@
       const error = document.getElementById("errorMessage");
 
       if (input === correctPassword) {
-        // ✅ Redirection vers menu.html
-        window.location.href = "menu.html";
+        document.getElementById("loginSection").classList.add("hidden");
+        document.getElementById("menuSection").classList.remove("hidden");
       } else {
         error.textContent = "Mot de passe incorrect. Réessaie.";
       }
     }
-  </script>
 
-</body>
-</html>
-
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Bienvenue</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background-color: #ffe6f0;
-      color: #333;
-    }
-
-    header {
-      background-color: #ffb6c1;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 28px;
-    }
-
-    .menu {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 30px 0;
-    }
-
-    .menu button {
-      background-color: white;
-      border: none;
-      border-radius: 20px;
-      padding: 15px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .menu button:hover {
-      transform: translateY(-3px);
-      background-color: #ffe6ea;
-    }
-
-    .content {
-      text-align: center;
-      padding: 30px;
-    }
-  </style>
-</head>
-<body>
-
-  <header>
-    <h1>Bienvenue sur ton petit espace perso</h1>
-  </header>
-
-  <div class="menu">
-    <button onclick="showContent('letter')">Love Letter</button>
-    <button onclick="showContent('music')">Music</button>
-    <button onclick="showContent('notes')">Notes</button>
-    <button onclick="showContent('gallery')">Gallery</button>
-  </div>
-
-  <div class="content" id="mainContent">
-    <p>Clique sur un bouton ci-dessus pour afficher le contenu</p>
-  </div>
-
-  <script>
     function showContent(section) {
-      const contentBox = document.getElementById('mainContent');
+      const contentBox = document.getElementById("mainContent");
 
-      if (section === 'letter') {
-        contentBox.innerHTML = '<h2>Ma lettre pour toi</h2><p>Tu es exceptionnelle et tu rends chaque jour plus doux. Merci d\'être qui tu es.</p>';
-      } else if (section === 'music') {
-        contentBox.innerHTML = '<h2>Notre chanson</h2><audio controls><source src="song.mp3" type="audio/mpeg">Ton navigateur ne supporte pas l\'audio.</audio>';
-      } else if (section === 'notes') {
-        contentBox.innerHTML = '<h2>Nos souvenirs</h2><ul><li>Notre premier message</li><li>Notre premier appel</li><li>Les projets qu\'on fera ensemble</li></ul>';
-      } else if (section === 'gallery') {
-        contentBox.innerHTML = '<h2>Galerie</h2><p>[Insère ici des photos, dessins, ou souvenirs]</p>';
+      if (section === "letter") {
+        contentBox.innerHTML = "<h2>Ma lettre pour toi</h2><p>Tu es exceptionnelle et tu rends chaque jour plus doux. Merci d’être qui tu es.</p>";
+      } else if (section === "music") {
+        contentBox.innerHTML = "<h2>Notre chanson</h2><audio controls><source src='song.mp3' type='audio/mpeg'>Ton navigateur ne supporte pas l’audio.</audio>";
+      } else if (section === "notes") {
+        contentBox.innerHTML = "<h2>Nos souvenirs</h2><ul><li>Notre premier message</li><li>Notre premier appel</li><li>Les projets qu’on fera ensemble</li></ul>";
+      } else if (section === "gallery") {
+        contentBox.innerHTML = "<h2>Galerie</h2><p>[Ajoute ici des images, dessins ou souvenirs]</p>";
       }
     }
   </script>
