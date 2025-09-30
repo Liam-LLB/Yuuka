@@ -39,13 +39,13 @@
       width: 100%;
       border-radius: 5px;
       border: none;
-      padding-right: 32px; /* 🔧 réduit ici */
+      padding-right: 32px; /* ➖ espace à droite pour l'icône */
     }
 
     .toggle-eye {
       position: absolute;
       top: 50%;
-      right: 8px; /* 👁️ légèrement plus près */
+      right: 8px;
       transform: translateY(-50%);
       cursor: pointer;
       font-size: 18px;
@@ -106,7 +106,8 @@
       const error = document.getElementById("errorMessage");
 
       if (input === correctPassword) {
-        window.location.assign("menu.html");
+        // ✅ Redirection vers menu.html
+        window.location.href = "menu.html";
       } else {
         error.textContent = "Mot de passe incorrect. Réessaie.";
       }
