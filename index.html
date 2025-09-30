@@ -3,61 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Connexion + Menu</title>
+  <title>Connexion sécurisée</title>
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f0f2f5;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d1b2a;
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
+      flex-direction: column;
     }
 
-    .container {
-      text-align: center;
-    }
-
-    .login-box {
-      background-color: #ffffff;
+    .login-box, .menu-box {
+      background-color: #1b263b;
       padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      text-align: center;
+      width: 100%;
       max-width: 400px;
-      margin: auto;
     }
 
     .password-container {
       position: relative;
+      margin-top: 10px;
     }
 
-    input[type="password"],
-    input[type="text"] {
+    input[type="password"], input[type="text"] {
       padding: 10px;
       font-size: 16px;
-      width: 92%;
+      width: 100%;
       border-radius: 5px;
-      border: 1px solid #ccc;
+      border: none;
       padding-right: 32px;
     }
 
     .toggle-eye {
       position: absolute;
       top: 50%;
-      right: 10px;
+      right: 8px;
       transform: translateY(-50%);
       cursor: pointer;
       font-size: 18px;
-      color: #555;
+      color: #aaa;
     }
 
     button {
       margin-top: 20px;
       padding: 10px 20px;
       font-size: 16px;
-      background-color: #007bff;
+      background-color: #0077b6;
       color: white;
       border: none;
       border-radius: 5px;
@@ -65,34 +63,46 @@
     }
 
     .error {
-      color: #e74c3c;
+      color: #ff4d4d;
       margin-top: 15px;
     }
 
-    .menu-section {
+    .hidden {
       display: none;
     }
 
-    .grid-buttons {
+    .menu-box h2 {
+      margin-bottom: 20px;
+    }
+
+    .grid {
       display: grid;
-      grid-template-columns: repeat(2, 140px);
-      gap: 25px;
-      justify-content: center;
-      margin-top: 30px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      justify-items: center;
     }
 
     .menu-button {
-      background-color: #ffffff;
-      border: 2px solid #007bff;
+      background-color: #1e3a5f;
+      border: none;
       border-radius: 15px;
-      padding: 30px;
+      padding: 20px;
+      width: 120px;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      color: white;
+      font-size: 14px;
       cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
+      text-align: center;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transition: background 0.3s;
     }
 
     .menu-button:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+      background-color: #274c77;
     }
 
     .menu-button img {
@@ -100,85 +110,71 @@
       height: 40px;
       margin-bottom: 10px;
     }
-
-    .menu-button span {
-      display: block;
-      color: #007bff;
-      font-weight: bold;
-    }
   </style>
 </head>
 <body>
-
-<div class="container">
-  <!-- Connexion -->
   <div class="login-box" id="loginBox">
     <h2>Connexion</h2>
-    <p>Entrez le mot de passe :</p>
-
+    <p>Entrez le mot de passe pour accéder au site :</p>
     <div class="password-container">
       <input type="password" id="passwordInput" placeholder="Mot de passe" />
       <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
     </div>
-
     <button onclick="checkPassword()">Valider</button>
     <p class="error" id="errorMessage"></p>
   </div>
 
-  <!-- Menu après connexion -->
-  <div class="menu-section" id="menuSection">
-    <h2>These are for you!</h2>
-    <p>I hope you like it. I love you!</p>
-
-    <div class="grid-buttons">
-      <div class="menu-button" onclick="alert('Gallery')">
-        <img src="https://cdn-icons-png.flaticon.com/512/1829/1829586.png" alt="Gallery">
-        <span>Gallery</span>
-      </div>
-      <div class="menu-button" onclick="alert('Flowers')">
-        <img src="https://cdn-icons-png.flaticon.com/512/3659/3659893.png" alt="Flowers">
-        <span>Flowers</span>
-      </div>
-      <div class="menu-button" onclick="alert('Lock')">
-        <img src="https://cdn-icons-png.flaticon.com/512/3064/3064197.png" alt="Lock">
-        <span>Locked Love</span>
-      </div>
-      <div class="menu-button" onclick="alert('Letter')">
-        <img src="https://cdn-icons-png.flaticon.com/512/3050/3050525.png" alt="Letter">
-        <span>Love Letter</span>
-      </div>
+  <div class="menu-box hidden" id="menuBox">
+    <h2>Ces pages sont pour toi 💙</h2>
+    <div class="grid">
+      <button class="menu-button" onclick="location.href='bouton.html'">
+        <img src="https://img.icons8.com/fluency/48/000000/picture.png" alt="Galerie" />
+        Galerie
+      </button>
+      <button class="menu-button" onclick="location.href='bouton.html'">
+        <img src="https://img.icons8.com/fluency/48/000000/bouquet.png" alt="Fleurs" />
+        Fleurs
+      </button>
+      <button class="menu-button" onclick="location.href='bouton.html'">
+        <img src="https://img.icons8.com/fluency/48/000000/lock--v1.png" alt="Cadenas" />
+        Moments
+      </button>
+      <button class="menu-button" onclick="location.href='bouton.html'">
+        <img src="https://img.icons8.com/fluency/48/000000/love-letter.png" alt="Lettre" />
+        Lettre
+      </button>
     </div>
   </div>
-</div>
 
-<script>
-  const correctPassword = "Pigeon";
+  <script>
+    const correctPassword = "Pigeon";
 
-  function togglePassword() {
-    const passwordInput = document.getElementById("passwordInput");
-    const eyeIcon = document.getElementById("eyeIcon");
+    function togglePassword() {
+      const passwordInput = document.getElementById("passwordInput");
+      const eyeIcon = document.getElementById("eyeIcon");
 
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      eyeIcon.textContent = "🙈";
-    } else {
-      passwordInput.type = "password";
-      eyeIcon.textContent = "👁️";
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.textContent = "🙈";
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.textContent = "👁️";
+      }
     }
-  }
 
-  function checkPassword() {
-    const input = document.getElementById("passwordInput").value.trim();
-    const error = document.getElementById("errorMessage");
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value.trim();
+      const error = document.getElementById("errorMessage");
 
-    if (input === correctPassword) {
-      document.getElementById("loginBox").style.display = "none";
-      document.getElementById("menuSection").style.display = "block";
-    } else {
-      error.textContent = "Mot de passe incorrect. Réessaie.";
+      if (input === correctPassword) {
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("menuBox").classList.remove("hidden");
+      } else {
+        error.textContent = "Mot de passe incorrect. Réessaie.";
+      }
     }
-  }
-</script>
-
+  </script>
+</body>
+</html>
 </body>
 </html>
