@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Connexion sécurisée</title>
+
+  <!-- === DEBUT DU STYLE === -->
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -22,15 +24,33 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.5);
       text-align: center;
+      width: 100%;
+      max-width: 400px;
     }
 
-    input[type="password"] {
+    .password-container {
+      position: relative;
+      margin-top: 10px;
+    }
+
+    input[type="password"],
+    input[type="text"] {
       padding: 10px;
       font-size: 16px;
       width: 100%;
-      margin-top: 10px;
       border-radius: 5px;
       border: none;
+      padding-right: 40px;
+    }
+
+    .toggle-eye {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 18px;
+      color: #aaa;
     }
 
     button {
@@ -49,34 +69,61 @@
       margin-top: 15px;
     }
   </style>
+  <!-- === FIN DU STYLE === -->
 </head>
+
 <body>
 
-<!-- === DEBUT DE LA BOITE DE CONNEXION === -->
-<div class="login-box">
-  <h2>Connexion</h2>
-  <p>Entrez le mot de passe pour accéder au site :</p>
-  <input type="password" id="passwordInput" placeholder="Mot de passe">
-  <button onclick="checkPassword()">Valider</button>
-  <p class="error" id="errorMessage"></p>
-</div>
-<!-- === FIN DE LA BOITE DE CONNEXION === -->
+  <!-- === BOITE DE CONNEXION === -->
+  <div class="login-box">
+    <h2>Connexion</h2>
+    <p>Entrez le mot de passe pour accéder au site :</p>
 
-<!-- === DEBUT DU SCRIPT DE VALIDATION === -->
-<script>
-  function checkPassword() {
-    const input = document.getElementById("passwordInput").value;
-    const correctPassword = "pingou2025"; // 🔑 CHANGE CE MOT DE PASSE ICI
-    const error = document.getElementById("errorMessage");
+    <!-- === CHAMP MOT DE PASSE + ICONE === -->
+    <div class="password-container">
+      <input type="password" id="passwordInput" placeholder="Mot de passe">
+      <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
+    </div>
 
-    if (input === correctPassword) {
-      window.location.href = "home.html"; // 📁 NOM DE LA PAGE A REDIRIGER SI BON MOT DE PASSE
-    } else {
-      error.textContent = "Mot de passe incorrect. Réessaie.";
+    <!-- === BOUTON VALIDATION === -->
+    <button onclick="checkPassword()">Valider</button>
+
+    <!-- === MESSAGE ERREUR === -->
+    <p class="error" id="errorMessage"></p>
+  </div>
+
+  <!-- === SCRIPT === -->
+  <script>
+    // 🔐 Mot de passe attendu
+    const correctPassword = "Pigeon";
+
+    // 🔁 Afficher / masquer mot de passe
+    function togglePassword() {
+      const passwordInput = document.getElementById("passwordInput");
+      const eyeIcon = document.getElementById("eyeIcon");
+
+      if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        eyeIcon.textContent = "🙈"; // Oeil fermé
+      } else {
+        passwordInput.type = "password";
+        eyeIcon.textContent = "👁️"; // Oeil ouvert
+      }
     }
-  }
-</script>
-<!-- === FIN DU SCRIPT DE VALIDATION === -->
+
+    // ✅ Vérification du mot de passe
+    function checkPassword() {
+      const input = document.getElementById("passwordInput").value;
+      const error = document.getElementById("errorMessage");
+
+      if (input === correctPassword) {
+        window.location.href = "home.html";
+      } else {
+        error.textContent = "Mot de passe incorrect. Réessaie.";
+      }
+    }
+  </script>
+  <!-- === FIN SCRIPT === -->
 
 </body>
 </html>
