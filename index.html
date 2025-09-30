@@ -3,34 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Site sécurisé</title>
+  <title>Connexion sécurisée</title>
   <style>
+    /* ---- STYLE GLOBAL ---- */
     body {
-      font-family: 'Arial', sans-serif;
-      background-color: #ffe6f0;
-      color: #333;
-      margin: 0;
-      padding: 0;
-    }
-
-    .centered-box {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      color: white;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      margin: 0;
     }
 
+    /* ---- CONTENEUR CONNEXION ---- */
     .login-box {
-      background-color: #1f1f1f;
-      color: white;
+      background-color: #1e2a38;
       padding: 40px;
       border-radius: 10px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 0 20px rgba(0,0,0,0.4);
       text-align: center;
-      width: 90%;
+      width: 100%;
       max-width: 400px;
     }
 
+    /* ---- CHAMP MOT DE PASSE ---- */
     .password-container {
       position: relative;
       margin-top: 10px;
@@ -40,7 +38,7 @@
     input[type="text"] {
       padding: 10px;
       font-size: 16px;
-      width: 100%;
+      width: 92%;
       border-radius: 5px;
       border: none;
       padding-right: 32px;
@@ -49,18 +47,19 @@
     .toggle-eye {
       position: absolute;
       top: 50%;
-      right: 8px;
+      right: 10px;
       transform: translateY(-50%);
       cursor: pointer;
       font-size: 18px;
-      color: #aaa;
+      color: #bbb;
     }
 
+    /* ---- BOUTON VALIDER ---- */
     button {
       margin-top: 20px;
-      padding: 10px 20px;
+      padding: 10px 25px;
       font-size: 16px;
-      background-color: #4CAF50;
+      background-color: #3498db;
       color: white;
       border: none;
       border-radius: 5px;
@@ -72,77 +71,61 @@
       margin-top: 15px;
     }
 
-    .menu {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 15px;
-      margin: 30px 0;
+    /* ---- SECTION MENU ---- */
+    #menuSection {
+      display: none;
+      text-align: center;
     }
 
-    .menu button {
-      background-color: white;
+    .menu-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+      padding: 0 20px;
+    }
+
+    .menu-buttons button {
+      background-color: #2980b9;
+      color: #f1f1f1;
       border: none;
-      border-radius: 20px;
-      padding: 15px 20px;
+      padding: 15px;
+      border-radius: 10px;
       font-size: 16px;
       cursor: pointer;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 10px;
+      transition: background 0.3s;
     }
 
-    .menu button:hover {
-      transform: translateY(-3px);
-      background-color: #ffe6ea;
-    }
-
-    .content {
-      text-align: center;
-      padding: 30px;
-    }
-
-    .hidden {
-      display: none;
+    .menu-buttons button:hover {
+      background-color: #1f6391;
     }
   </style>
 </head>
 <body>
 
-  <!-- === ÉCRAN DE CONNEXION === -->
-  <div class="centered-box" id="loginSection">
-    <div class="login-box">
-      <h2>Connexion</h2>
-      <p>Entrez le mot de passe pour accéder au site :</p>
+  <!-- ÉTAPE 1 : MOT DE PASSE -->
+  <div class="login-box" id="loginBox">
+    <h2>Connexion</h2>
+    <p>Entrez le mot de passe pour accéder au menu :</p>
 
-      <div class="password-container">
-        <input type="password" id="passwordInput" placeholder="Mot de passe" />
-        <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
-      </div>
-
-      <button onclick="checkPassword()">Valider</button>
-
-      <p class="error" id="errorMessage"></p>
+    <div class="password-container">
+      <input type="password" id="passwordInput" placeholder="Mot de passe" />
+      <span class="toggle-eye" onclick="togglePassword()" id="eyeIcon">👁️</span>
     </div>
+
+    <button onclick="checkPassword()">Valider</button>
+
+    <p class="error" id="errorMessage"></p>
   </div>
 
-  <!-- === MENU INTERACTIF CACHÉ AU DÉBUT === -->
-  <div class="hidden" id="menuSection">
-    <header style="background-color:#ffb6c1;padding:20px;text-align:center;">
-      <h1>Bienvenue sur ton espace secret !</h1>
-    </header>
-
-    <div class="menu">
-      <button onclick="showContent('letter')">Love Letter</button>
-      <button onclick="showContent('music')">Music</button>
-      <button onclick="showContent('notes')">Notes</button>
-      <button onclick="showContent('gallery')">Gallery</button>
-    </div>
-
-    <div class="content" id="mainContent">
-      <p>Clique sur un bouton ci-dessus pour afficher le contenu ✨</p>
+  <!-- ÉTAPE 2 : MENU -->
+  <div id="menuSection">
+    <h2>Bienvenue 💙</h2>
+    <div class="menu-buttons">
+      <button onclick="alert('Lettre d\'amour à afficher ici')">💌 Love Letter</button>
+      <button onclick="alert('Musique à jouer ici')">🎵 Music</button>
+      <button onclick="alert('Notes à afficher ici')">📝 Notes</button>
+      <button onclick="alert('Galerie à afficher ici')">📷 Gallery</button>
     </div>
   </div>
 
@@ -167,24 +150,10 @@
       const error = document.getElementById("errorMessage");
 
       if (input === correctPassword) {
-        document.getElementById("loginSection").classList.add("hidden");
-        document.getElementById("menuSection").classList.remove("hidden");
+        document.getElementById("loginBox").style.display = "none";
+        document.getElementById("menuSection").style.display = "block";
       } else {
         error.textContent = "Mot de passe incorrect. Réessaie.";
-      }
-    }
-
-    function showContent(section) {
-      const contentBox = document.getElementById("mainContent");
-
-      if (section === "letter") {
-        contentBox.innerHTML = "<h2>Ma lettre pour toi</h2><p>Tu es exceptionnelle et tu rends chaque jour plus doux. Merci d’être qui tu es.</p>";
-      } else if (section === "music") {
-        contentBox.innerHTML = "<h2>Notre chanson</h2><audio controls><source src='song.mp3' type='audio/mpeg'>Ton navigateur ne supporte pas l’audio.</audio>";
-      } else if (section === "notes") {
-        contentBox.innerHTML = "<h2>Nos souvenirs</h2><ul><li>Notre premier message</li><li>Notre premier appel</li><li>Les projets qu’on fera ensemble</li></ul>";
-      } else if (section === "gallery") {
-        contentBox.innerHTML = "<h2>Galerie</h2><p>[Ajoute ici des images, dessins ou souvenirs]</p>";
       }
     }
   </script>
