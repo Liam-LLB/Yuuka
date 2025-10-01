@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Love Letter</title>
+  <title>Photos</title>
   <style>
     body {
       margin: 0;
@@ -19,6 +19,9 @@
       gap: 30px;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     nav a {
@@ -42,54 +45,53 @@
 
     h1 {
       font-size: 2em;
-      margin-bottom: 20px;
+      margin-bottom: 30px;
     }
 
-    details {
+    .post {
       background-color: #1e293b;
-      border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 20px;
-      cursor: pointer;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
 
-    summary {
-      font-size: 1.2em;
-      font-weight: bold;
-      outline: none;
+    .post h2 {
+      margin-top: 0;
+      font-size: 1.5em;
+      color: #60a5fa;
     }
 
-    p {
-      margin-top: 10px;
-      line-height: 1.5em;
+    .post p {
+      line-height: 1.6em;
     }
   </style>
 </head>
 <body>
   <nav>
-    <a href="bouton1.html">Love Letter</a>
-    <a href="bouton2.html">Music</a>
-    <a href="bouton3.html">Notes</a>
-    <a href="bouton4.html">Gallery</a>
+    <a href="bouton1.html">Photos</a>
+    <a href="bouton2.html">Musiques</a>
+    <a href="bouton3.html">Garçons</a>
+    <a href="bouton4.html">Jardin Secret</a>
   </nav>
 
   <div class="container">
-    <h1>Oui, ça a bien marché ! Tu as cliqué sur : Love Letter</h1>
+    <h1>Oui, ça a bien marché ! Tu as cliqué sur : Photos</h1>
 
-    <details>
-      <summary>💌 Message secret</summary>
-      <p>Tu es adorable, merci de visiter cette section. Ce message t’est dédié !</p>
-    </details>
+    <div class="post">
+      <h2>📷 Souvenir d'été</h2>
+      <p>Un moment inoubliable sur la plage, avec le coucher de soleil en fond et des éclats de rire partagés.</p>
+    </div>
 
-    <details>
-      <summary>📨 Lettre à envoyer</summary>
-      <p>Crée ta propre lettre d’amour numérique et envoie-la à quelqu’un que tu apprécies.</p>
-    </details>
+    <div class="post">
+      <h2>🖼️ Instantané urbain</h2>
+      <p>Balade dans les ruelles de la ville, appareil photo à la main, capturant l’instant brut et vivant.</p>
+    </div>
 
-    <details>
-      <summary>📖 Historique de lettres</summary>
-      <p>Reviens sur les plus belles lettres que tu as reçues ou envoyées.</p>
-    </details>
+    <div class="post">
+      <h2>🌸 Printemps au jardin</h2>
+      <p>Les fleurs écloses, le vent doux et la lumière dorée du matin. Une promenade paisible et inspirante.</p>
+    </div>
   </div>
 </body>
 </html>
