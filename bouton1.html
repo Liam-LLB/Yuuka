@@ -15,8 +15,8 @@
     nav {
       background-color: #1e293b;
       display: flex;
-      justify-content: center;
-      gap: 30px;
+      justify-content: space-between;
+      align-items: center;
       padding: 20px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       position: sticky;
@@ -24,17 +24,25 @@
       z-index: 1000;
     }
 
+    .nav-left, .nav-right {
+      display: flex;
+      gap: 20px;
+    }
+
     nav a {
       color: white;
       text-decoration: none;
       padding: 10px 20px;
       border-radius: 6px;
-      transition: background-color 0.3s ease;
-      background-color: #1d4ed8;
+      transition: all 0.3s ease;
+      background-color: #0ea5e9;
+      font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
 
     nav a:hover {
-      background-color: #2563eb;
+      background-color: #0284c7;
+      transform: translateY(-2px);
     }
 
     .container {
@@ -69,10 +77,15 @@
 </head>
 <body>
   <nav>
-    <a href="bouton1.html">Photos</a>
-    <a href="bouton2.html">Musiques</a>
-    <a href="bouton3.html">Garçons</a>
-    <a href="bouton4.html">Jardin Secret</a>
+    <div class="nav-left">
+      <a href="index.html">🏠 Accueil</a>
+    </div>
+    <div class="nav-right">
+      <a href="bouton1.html">Photos</a>
+      <a href="bouton2.html">Musiques</a>
+      <a href="bouton3.html">Garçons</a>
+      <a href="bouton4.html">Jardin Secret</a>
+    </div>
   </nav>
 
   <div class="container">
