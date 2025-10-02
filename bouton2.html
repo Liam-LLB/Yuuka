@@ -2,9 +2,150 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <title>Bouton 2</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yuusiques</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f0f4f8;
+      color: #1e293b;
+      overflow-x: hidden;
+    }
+
+    nav {
+      background-color: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .nav-group {
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-left a:first-child {
+      margin-right: 40px;
+    }
+
+    .nav-right a {
+      margin-left: 40px;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background-color: transparent;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    nav a:not(:last-child)::after {
+      content: "";
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 18px;
+      background-color: #475569;
+    }
+
+    nav a:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .intro {
+      text-align: center;
+      margin-top: 60px;
+      margin-bottom: 80px;
+    }
+
+    .intro h1 {
+      font-size: 2em;
+      font-weight: 600;
+      margin-bottom: 10px;
+    }
+
+    .intro p {
+      font-size: 1em;
+      color: #64748b;
+    }
+
+    .main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px 40px;
+    }
+
+    .cd-container {
+      position: relative;
+      width: 400px;
+      height: 400px;
+      border-radius: 50%;
+      background: conic-gradient(#1e3a8a, #3b82f6, #93c5fd, #1e3a8a);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+      animation: spin 5s linear infinite;
+      margin-top: 60px;
+    }
+
+    .cd-center {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 60px;
+      height: 60px;
+      background-color: #1e293b;
+      border-radius: 50%;
+      box-shadow: inset 0 0 12px rgba(255,255,255,0.2);
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+  </style>
 </head>
-<body style="background-color:#0f172a; color:white; display:flex; align-items:center; justify-content:center; height:100vh;">
-  <h1>Oui, ça a bien marché ! Tu as cliqué sur : Music</h1>
+<body>
+  <nav>
+    <div class="nav-group nav-left">
+      <a href="menu.html"><i class="fas fa-house"></i><span>Yuukaccueil</span></a>
+      <a href="bouton1.html"><i class="fas fa-camera-retro"></i><span>Yuukalerie</span></a>
+      <a href="bouton2.html"><i class="fas fa-music"></i><span>Yuusiques</span></a>
+      <a href="bouton3.html"><i class="fas fa-mars"></i><span>Yuugars</span></a>
+      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i><span>Yuukafe place</span></a>
+    </div>
+    <div class="nav-group nav-right">
+      <a href="index.html"><i class="fas fa-sign-out-alt"></i><span>Yuukoff</span></a>
+    </div>
+  </nav>
+
+  <div class="intro">
+    <h1>Bienvenue dans l'espace Yuusiques !</h1>
+    <p>Ici tu pourras consulter, supprimer et partager nos pires et meilleures musiques : c'est un peu notre petite playlist secrète à nous ;)</p>
+  </div>
+
+  <div class="main">
+    <div class="cd-container">
+      <div class="cd-center"></div>
+    </div>
+  </div>
 </body>
 </html>
