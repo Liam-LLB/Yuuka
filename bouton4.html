@@ -153,12 +153,6 @@
       box-sizing: border-box;
     }
 
-    .error-message {
-      font-size: 0.9em;
-      color: red;
-      margin-top: 5px;
-    }
-
     .password-wrapper .toggle-password {
       position: absolute;
       right: 12px;
@@ -182,7 +176,6 @@
       font-family: 'Indie Flower', cursive;
       border-radius: 8px;
       cursor: pointer;
-      margin-top: 5px;
     }
 
     .dark-toggle {
@@ -199,27 +192,93 @@
   </style>
 </head>
 <body>
-  <!-- nav et autres sections conservés comme dans le fichier précédent -->
+  <nav>
+    <div class="nav-group nav-left">
+      <a href="menu.html"><i class="fas fa-house"></i><span>Yuukaccueil</span></a>
+      <a href="bouton1.html"><i class="fas fa-camera-retro"></i><span>Yuukalerie</span></a>
+      <a href="bouton2.html"><i class="fas fa-music"></i><span>Yuusiques</span></a>
+      <a href="bouton3.html"><i class="fas fa-mars"></i><span>Yuugars</span></a>
+      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i><span>Yuukafe place</span></a>
+    </div>
+    <div class="nav-group nav-right">
+      <a href="index.html"><i class="fas fa-sign-out-alt"></i><span>Yuukoff</span></a>
+    </div>
+  </nav>
+
+  <div class="content">
+    <h1>Bienvenue dans la Yuukafe place !</h1>
+    <p class="subtitle">Un carnet secret où tu pourras lire ou ajouter de petits mots précieux, à condition d'avoir le bon mot de passe 😉</p>
+
+    <div class="note-search">
+      <input type="text" id="searchInput" placeholder="🔍 Cherche un mot doux...">
+    </div>
+
+    <div class="notes-grid" id="notesContainer">
+      <div class="note-card">
+        <div class="note-title">Petit mot #1</div>
+        <div class="password-wrapper">
+          <input type="password" placeholder="Mot de passe">
+          <i class="fas fa-eye toggle-password" onclick="togglePassword(this)"></i>
+        </div>
+        <button onclick="revealNote(this, 'tuEsLeMeilleur')">Déverrouiller</button>
+        <div class="note-content">Tu es incroyable, ne l'oublie jamais 💖</div>
+      </div>
+      <div class="note-card">
+        <div class="note-title">Petit mot #2</div>
+        <div class="password-wrapper">
+          <input type="password" placeholder="Mot de passe">
+          <i class="fas fa-eye toggle-password" onclick="togglePassword(this)"></i>
+        </div>
+        <button onclick="revealNote(this, 'cafeSecret')">Déverrouiller</button>
+        <div class="note-content">Tu mérites le monde entier. Et un petit café ☕</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="dark-toggle" onclick="toggleDarkMode()">🌙 Mode sombre</div>
 
   <script>
     function revealNote(button, correctPassword) {
       const card = button.parentElement;
       const input = card.querySelector('input[type="password"], input[type="text"]');
       const content = card.querySelector('.note-content');
-      const existingError = card.querySelector('.error-message');
-      if (existingError) existingError.remove();
 
       if (input.value === correctPassword) {
         content.style.display = 'block';
         card.querySelector('.password-wrapper').style.display = 'none';
         button.style.display = 'none';
       } else {
-        const errorMsg = document.createElement('div');
-        errorMsg.className = 'error-message';
-        errorMsg.textContent = 'Mot de passe incorrect. Réessaie !';
-        card.querySelector('.password-wrapper').after(errorMsg);
+        alert("Mot de passe incorrect ! Essaie encore.");
       }
     }
+
+    function togglePassword(icon) {
+      const input = icon.previousElementSibling;
+      const isVisible = input.type === 'text';
+      input.type = isVisible ? 'password' : 'text';
+      icon.className = isVisible ? 'fas fa-eye toggle-password' : 'fas fa-eye-slash toggle-password';
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+      const toggleBtn = document.querySelector('.dark-toggle');
+      if (document.body.classList.contains('dark-mode')) {
+        toggleBtn.innerHTML = "☀️ Mode clair";
+      } else {
+        toggleBtn.innerHTML = "🌙 Mode sombre";
+      }
+    }
+
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const searchValue = this.value.toLowerCase();
+      const notes = document.querySelectorAll('.note-card');
+
+      notes.forEach(note => {
+        const content = note.querySelector('.note-content').textContent.toLowerCase();
+        const title = note.querySelector('.note-title').textContent.toLowerCase();
+        note.style.display = content.includes(searchValue) || title.includes(searchValue) ? 'flex' : 'none';
+      });
+    });
   </script>
 </body>
 </html>
