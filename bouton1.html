@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yuukalerie</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <style>
     body {
       margin: 0;
-      background: #1e293b;
+      background: #2b3a57; /* Bleu légèrement plus clair */
       color: #f5f5f5;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
       overflow-x: hidden;
+      transition: background-color 0.5s ease;
     }
 
-    /* NAVIGATION */
     nav {
       background-color: #1e293b;
       display: flex;
@@ -59,81 +59,78 @@
       background-color: #475569;
     }
 
-    /* ALBUM BAR */
-    .album-bar {
+    .album-filter {
       display: flex;
       justify-content: center;
+      margin-top: 40px;
       gap: 15px;
-      padding: 15px 10px;
-      background-color: #0f172a;
-      border-bottom: 1px solid #334155;
     }
 
-    .album-bar button {
-      background-color: #334155;
+    .album-filter button {
+      padding: 10px 16px;
       border: none;
-      border-radius: 20px;
-      color: #f1f5f9;
-      padding: 8px 16px;
-      cursor: pointer;
+      border-radius: 8px;
+      background-color: #334155;
+      color: white;
       font-weight: 500;
-      transition: background-color 0.3s ease, transform 0.2s ease;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s;
     }
 
-    .album-bar button:hover {
+    .album-filter button:hover,
+    .album-filter button.active {
       background-color: #475569;
-      transform: scale(1.05);
+      transform: translateY(-2px);
     }
 
-    /* GALLERY */
     .gallery-container {
       max-width: 1200px;
       margin: 40px auto;
       padding: 20px;
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 30px;
-      animation: fadeIn 1.2s ease;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
+      transition: all 0.3s ease-in-out;
     }
 
     .gallery-item {
       background: #334155;
-      border-radius: 16px;
+      border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
       cursor: pointer;
-      display: flex;
-      flex-direction: column;
+      animation: fadeIn 0.5s ease-in-out;
     }
 
-    .gallery-item:hover {
-      transform: scale(1.03);
-      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    .gallery-item.hide {
+      animation: fadeOut 0.4s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.95); display: none; }
     }
 
     .gallery-item img {
       width: 100%;
-      height: 210px;
+      height: 200px;
       object-fit: cover;
       display: block;
     }
 
     .gallery-caption {
-      padding: 12px;
+      padding: 15px;
       text-align: center;
       font-weight: 500;
-      background: #1e293b;
     }
   </style>
 </head>
 <body>
-  <!-- NAVIGATION BAR -->
   <nav>
     <a href="menu.html"><i class="fas fa-house"></i> Yuukaccueil</a>
     <div class="center-menu">
@@ -146,33 +143,51 @@
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
-  <!-- ALBUM BAR -->
-  <div class="album-bar">
-    <button>Tous les albums</button>
-    <button>Voyages</button>
-    <button>Amis</button>
-    <button>Famille</button>
-    <button>Moments clés</button>
+  <div class="album-filter">
+    <button class="active" onclick="filterAlbums('all')">Tous les albums</button>
+    <button onclick="filterAlbums('fichas')">Fichas</button>
+    <button onclick="filterAlbums('voyages')">Voyages</button>
+    <button onclick="filterAlbums('amis')">Amis</button>
+    <button onclick="filterAlbums('etudes')">Études</button>
   </div>
 
-  <!-- GALLERY GRID -->
-  <div class="gallery-container">
-    <div class="gallery-item">
+  <div class="gallery-container" id="gallery">
+    <div class="gallery-item" data-category="amis">
       <img src="img/photo1.jpg" alt="Souvenir 1">
       <div class="gallery-caption">Soirée entre amis 🎉</div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-category="fichas">
       <img src="img/photo2.jpg" alt="Souvenir 2">
-      <div class="gallery-caption">Anniversaire magique 🎂</div>
+      <div class="gallery-caption">Fiche #45</div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-category="voyages">
       <img src="img/photo3.jpg" alt="Souvenir 3">
       <div class="gallery-caption">Vacances au soleil 🌞</div>
     </div>
-    <div class="gallery-item">
+    <div class="gallery-item" data-category="etudes">
       <img src="img/photo4.jpg" alt="Souvenir 4">
-      <div class="gallery-caption">Moments inoubliables ✨</div>
+      <div class="gallery-caption">Devoirs de SES 📚</div>
     </div>
   </div>
+
+  <script>
+    function filterAlbums(category) {
+      const buttons = document.querySelectorAll('.album-filter button');
+      buttons.forEach(btn => btn.classList.remove('active'));
+
+      const activeBtn = Array.from(buttons).find(btn => btn.textContent.toLowerCase().includes(category));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const items = document.querySelectorAll('.gallery-item');
+      items.forEach(item => {
+        const itemCat = item.getAttribute('data-category');
+        if (category === 'all' || itemCat === category) {
+          item.classList.remove('hide');
+        } else {
+          item.classList.add('hide');
+        }
+      });
+    }
+  </script>
 </body>
 </html>
