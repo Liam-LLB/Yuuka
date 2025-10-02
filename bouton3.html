@@ -18,6 +18,11 @@
       background: #121212 url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
     }
 
+    body.green-mode {
+      background: #1d3b30;
+      color: #eaf5ea;
+    }
+
     nav {
       background-color: #1e293b;
       display: flex;
@@ -182,11 +187,8 @@
     <span class="back-icon" onclick="goBack()"><i class="fas fa-arrow-left"></i></span>
     <h1>🔴 DOSSIERS CLASSÉS</h1>
     <p class="subtitle">Voici les profils des personnes à ne jamais recontacter. Considérés comme nuisibles émotionnellement. ⚠️</p>
-
     <div class="criminal-card">
-      <div class="criminal-photo">
-        Photo non disponible
-      </div>
+      <div class="criminal-photo">Photo non disponible</div>
       <div class="criminal-info">
         <h2>Code Nom : EX-001 — "Le Fantôme du Passé"</h2>
         <p><strong>Âge :</strong> 21</p>
@@ -196,11 +198,8 @@
         <a class="btn-dossier" href="fiche1.html">Voir le dossier complet</a>
       </div>
     </div>
-
     <div class="criminal-card">
-      <div class="criminal-photo">
-        Photo non disponible
-      </div>
+      <div class="criminal-photo">Photo non disponible</div>
       <div class="criminal-info">
         <h2>Code Nom : EX-002 — "Le Séducteur Inconstant"</h2>
         <p><strong>Âge :</strong> 23</p>
@@ -212,22 +211,46 @@
     </div>
   </div>
 
+  <div class="container" id="luckSection" style="display: none;">
+    <span class="back-icon" onclick="goBack()"><i class="fas fa-arrow-left"></i></span>
+    <h1>🍀 ÂMES CHANCEUSES</h1>
+    <p class="subtitle">Des personnes à ne jamais oublier. Bienveillantes, drôles, sincères — un vrai bol d’air.</p>
+    <div class="criminal-card" style="background:#2a4b3a; border-color:#69d297; box-shadow: 0 0 12px rgba(105, 210, 151, 0.3);">
+      <div class="criminal-photo" style="background:#3c6e58; color:#b2f0cf; border-color:#69d297;">Photo à venir</div>
+      <div class="criminal-info">
+        <h2 style="color:#b2f0cf">Code Nom : BFF-001 — "L'Épaule Fidèle"</h2>
+        <p><strong>Âge :</strong> 22</p>
+        <p><strong>Origine :</strong> Marseille, France</p>
+        <p><strong>Qualités :</strong> toujours présent(e), conseils avisés, soutien sans faille.</p>
+        <p><strong>Statut :</strong> Trésor émotionnel — à garder précieusement</p>
+        <a class="btn-dossier" href="#" style="background-color: #69d297; color:#1b2f25">Voir le dossier complet</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     function showSection(type) {
+      document.getElementById('choiceScreen').style.display = 'none';
       if (type === 'redflag') {
         document.body.classList.add('red-mode');
-        document.getElementById('choiceScreen').style.display = 'none';
+        document.body.classList.remove('green-mode');
         document.getElementById('redflagSection').style.display = 'block';
+        document.getElementById('luckSection').style.display = 'none';
         document.getElementById('topNav').style.backgroundColor = '#000000';
-      } else {
-        document.getElementById('topNav').style.backgroundColor = '#1e293b';
+      } else if (type === 'luck') {
+        document.body.classList.add('green-mode');
+        document.body.classList.remove('red-mode');
+        document.getElementById('luckSection').style.display = 'block';
+        document.getElementById('redflagSection').style.display = 'none';
+        document.getElementById('topNav').style.backgroundColor = '#1d3b30';
       }
     }
 
     function goBack() {
-      document.body.classList.remove('red-mode');
+      document.body.classList.remove('red-mode', 'green-mode');
       document.getElementById('choiceScreen').style.display = 'block';
       document.getElementById('redflagSection').style.display = 'none';
+      document.getElementById('luckSection').style.display = 'none';
       document.getElementById('topNav').style.backgroundColor = '#1e293b';
     }
   </script>
