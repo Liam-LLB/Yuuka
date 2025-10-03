@@ -28,7 +28,13 @@
     const db = getFirestore(app);
     const storage = getStorage(app);
     const auth = getAuth(app);
-    signInAnonymously(auth);
+    signInAnonymously(auth)
+  .then(() => {
+    console.log("✅ Connecté anonymement à Firebase.");
+  })
+  .catch((error) => {
+    console.error("❌ Erreur d’authentification Firebase :", error);
+  });
 
     window.file = null;
 
