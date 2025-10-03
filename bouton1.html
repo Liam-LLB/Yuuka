@@ -1,24 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  npm install firebase
-  // Import the functions you need from the SDKs you need
-import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCGQDW5I7kRgZR3wgQ1UeB4GRtVCPxstOs",
-  authDomain: "yuukalerie.firebaseapp.com",
-  projectId: "yuukalerie",
-  storageBucket: "yuukalerie.firebasestorage.app",
-  messagingSenderId: "323287958771",
-  appId: "1:323287958771:web:3b304cc81fd312e4f8a386"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yuukalerie</title>
@@ -44,7 +26,7 @@ const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     signInAnonymously(auth);
 
-    let file;
+    window.file = null;
 
     async function loadPhotos() {
       const gallery = document.getElementById('gallery');
@@ -70,21 +52,30 @@ const app = initializeApp(firebaseConfig);
     loadPhotos();
 
     window.openUploadModal = () => {
-      file = document.getElementById('uploadInput').files[0];
+      window.file = document.getElementById('uploadInput').files[0];
       const preview = document.getElementById('preview');
       const reader = new FileReader();
       reader.onload = function (e) {
         preview.src = e.target.result;
         preview.style.display = 'block';
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(window.file);
       document.getElementById('uploadModal').style.display = 'block';
+    }
+
+    window.cancelUpload = () => {
+      document.getElementById('uploadModal').style.display = 'none';
+      document.getElementById('uploadInput').value = "";
+      window.file = null;
     }
 
     window.uploadPhoto = async () => {
       const album = document.getElementById('albumSelect').value;
-      const storageRef = ref(storage, `${album}/${file.name}`);
-      await uploadBytes(storageRef, file);
+      const storageRef = ref(storage, `${album}/${window.file.name}`);
+      const loader = document.getElementById('uploadLoader');
+      loader.style.display = 'inline-block';
+
+      await uploadBytes(storageRef, window.file);
       const url = await getDownloadURL(storageRef);
 
       await addDoc(collection(db, "albums", album, "photos"), {
@@ -93,6 +84,7 @@ const app = initializeApp(firebaseConfig);
         deleted: false
       });
 
+      loader.style.display = 'none';
       alert("Photo ajoutée !");
       location.reload();
     }
@@ -198,6 +190,20 @@ const app = initializeApp(firebaseConfig);
       border-radius: 8px;
       display: none;
     }
+    #uploadLoader {
+      display: none;
+      margin-top: 10px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #3498db;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -229,7 +235,11 @@ const app = initializeApp(firebaseConfig);
       <option value="voyages">Voyages</option>
       <option value="etudes">Études</option>
     </select>
-    <button onclick="uploadPhoto()">Valider l’upload</button>
+    <div style="text-align:center">
+      <button onclick="uploadPhoto()">Valider l’upload</button>
+      <button onclick="cancelUpload()">Annuler</button>
+    </div>
+    <div id="uploadLoader"></div>
   </div>
 
   <div class="album-filter">
