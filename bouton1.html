@@ -13,15 +13,17 @@
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
+    // 🧠 Configuration Firebase liée à ton projet (via clé API fournie)
     const firebaseConfig = {
-  apiKey: "AIzaSyBcK1l6rQtHQ4z_y_aKRA_YOg0yVqqhskA",  // 🔐 Clé active
-  authDomain: "yuukalerie.firebaseapp.com",
-  projectId: "yuukalerie",
-  storageBucket: "yuukalerie.appspot.com",
-  messagingSenderId: "323287958771",
-  appId: "1:323287958771:web:93ebdf4a650f14c30d3825"
-};
+      apiKey: "AIzaSyBcK1l6rQtHQ4z_y_aKRA_YOg0yVqqhskA",
+      authDomain: "yuukalerie.firebaseapp.com",
+      projectId: "yuukalerie",
+      storageBucket: "yuukalerie.appspot.com",
+      messagingSenderId: "323287958771",
+      appId: "1:323287958771:web:93ebdf4a650f14c30d3825"
+    };
 
+    // 🔌 Initialisation Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
@@ -30,7 +32,7 @@
 
     window.file = null;
 
-    // 📸 Load Photos from Firestore
+    // 📸 Charger les photos depuis Firestore
     async function loadPhotos() {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
@@ -54,7 +56,7 @@
 
     loadPhotos();
 
-    // 📂 Open Upload Modal
+    // 📂 Ouvrir la fenêtre d'upload
     window.openUploadModal = () => {
       window.file = document.getElementById('uploadInput').files[0];
       const preview = document.getElementById('preview');
@@ -67,14 +69,14 @@
       document.getElementById('uploadModal').style.display = 'block';
     }
 
-    // ❌ Cancel Upload
+    // ❌ Annuler l'upload
     window.cancelUpload = () => {
       document.getElementById('uploadModal').style.display = 'none';
       document.getElementById('uploadInput').value = "";
       window.file = null;
     }
 
-    // ✅ Upload Photo to Firebase Storage & Firestore
+    // ✅ Envoyer la photo vers Firebase Storage et Firestore
     window.uploadPhoto = async () => {
       if (!window.file) return alert("Aucune image sélectionnée.");
       const album = document.getElementById('albumSelect').value;
