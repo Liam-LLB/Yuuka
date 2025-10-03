@@ -14,13 +14,13 @@
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
     const firebaseConfig = {
-     apiKey: "AIzaSyBcK1l6rQtHQ4z_y_aKRA_YOg0yVqqhskA",
-      authDomain: "yuukalerie.firebaseapp.com",
-      projectId: "yuukalerie",
-      storageBucket: "yuukalerie.appspot.com",
-      messagingSenderId: "323287958771",
-      appId: "1:323287958771:web:93ebdf4a650f14c30d3825"
-    };
+  apiKey: "AIzaSyBcK1l6rQtHQ4z_y_aKRA_YOg0yVqqhskA",  // 🔐 Clé active
+  authDomain: "yuukalerie.firebaseapp.com",
+  projectId: "yuukalerie",
+  storageBucket: "yuukalerie.appspot.com",
+  messagingSenderId: "323287958771",
+  appId: "1:323287958771:web:93ebdf4a650f14c30d3825"
+};
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
