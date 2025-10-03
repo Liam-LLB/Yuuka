@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Yuukalerie</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <!-- 🔐 Firebase App Config using GitHub Secret -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
@@ -12,7 +14,7 @@
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
     const firebaseConfig = {
-      apiKey: "AIzaSyCZHcnOMbcZu9sEY-nvNHQZpRiFZ4MHNUE",
+      apiKey: import.meta.env ? import.meta.env.VITE_API_FIREBASE : "__REPLACE_WITH_ENV_SECRET__",
       authDomain: "yuukalerie.firebaseapp.com",
       projectId: "yuukalerie",
       storageBucket: "yuukalerie.appspot.com",
@@ -28,6 +30,7 @@
 
     window.file = null;
 
+    // 📸 Load Photos from Firestore
     async function loadPhotos() {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
@@ -51,6 +54,7 @@
 
     loadPhotos();
 
+    // 📂 Open Upload Modal
     window.openUploadModal = () => {
       window.file = document.getElementById('uploadInput').files[0];
       const preview = document.getElementById('preview');
@@ -63,32 +67,43 @@
       document.getElementById('uploadModal').style.display = 'block';
     }
 
+    // ❌ Cancel Upload
     window.cancelUpload = () => {
       document.getElementById('uploadModal').style.display = 'none';
       document.getElementById('uploadInput').value = "";
       window.file = null;
     }
 
+    // ✅ Upload Photo to Firebase Storage & Firestore
     window.uploadPhoto = async () => {
+      if (!window.file) return alert("Aucune image sélectionnée.");
       const album = document.getElementById('albumSelect').value;
       const storageRef = ref(storage, `${album}/${window.file.name}`);
       const loader = document.getElementById('uploadLoader');
       loader.style.display = 'inline-block';
 
-      await uploadBytes(storageRef, window.file);
-      const url = await getDownloadURL(storageRef);
+      try {
+        await uploadBytes(storageRef, window.file);
+        const url = await getDownloadURL(storageRef);
 
-      await addDoc(collection(db, "albums", album, "photos"), {
-        url,
-        timestamp: serverTimestamp(),
-        deleted: false
-      });
+        await addDoc(collection(db, "albums", album, "photos"), {
+          url,
+          timestamp: serverTimestamp(),
+          deleted: false
+        });
 
-      loader.style.display = 'none';
-      alert("Photo ajoutée !");
-      location.reload();
+        alert("✅ Photo ajoutée !");
+        location.reload();
+      } catch (e) {
+        console.error("Erreur d’upload:", e);
+        alert("Erreur lors de l’upload de l’image.");
+      } finally {
+        loader.style.display = 'none';
+      }
     }
   </script>
+
+  <!-- 🎨 Style CSS -->
   <style>
     body {
       margin: 0;
@@ -207,6 +222,7 @@
   </style>
 </head>
 <body>
+  <!-- 🔗 Navigation Bar -->
   <nav>
     <a href="menu.html"><i class="fas fa-house"></i> Yuukaccueil</a>
     <div class="center-menu">
@@ -219,6 +235,7 @@
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
+  <!-- 📥 Upload Interface -->
   <div style="text-align: center; margin: 30px;">
     <label for="uploadInput" style="background: #334155; color: white; padding: 12px 24px; border-radius: 10px; cursor: pointer;">
       <i class="fas fa-plus-circle"></i> Ajouter une photo
@@ -242,6 +259,7 @@
     <div id="uploadLoader"></div>
   </div>
 
+  <!-- 🎛️ Filter Buttons -->
   <div class="album-filter">
     <button class="active" onclick="filterAlbums('all')">Tous les albums</button>
     <button onclick="filterAlbums('fichas')">Fichas</button>
@@ -250,8 +268,10 @@
     <button onclick="filterAlbums('etudes')">Études</button>
   </div>
 
+  <!-- 🖼️ Gallery Grid -->
   <div class="gallery-container" id="gallery"></div>
 
+  <!-- 🔍 Filter Logic -->
   <script>
     function filterAlbums(category) {
       const buttons = document.querySelectorAll('.album-filter button');
