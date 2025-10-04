@@ -3,23 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yuukafe place</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <title>Yuukafe place - En développement</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
   <style>
     body {
       margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      background: #f9f5ec url('https://www.transparenttextures.com/patterns/paper-fibers.png');
-      color: #3e3e3e;
-      overflow-x: hidden;
-      transition: background 0.3s, color 0.3s;
+      background-color: #253347; /* bleu plus foncé */
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-
-    body.dark-mode {
-      background: #1e1e1e;
-      color: #f5f5f5;
-    }
-
     nav {
       background-color: #1e293b;
       display: flex;
@@ -31,257 +27,73 @@
       top: 0;
       z-index: 1000;
     }
-
-    .nav-group {
+    .center-menu {
       display: flex;
-      align-items: center;
+      gap: 20px;
+      justify-content: center;
+      flex: 1;
     }
-
-    .nav-left a:first-child {
-      margin-right: 40px;
-    }
-
-    .nav-right a {
-      margin-left: 40px;
-    }
-
     nav a {
       color: white;
       text-decoration: none;
       padding: 10px 18px;
-      border-radius: 12px;
-      transition: all 0.3s ease;
-      background-color: transparent;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-weight: 600;
+      font-size: 1em;
       position: relative;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      transition: all 0.3s ease;
     }
-
+    nav a:hover {
+      color: #7dd3fc;
+    }
     nav a:not(:last-child)::after {
       content: "";
       position: absolute;
-      right: -8px;
+      right: -10px;
       top: 50%;
       transform: translateY(-50%);
       width: 1px;
       height: 18px;
       background-color: #475569;
     }
-
-    nav a:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-      transform: translateY(-2px);
-    }
-
     .content {
-      padding: 40px 20px;
-      max-width: 1000px;
-      margin: auto;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    h1 {
-      font-size: 2.5em;
       text-align: center;
-      margin-bottom: 10px;
+      padding: 80px 20px 40px;
+      flex-grow: 1;
     }
-
-    p.subtitle {
-      font-size: 1.2em;
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .note-search {
-      display: flex;
-      justify-content: center;
+    .content h1 {
+      font-size: 2em;
       margin-bottom: 20px;
     }
-
-    .note-search input {
-      padding: 10px;
-      border: 2px dashed #b5b5b5;
-      background: #fffefa;
-      border-radius: 8px;
-      font-size: 1em;
-      width: 300px;
-      outline: none;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    .notes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
-    }
-
-    .note-card {
-      background: #fffefa;
-      border: 2px dashed #d4cfc2;
-      border-radius: 10px;
-      padding: 20px;
-      box-shadow: 3px 3px 10px rgba(0,0,0,0.1);
-      position: relative;
+    .icon-container {
+      margin-top: 60px;
       display: flex;
-      flex-direction: column;
-      gap: 10px;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    .note-title {
-      font-weight: bold;
-      font-size: 1.3em;
-      text-align: center;
-      color: #2b2b2b;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    .note-card .password-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
-    .note-card input[type='password'],
-    .note-card input[type='text'] {
-      width: 100%;
-      padding: 10px 40px 10px 10px;
-      border: 2px solid #ccc;
-      border-radius: 8px;
-      background-color: #f1efe5;
-      font-size: 1em;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-      box-sizing: border-box;
-    }
-
-    .password-wrapper .toggle-password {
-      position: absolute;
-      right: 12px;
-      top: 50%;
-      transform: translateY(-50%);
-      cursor: pointer;
-      font-size: 1.1em;
-      color: #444;
-    }
-
-    .note-content {
-      display: none;
-      font-size: 1.1em;
-    }
-
-    .note-card button {
-      align-self: flex-end;
-      background-color: #ffb6b9;
-      border: none;
-      padding: 6px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    .dark-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #1e293b;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 30px;
-      cursor: pointer;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
+
   <nav>
-    <div class="nav-group nav-left">
-      <a href="menu.html"><i class="fas fa-house"></i><span>Yuukaccueil</span></a>
-      <a href="bouton1.html"><i class="fas fa-camera-retro"></i><span>Yuukalerie</span></a>
-      <a href="bouton2.html"><i class="fas fa-music"></i><span>Yuusiques</span></a>
-      <a href="bouton3.html"><i class="fas fa-mars"></i><span>Yuugars</span></a>
-      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i><span>Yuukafe place</span></a>
+    <a href="menu.html"><i class="fas fa-house"></i> Yuukaccueil</a>
+    <div class="center-menu">
+      <a href="bouton1.html"><i class="fas fa-camera-retro"></i> Yuukalerie</a>
+      <a href="bouton2.html"><i class="fas fa-music"></i> Yuusiques</a>
+      <a href="bouton3.html"><i class="fas fa-mars"></i> Yuugars</a>
+      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i> Yuukafe place</a>
+      <a href="bouton5.html"><i class="fas fa-calendar-alt"></i> Yuukalendrier</a>
     </div>
-    <div class="nav-group nav-right">
-      <a href="index.html"><i class="fas fa-sign-out-alt"></i><span>Yuukoff</span></a>
-    </div>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
   <div class="content">
-    <h1>Bienvenue dans la Yuukafe place !</h1>
-    <p class="subtitle">Un carnet secret où tu pourras lire ou ajouter de petits mots précieux, à condition d'avoir le bon mot de passe 😉</p>
-
-    <div class="note-search">
-      <input type="text" id="searchInput" placeholder="🔍 Cherche un mot doux...">
-    </div>
-
-    <div class="notes-grid" id="notesContainer">
-      <div class="note-card">
-        <div class="note-title">Petit mot #1</div>
-        <div class="password-wrapper">
-          <input type="password" placeholder="Mot de passe">
-          <i class="fas fa-eye toggle-password" onclick="togglePassword(this)"></i>
-        </div>
-        <button onclick="revealNote(this, 'tuEsLeMeilleur')">Déverrouiller</button>
-        <div class="note-content">Tu es incroyable, ne l'oublie jamais 💖</div>
-      </div>
-      <div class="note-card">
-        <div class="note-title">Petit mot #2</div>
-        <div class="password-wrapper">
-          <input type="password" placeholder="Mot de passe">
-          <i class="fas fa-eye toggle-password" onclick="togglePassword(this)"></i>
-        </div>
-        <button onclick="revealNote(this, 'cafeSecret')">Déverrouiller</button>
-        <div class="note-content">Tu mérites le monde entier. Et un petit café ☕</div>
-      </div>
+    <h1>Désolé, cette page est actuellement en développement.</h1>
+    <p>Reviens y faire un tour dans quelques temps pour y partager un moment au Yuukafe !</p>
+    <div class="icon-container">
+      <svg xmlns="http://www.w3.org/2000/svg" height="180" viewBox="0 0 24 24" fill="white">
+        <path d="M13 2v8h8c0-4.42-3.58-8-8-8zm-1 8V2c-4.42 0-8 3.58-8 8h8zm8 1h-8v8c4.42 0 8-3.58 8-8zm-10 8v-8H2c0 4.42 3.58 8 8 8z"/>
+      </svg>
     </div>
   </div>
 
-  <div class="dark-toggle" onclick="toggleDarkMode()">🌙 Mode sombre</div>
-
-  <script>
-    function revealNote(button, correctPassword) {
-      const card = button.parentElement;
-      const input = card.querySelector('input[type="password"], input[type="text"]');
-      const content = card.querySelector('.note-content');
-
-      if (input.value === correctPassword) {
-        content.style.display = 'block';
-        card.querySelector('.password-wrapper').style.display = 'none';
-        button.style.display = 'none';
-      } else {
-        alert("Mot de passe incorrect ! Essaie encore.");
-      }
-    }
-
-    function togglePassword(icon) {
-      const input = icon.previousElementSibling;
-      const isVisible = input.type === 'text';
-      input.type = isVisible ? 'password' : 'text';
-      icon.className = isVisible ? 'fas fa-eye toggle-password' : 'fas fa-eye-slash toggle-password';
-    }
-
-    function toggleDarkMode() {
-      document.body.classList.toggle('dark-mode');
-      const toggleBtn = document.querySelector('.dark-toggle');
-      if (document.body.classList.contains('dark-mode')) {
-        toggleBtn.innerHTML = "☀️ Mode clair";
-      } else {
-        toggleBtn.innerHTML = "🌙 Mode sombre";
-      }
-    }
-
-    document.getElementById('searchInput').addEventListener('input', function() {
-      const searchValue = this.value.toLowerCase();
-      const notes = document.querySelectorAll('.note-card');
-
-      notes.forEach(note => {
-        const content = note.querySelector('.note-content').textContent.toLowerCase();
-        const title = note.querySelector('.note-title').textContent.toLowerCase();
-        note.style.display = content.includes(searchValue) || title.includes(searchValue) ? 'flex' : 'none';
-      });
-    });
-  </script>
 </body>
 </html>
