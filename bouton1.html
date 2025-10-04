@@ -6,14 +6,12 @@
   <title>Yuukalerie</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
-  <!-- 🔐 Firebase App Config using GitHub Secret -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
     import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-storage.js";
     import { getFirestore, collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
     import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-    // 🧠 Configuration Firebase liée à ton projet (via clé API fournie)
     const firebaseConfig = {
       apiKey: "AIzaSyBcK1l6rQtHQ4z_y_aKRA_YOg0yVqqhskA",
       authDomain: "yuukalerie.firebaseapp.com",
@@ -23,22 +21,17 @@
       appId: "1:323287958771:web:93ebdf4a650f14c30d3825"
     };
 
-    // 🔌 Initialisation Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const storage = getStorage(app);
     const auth = getAuth(app);
+
     signInAnonymously(auth)
-  .then(() => {
-    console.log("✅ Connecté anonymement à Firebase.");
-  })
-  .catch((error) => {
-    console.error("❌ Erreur d’authentification Firebase :", error);
-  });
+      .then(() => console.log("✅ Connecté anonymement à Firebase."))
+      .catch((error) => console.error("❌ Erreur d’authentification Firebase :", error));
 
     window.file = null;
 
-    // 📸 Charger les photos depuis Firestore
     async function loadPhotos() {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = '';
@@ -62,7 +55,6 @@
 
     loadPhotos();
 
-    // 📂 Ouvrir la fenêtre d'upload
     window.openUploadModal = () => {
       window.file = document.getElementById('uploadInput').files[0];
       const preview = document.getElementById('preview');
@@ -73,45 +65,40 @@
       };
       reader.readAsDataURL(window.file);
       document.getElementById('uploadModal').style.display = 'block';
-    }
+    };
 
-    // ❌ Annuler l'upload
     window.cancelUpload = () => {
       document.getElementById('uploadModal').style.display = 'none';
       document.getElementById('uploadInput').value = "";
       window.file = null;
-    }
+    };
 
-    // ✅ Envoyer la photo vers Firebase Storage et Firestore
     window.uploadPhoto = async () => {
       if (!window.file) return alert("Aucune image sélectionnée.");
       const album = document.getElementById('albumSelect').value;
-      const storageRef = ref(storage, `${album}/${window.file.name}`);
+      const storageRef = ref(storage, `albums/${album}/${window.file.name}`);
       const loader = document.getElementById('uploadLoader');
       loader.style.display = 'inline-block';
 
       try {
         await uploadBytes(storageRef, window.file);
         const url = await getDownloadURL(storageRef);
-
         await addDoc(collection(db, "albums", album, "photos"), {
           url,
           timestamp: serverTimestamp(),
           deleted: false
         });
-
         alert("✅ Photo ajoutée !");
-        location.reload();
+        await loadPhotos();
       } catch (e) {
         console.error("Erreur d’upload:", e);
         alert("Erreur lors de l’upload de l’image.");
       } finally {
         loader.style.display = 'none';
       }
-    }
+    };
   </script>
 
-  <!-- 🎨 Style CSS -->
   <style>
     body {
       margin: 0;
@@ -230,7 +217,6 @@
   </style>
 </head>
 <body>
-  <!-- 🔗 Navigation Bar -->
   <nav>
     <a href="menu.html"><i class="fas fa-house"></i> Yuukaccueil</a>
     <div class="center-menu">
@@ -243,7 +229,6 @@
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
-  <!-- 📥 Upload Interface -->
   <div style="text-align: center; margin: 30px;">
     <label for="uploadInput" style="background: #334155; color: white; padding: 12px 24px; border-radius: 10px; cursor: pointer;">
       <i class="fas fa-plus-circle"></i> Ajouter une photo
@@ -267,7 +252,6 @@
     <div id="uploadLoader"></div>
   </div>
 
-  <!-- 🎛️ Filter Buttons -->
   <div class="album-filter">
     <button class="active" onclick="filterAlbums('all')">Tous les albums</button>
     <button onclick="filterAlbums('fichas')">Fichas</button>
@@ -276,10 +260,8 @@
     <button onclick="filterAlbums('etudes')">Études</button>
   </div>
 
-  <!-- 🖼️ Gallery Grid -->
   <div class="gallery-container" id="gallery"></div>
 
-  <!-- 🔍 Filter Logic -->
   <script>
     function filterAlbums(category) {
       const buttons = document.querySelectorAll('.album-filter button');
