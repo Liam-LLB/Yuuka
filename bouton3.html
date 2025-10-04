@@ -1,50 +1,50 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dossier Classé - Yuugars</title>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yuugars - En développement</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
   <style>
     body {
       margin: 0;
-      background: #1e293b;
-      color: #f5f5f5;
-      font-family: 'Courier New', Courier, monospace;
-      overflow-x: hidden;
+      background-color: #32405e; /* bleu clair */
+      color: white;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
     }
-
-    body.red-mode {
-      background: #121212 url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
+    nav {
+      background-color: #1e293b;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-
-    body.green-mode {
-      background: #1d3b30;
-      color: #eaf5ea;
+    .center-menu {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex: 1;
     }
-
-  nav {
-  background-color: #1e293b;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-}
-
     nav a {
       color: white;
       text-decoration: none;
       padding: 10px 18px;
-      font-weight: bold;
+      font-weight: 600;
       font-size: 1em;
       position: relative;
+      transition: all 0.3s ease;
     }
-
+    nav a:hover {
+      color: #7dd3fc;
+    }
     nav a:not(:last-child)::after {
       content: "";
       position: absolute;
@@ -55,118 +55,27 @@
       height: 18px;
       background-color: #475569;
     }
-
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      padding: 40px 20px;
-    }
-
-    h1 {
-      font-size: 2.8em;
+    .content {
       text-align: center;
-      margin-bottom: 10px;
+      padding: 80px 20px 40px;
+      flex-grow: 1;
     }
-
-    .subtitle {
-      text-align: center;
-      font-style: italic;
-      margin-bottom: 50px;
-    }
-
-    .choice-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 40px;
-      margin-top: 100px;
-    }
-
-    .choice-buttons button {
-      font-size: 3em;
-      background-color: #263859;
-      border: none;
-      width: 180px;
-      height: 180px;
-      border-radius: 20px;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.2s, background-color 0.3s;
-    }
-
-    .choice-buttons button:hover {
-      transform: scale(1.05);
-      background-color: #334e80;
-    }
-
-    .criminal-card {
-      background: #1c1c1c;
-      border: 2px solid #ff4d4d;
-      border-radius: 10px;
-      padding: 20px;
-      display: flex;
-      gap: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 0 12px rgba(255, 0, 0, 0.3);
-    }
-
-    .criminal-photo {
-      width: 180px;
-      height: 220px;
-      background: #333;
-      border: 2px dashed #888;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9em;
-      color: #999;
-    }
-
-    .criminal-info {
-      flex: 1;
-    }
-
-    .criminal-info h2 {
-      color: #ff4d4d;
-      font-size: 1.6em;
-      margin: 0 0 10px;
-      text-transform: uppercase;
-    }
-
-    .criminal-info p {
-      margin: 6px 0;
-      line-height: 1.5em;
-    }
-
-    .criminal-info .btn-dossier {
-      display: inline-block;
-      margin-top: 12px;
-      background-color: #ff4d4d;
-      color: white;
-      padding: 8px 16px;
-      border: none;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
-      text-decoration: none;
-    }
-
-    .criminal-info .btn-dossier:hover {
-      background-color: #e60000;
-    }
-
-    .back-icon {
-      font-size: 1.5em;
-      color: #fff;
+    .content h1 {
+      font-size: 2em;
       margin-bottom: 20px;
-      display: inline-block;
-      cursor: pointer;
+    }
+    .icon-container {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
     }
   </style>
 </head>
 <body>
-  <nav id="topNav">
+
+  <nav>
     <a href="menu.html"><i class="fas fa-house"></i> Yuukaccueil</a>
-    <div style="display: flex; gap: 20px;">
+    <div class="center-menu">
       <a href="bouton1.html"><i class="fas fa-camera-retro"></i> Yuukalerie</a>
       <a href="bouton2.html"><i class="fas fa-music"></i> Yuusiques</a>
       <a href="bouton3.html"><i class="fas fa-mars"></i> Yuugars</a>
@@ -176,86 +85,15 @@
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
-  <!-- Remaining HTML structure remains unchanged -->
-  <div class="container" id="choiceScreen">
-    <h1>Quel type de profil veux-tu consulter ?</h1>
-    <p class="subtitle">Fais ton choix avec sagesse 🍃</p>
-    <div class="choice-buttons">
-      <button onclick="showSection('luck')">🍀</button>
-      <button onclick="showSection('redflag')">🚩</button>
+  <div class="content">
+    <h1>Désolé, cette page est actuellement en développement.</h1>
+    <p>Reviens y faire un tour dans quelques temps pour y découvrir de nouveaux Yuugars !</p>
+    <div class="icon-container">
+      <svg xmlns="http://www.w3.org/2000/svg" height="180" viewBox="0 0 24 24" fill="white">
+        <path d="M13 2v8h8c0-4.42-3.58-8-8-8zm-1 8V2c-4.42 0-8 3.58-8 8h8zm8 1h-8v8c4.42 0 8-3.58 8-8zm-10 8v-8H2c0 4.42 3.58 8 8 8z"/>
+      </svg>
     </div>
   </div>
 
-  <div class="container" id="redflagSection" style="display: none;">
-    <span class="back-icon" onclick="goBack()"><i class="fas fa-arrow-left"></i></span>
-    <h1>🔴 DOSSIERS CLASSÉS</h1>
-    <p class="subtitle">Voici les profils des personnes à ne jamais recontacter. Considérés comme nuisibles émotionnellement. ⚠️</p>
-    <div class="criminal-card">
-      <div class="criminal-photo">Photo non disponible</div>
-      <div class="criminal-info">
-        <h2>Code Nom : EX-001 — "Le Fantôme du Passé"</h2>
-        <p><strong>Âge :</strong> 21</p>
-        <p><strong>Origine :</strong> Lyon, France</p>
-        <p><strong>Infractions :</strong> ghosting, manipulation affective, promesses non tenues, messages ambigus répétés.</p>
-        <p><strong>Statut :</strong> Dossier clos - ne surtout pas rouvrir</p>
-        <a class="btn-dossier" href="fiche1.html">Voir le dossier complet</a>
-      </div>
-    </div>
-    <div class="criminal-card">
-      <div class="criminal-photo">Photo non disponible</div>
-      <div class="criminal-info">
-        <h2>Code Nom : EX-002 — "Le Séducteur Inconstant"</h2>
-        <p><strong>Âge :</strong> 23</p>
-        <p><strong>Origine :</strong> Bordeaux, France</p>
-        <p><strong>Infractions :</strong> double jeu relationnel, jalousie excessive, disputes infondées.</p>
-        <p><strong>Statut :</strong> Fiche rouge - danger émotionnel élevé</p>
-        <a class="btn-dossier" href="fiche2.html">Voir le dossier complet</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" id="luckSection" style="display: none;">
-    <span class="back-icon" onclick="goBack()"><i class="fas fa-arrow-left"></i></span>
-    <h1>🍀 ÂMES CHANCEUSES</h1>
-    <p class="subtitle">Des personnes à ne jamais oublier. Bienveillantes, drôles, sincères — un vrai bol d’air.</p>
-    <div class="criminal-card" style="background:#2a4b3a; border-color:#69d297; box-shadow: 0 0 12px rgba(105, 210, 151, 0.3);">
-      <div class="criminal-photo" style="background:#3c6e58; color:#b2f0cf; border-color:#69d297;">Photo à venir</div>
-      <div class="criminal-info">
-        <h2 style="color:#b2f0cf">Code Nom : BFF-001 — "L'Épaule Fidèle"</h2>
-        <p><strong>Âge :</strong> 22</p>
-        <p><strong>Origine :</strong> Marseille, France</p>
-        <p><strong>Qualités :</strong> toujours présent(e), conseils avisés, soutien sans faille.</p>
-        <p><strong>Statut :</strong> Trésor émotionnel — à garder précieusement</p>
-        <a class="btn-dossier" href="#" style="background-color: #69d297; color:#1b2f25">Voir le dossier complet</a>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    function showSection(type) {
-      document.getElementById('choiceScreen').style.display = 'none';
-      if (type === 'redflag') {
-        document.body.classList.add('red-mode');
-        document.body.classList.remove('green-mode');
-        document.getElementById('redflagSection').style.display = 'block';
-        document.getElementById('luckSection').style.display = 'none';
-        document.getElementById('topNav').style.backgroundColor = '#000000';
-      } else if (type === 'luck') {
-        document.body.classList.add('green-mode');
-        document.body.classList.remove('red-mode');
-        document.getElementById('luckSection').style.display = 'block';
-        document.getElementById('redflagSection').style.display = 'none';
-        document.getElementById('topNav').style.backgroundColor = '#1d3b30';
-      }
-    }
-
-    function goBack() {
-      document.body.classList.remove('red-mode', 'green-mode');
-      document.getElementById('choiceScreen').style.display = 'block';
-      document.getElementById('redflagSection').style.display = 'none';
-      document.getElementById('luckSection').style.display = 'none';
-      document.getElementById('topNav').style.backgroundColor = '#1e293b';
-    }
-  </script>
 </body>
 </html>
