@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yuukajeux</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: rgba(30, 41, 59, 0.85);
+      --card: rgba(30, 41, 59, 0.9);
+      --muted: #cbd5e1;
+      --text: #e2e8f0;
+      --accent: #60a5fa;
+      --accent-2: #f472b6;
+      --accent-3: #22d3ee;
+      --border: rgba(148, 163, 184, 0.35);
+      --success: #22c55e;
+      --warning: #f59e0b;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.22), transparent 25%),
+        radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.15), transparent 22%),
+        linear-gradient(135deg, #0b1224 0%, #0f172a 100%);
+      color: var(--text);
+      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    nav {
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    .center-menu {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 10px 16px;
+      font-weight: 600;
+      font-size: 0.95em;
+      border-radius: 999px;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: #c7d2fe;
+      background: rgba(59, 130, 246, 0.15);
+    }
+
+    main {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 50px 18px 70px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(59, 130, 246, 0.35);
+      background: rgba(59, 130, 246, 0.18);
+      color: #dbeafe;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 22px 20px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero {
+      text-align: left;
+      display: grid;
+      gap: 10px;
+    }
+
+    .hero h1 {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 42px);
+      letter-spacing: 1px;
+    }
+
+    .hero p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+      max-width: 840px;
+    }
+
+    .scoreboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      align-items: center;
+    }
+
+    .score-item {
+      background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(15, 23, 42, 0.8));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+    }
+
+    .score-item .icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(59, 130, 246, 0.18);
+      color: white;
+      font-size: 18px;
+    }
+
+    .score-item strong {
+      font-size: 1.2em;
+    }
+
+    .progress-wrapper {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      width: 100%;
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #60a5fa, #22d3ee);
+      transition: width 0.35s ease;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    .game-card {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px;
+      border-radius: 14px;
+      background: linear-gradient(140deg, rgba(59, 130, 246, 0.14), rgba(15, 23, 42, 0.92));
+      border: 1px solid rgba(59, 130, 246, 0.22);
+      box-shadow: 0 15px 38px rgba(0, 0, 0, 0.3);
+    }
+
+    .game-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .game-header .icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: rgba(244, 114, 182, 0.18);
+      color: #fde7f3;
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+    }
+
+    .game-card h3 {
+      margin: 0;
+      font-size: 1.2em;
+      letter-spacing: 0.3px;
+    }
+
+    .game-card p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+      font-size: 0.98em;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      background: rgba(59, 130, 246, 0.2);
+      color: #e2e8f0;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover { background: rgba(59, 130, 246, 0.28); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .status {
+      font-weight: 700;
+      color: var(--warning);
+    }
+
+    .status.success { color: var(--success); }
+    .status.pending { color: var(--warning); }
+
+    .chip {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: rgba(59, 130, 246, 0.12);
+      color: var(--muted);
+      border: 1px solid rgba(59, 130, 246, 0.25);
+      font-size: 0.9em;
+    }
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .tile {
+      padding: 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.1s ease, background 0.2s ease, border-color 0.2s ease;
+      user-select: none;
+    }
+
+    .tile:hover { transform: translateY(-2px); }
+    .tile.active { background: rgba(59, 130, 246, 0.25); border-color: rgba(59, 130, 246, 0.5); }
+    .tile.correct { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.6); }
+    .tile.wrong { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.6); }
+
+    .reward {
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(15, 23, 42, 0.94));
+      color: #dcfce7;
+      text-align: center;
+    }
+
+    .hidden { display: none; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <nav>
+    <a href="index.html"><i class="fas fa-house"></i> Yuukaccueil</a>
+    <div class="center-menu">
+      <a href="bouton1.html"><i class="fas fa-camera-retro"></i> Yuukalerie</a>
+      <a href="bouton2.html"><i class="fas fa-music"></i> Yuusiques</a>
+      <a href="bouton3.html"><i class="fas fa-mars"></i> Yuugars</a>
+      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i> Yuukafe place</a>
+      <a href="bouton5.html"><i class="fas fa-calendar-alt"></i> Yuukalendrier</a>
+      <a href="bouton6.html"><i class="fas fa-gamepad"></i> Yuukajeux</a>
+    </div>
+    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
+  </nav>
+
+  <main>
+    <section class="card hero">
+      <div class="pill"><i class="fas fa-sparkles"></i> Hub Yuukajeux</div>
+      <h1>Accumule des points, valide chaque mini-jeu, débloque les récompenses.</h1>
+      <p>Chaque mini-jeu octroie des points selon ta performance. La progression est enregistrée dans ton navigateur : termine tous les défis pour remplir la barre et accéder aux récompenses. Tu peux rejouer pour améliorer ton meilleur score.</p>
+    </section>
+
+    <section class="scoreboard">
+      <div class="score-item">
+        <div class="icon"><i class="fas fa-coins"></i></div>
+        <div>
+          <div>Total de points</div>
+          <strong id="totalPoints">0 pts</strong>
+          <div class="chip" id="completedCount">0 / 3 jeux validés</div>
+        </div>
+      </div>
+      <div class="score-item">
+        <div class="icon"><i class="fas fa-battery-three-quarters"></i></div>
+        <div class="progress-wrapper">
+          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+          <strong id="progressText">0%</strong>
+        </div>
+      </div>
+      <div class="score-item">
+        <div class="icon"><i class="fas fa-gift"></i></div>
+        <div>
+          <div>Récompenses</div>
+          <strong id="rewardStatus" class="status pending">Bloquées</strong>
+          <div class="chip">Termine les 3 jeux pour débloquer</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="game-card" id="reflex-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-bolt"></i></div>
+          <div>
+            <h3>Réflexe éclair</h3>
+            <p>Attends le signal puis clique le plus vite possible. Plus ta réaction est rapide, plus tu marques de points.</p>
+          </div>
+        </div>
+        <div class="chip">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</div>
+        <div class="actions">
+          <button class="btn" id="reflexStart">Lancer</button>
+          <span id="reflexStatus" class="status pending">En attente</span>
+        </div>
+        <div id="reflexTarget" class="tile">Attends le signal…</div>
+        <div class="chip" id="reflexScore">Meilleur : 0 pts</div>
+      </article>
+
+      <article class="game-card" id="memory-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-brain"></i></div>
+          <div>
+            <h3>Mémoire chroma</h3>
+            <p>Mémorise la séquence de couleurs puis reproduis-la. Bonne séquence = points assurés.</p>
+          </div>
+        </div>
+        <div class="chip">25 pts • Réussite si la séquence est exacte</div>
+        <div class="actions">
+          <button class="btn" id="memoryStart">Montrer la séquence</button>
+          <span id="memoryStatus" class="status pending">En attente</span>
+        </div>
+        <div class="board" id="memoryBoard">
+          <div class="tile" data-color="cyan">Cyan</div>
+          <div class="tile" data-color="rose">Rose</div>
+          <div class="tile" data-color="indigo">Indigo</div>
+          <div class="tile" data-color="lime">Lime</div>
+        </div>
+        <div class="chip" id="memoryScore">Meilleur : 0 pts</div>
+      </article>
+
+      <article class="game-card" id="quiz-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-question-circle"></i></div>
+          <div>
+            <h3>Yuukwizz express</h3>
+            <p>Réponds à trois questions. Un sans faute te rapporte le maximum de points.</p>
+          </div>
+        </div>
+        <div class="chip">Jusqu’à 30 pts • Réussite à 3/3</div>
+        <div id="quizArea">
+          <div id="quizQuestion">Prêt à commencer ?</div>
+          <div class="actions" id="quizOptions"></div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="quizStart">Démarrer le quiz</button>
+          <span id="quizStatus" class="status pending">En attente</span>
+        </div>
+        <div class="chip" id="quizScore">Meilleur : 0 pts</div>
+      </article>
+    </section>
+
+    <section class="card reward hidden" id="rewardCard">
+      <h2>Récompenses débloquées !</h2>
+      <p>Bravo, tu as validé tous les mini-jeux. Voici ton lien magique : <strong>yuukareward://joue encore</strong></p>
+      <p>Tu peux rejouer pour améliorer tes scores, mais la récompense reste acquise.</p>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "yuukajeuxProgress";
+    const games = {
+      reflex: { name: "Réflexe éclair", max: 30 },
+      memory: { name: "Mémoire chroma", max: 25 },
+      quiz: { name: "Yuukwizz express", max: 30 },
+    };
+
+    let state = {
+      scores: { reflex: 0, memory: 0, quiz: 0 },
+      completed: { reflex: false, memory: false, quiz: false },
+    };
+
+    const totalGames = Object.keys(games).length;
+
+    function loadState() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          const parsed = JSON.parse(stored);
+          state = { ...state, ...parsed };
+        } catch (_) { /* ignore */ }
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function updateScoreboard() {
+      const totalPoints = Object.values(state.scores).reduce((a, b) => a + b, 0);
+      const completedCount = Object.values(state.completed).filter(Boolean).length;
+      const progress = Math.round((completedCount / totalGames) * 100);
+
+      document.getElementById("totalPoints").textContent = `${totalPoints} pts`;
+      document.getElementById("completedCount").textContent = `${completedCount} / ${totalGames} jeux validés`;
+      document.getElementById("progressText").textContent = `${progress}%`;
+      document.getElementById("progressFill").style.width = `${progress}%`;
+
+      const rewardStatus = document.getElementById("rewardStatus");
+      const rewardCard = document.getElementById("rewardCard");
+      if (completedCount === totalGames) {
+        rewardStatus.textContent = "Débloquées";
+        rewardStatus.classList.add("success");
+        rewardStatus.classList.remove("pending");
+        rewardCard.classList.remove("hidden");
+      } else {
+        rewardStatus.textContent = "Bloquées";
+        rewardStatus.classList.add("pending");
+        rewardStatus.classList.remove("success");
+        rewardCard.classList.add("hidden");
+      }
+
+      document.getElementById("reflexScore").textContent = `Meilleur : ${state.scores.reflex} pts`;
+      document.getElementById("memoryScore").textContent = `Meilleur : ${state.scores.memory} pts`;
+      document.getElementById("quizScore").textContent = `Meilleur : ${state.scores.quiz} pts`;
+    }
+
+    // Réflexe éclair
+    const reflexStartBtn = document.getElementById("reflexStart");
+    const reflexTarget = document.getElementById("reflexTarget");
+    const reflexStatus = document.getElementById("reflexStatus");
+    let reflexTimeout;
+    let reflexStartTime = 0;
+    let reflexReady = false;
+
+    function resetReflex() {
+      clearTimeout(reflexTimeout);
+      reflexReady = false;
+      reflexTarget.textContent = "Attends le signal…";
+      reflexTarget.classList.remove("active", "correct", "wrong");
+      reflexStartBtn.disabled = false;
+    }
+
+    reflexStartBtn.addEventListener("click", () => {
+      resetReflex();
+      reflexStatus.textContent = "Prépare-toi…";
+      reflexStartBtn.disabled = true;
+      reflexTimeout = setTimeout(() => {
+        reflexTarget.textContent = "Clique maintenant !";
+        reflexTarget.classList.add("active");
+        reflexReady = true;
+        reflexStartTime = performance.now();
+      }, 1000 + Math.random() * 2000);
+    });
+
+    reflexTarget.addEventListener("click", () => {
+      if (!reflexReady) {
+        reflexStatus.textContent = "Trop tôt !";
+        reflexStatus.classList.remove("success");
+        reflexStatus.classList.add("pending");
+        resetReflex();
+        return;
+      }
+      const reaction = performance.now() - reflexStartTime;
+      reflexTarget.classList.remove("active");
+      reflexReady = false;
+
+      const points = Math.max(5, Math.min(30, Math.round(30 - reaction / 30)));
+      if (reaction <= 900) {
+        reflexStatus.textContent = `Validé : ${Math.round(reaction)} ms`;
+        reflexStatus.classList.add("success");
+        state.completed.reflex = true;
+        state.scores.reflex = Math.max(state.scores.reflex, points);
+      } else {
+        reflexStatus.textContent = `Un peu lent (${Math.round(reaction)} ms) — réessaie !`;
+        reflexStatus.classList.remove("success");
+      }
+      saveState();
+      updateScoreboard();
+      reflexStartBtn.disabled = false;
+    });
+
+    // Mémoire chroma
+    const memoryColors = ["cyan", "rose", "indigo", "lime"];
+    const memoryStatus = document.getElementById("memoryStatus");
+    const memoryStartBtn = document.getElementById("memoryStart");
+    const memoryTiles = Array.from(document.querySelectorAll("#memoryBoard .tile"));
+    let memorySequence = [];
+    let memoryStep = 0;
+    let memoryActive = false;
+
+    function colorToStyle(color) {
+      const map = {
+        cyan: "rgba(34,211,238,0.28)",
+        rose: "rgba(244,114,182,0.28)",
+        indigo: "rgba(99,102,241,0.28)",
+        lime: "rgba(163,230,53,0.28)",
+      };
+      return map[color] || "rgba(59,130,246,0.25)";
+    }
+
+    function flashTile(tile) {
+      const original = tile.style.backgroundColor;
+      tile.style.backgroundColor = colorToStyle(tile.dataset.color);
+      setTimeout(() => { tile.style.backgroundColor = original; }, 450);
+    }
+
+    function playSequence(seq) {
+      seq.forEach((color, idx) => {
+        const tile = memoryTiles.find(t => t.dataset.color === color);
+        setTimeout(() => flashTile(tile), idx * 650);
+      });
+    }
+
+    function resetMemory() {
+      memoryActive = false;
+      memoryStep = 0;
+      memorySequence = [];
+      memoryTiles.forEach(t => t.classList.remove("correct", "wrong"));
+    }
+
+    memoryStartBtn.addEventListener("click", () => {
+      resetMemory();
+      memorySequence = Array.from({ length: 4 }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
+      playSequence(memorySequence);
+      memoryStatus.textContent = "Reproduis la séquence";
+      memoryActive = true;
+    });
+
+    memoryTiles.forEach(tile => {
+      tile.addEventListener("click", () => {
+        if (!memoryActive) return;
+        flashTile(tile);
+        const expected = memorySequence[memoryStep];
+        const chosen = tile.dataset.color;
+        memoryStep++;
+        if (chosen !== expected) {
+          tile.classList.add("wrong");
+          memoryStatus.textContent = "Raté, essaie encore !";
+          memoryActive = false;
+          return;
+        }
+        if (memoryStep === memorySequence.length) {
+          tile.classList.add("correct");
+          memoryStatus.textContent = "Séquence validée !";
+          memoryStatus.classList.add("success");
+          state.completed.memory = true;
+          state.scores.memory = Math.max(state.scores.memory, games.memory.max);
+          saveState();
+          updateScoreboard();
+          memoryActive = false;
+        }
+      });
+    });
+
+    // Quiz
+    const quizStartBtn = document.getElementById("quizStart");
+    const quizStatus = document.getElementById("quizStatus");
+    const quizQuestion = document.getElementById("quizQuestion");
+    const quizOptions = document.getElementById("quizOptions");
+    const quizQuestions = [
+      {
+        q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?",
+        options: ["2", "3", "5"],
+        answer: "3",
+      },
+      {
+        q: "Quel type de jeu teste ta rapidité ?",
+        options: ["Réflexe éclair", "Mémoire chroma", "Yuukwizz express"],
+        answer: "Réflexe éclair",
+      },
+      {
+        q: "Qu’enregistre le hub Yuukajeux ?",
+        options: ["Tes points dans le navigateur", "Un compte en ligne", "Rien du tout"],
+        answer: "Tes points dans le navigateur",
+      },
+    ];
+    let currentQuizIndex = 0;
+    let correctAnswers = 0;
+    let quizActive = false;
+
+    function renderQuizQuestion() {
+      const { q, options } = quizQuestions[currentQuizIndex];
+      quizQuestion.textContent = q;
+      quizOptions.innerHTML = "";
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = opt;
+        btn.addEventListener("click", () => handleQuizAnswer(opt));
+        quizOptions.appendChild(btn);
+      });
+    }
+
+    function handleQuizAnswer(choice) {
+      if (!quizActive) return;
+      const current = quizQuestions[currentQuizIndex];
+      if (choice === current.answer) correctAnswers++;
+      currentQuizIndex++;
+      if (currentQuizIndex >= quizQuestions.length) {
+        const points = correctAnswers * 10;
+        if (correctAnswers === quizQuestions.length) {
+          quizStatus.textContent = "Sans faute !";
+          quizStatus.classList.add("success");
+          state.completed.quiz = true;
+          state.scores.quiz = Math.max(state.scores.quiz, points);
+        } else {
+          quizStatus.textContent = `${correctAnswers}/3 — réessaie pour valider`;
+          quizStatus.classList.remove("success");
+          state.scores.quiz = Math.max(state.scores.quiz, points);
+        }
+        saveState();
+        updateScoreboard();
+        quizActive = false;
+        quizQuestion.textContent = "Quiz terminé, rejoue pour améliorer ton score.";
+        quizOptions.innerHTML = "";
+        quizStartBtn.disabled = false;
+        return;
+      }
+      renderQuizQuestion();
+    }
+
+    quizStartBtn.addEventListener("click", () => {
+      currentQuizIndex = 0;
+      correctAnswers = 0;
+      quizActive = true;
+      quizStatus.textContent = "En cours…";
+      quizStatus.classList.remove("success");
+      quizStartBtn.disabled = true;
+      renderQuizQuestion();
+    });
+
+    // Init
+    loadState();
+    updateScoreboard();
+    quizQuestion.textContent = "Prêt à commencer ?";
+  </script>
+</body>
+</html>
