@@ -270,7 +270,6 @@
       const input = document.getElementById("passwordInput").value.trim();
       const error = document.getElementById("errorMessage");
       const hint = document.getElementById("hintText");
-      const calendarContainer = document.getElementById("calendarContainer");
 
       if (input === correctPassword) {
         document.getElementById("loginBox").classList.remove("active");
@@ -279,10 +278,6 @@
         hint.innerHTML = "Tu as désormais accès au <strong>Yuukonline</strong>, que souhaites-tu découvrir ?";
         hint.classList.add("success");
 
-        setTimeout(() => {
-          calendarContainer.style.display = "block";
-          calendarContainer.style.opacity = "1";
-        }, 500);
       } else {
         error.textContent = "Mot de passe incorrect. Réessaie.";
       }
