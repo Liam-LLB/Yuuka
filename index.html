@@ -127,7 +127,7 @@
 
     .menu-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 25px;
       margin-top: 30px;
       justify-items: center;
@@ -242,6 +242,10 @@
       <div class="menu-item" onclick="goToPage('bouton4.html')">
         <i class="fas fa-mug-hot"></i>
         <span>Yuukafe place</span>
+      </div>
+      <div class="menu-item" onclick="goToPage('bouton6.html')">
+        <i class="fas fa-gamepad"></i>
+        <span>Yuukajeux</span>
       </div>
     </div>
   </div>
