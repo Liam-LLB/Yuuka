@@ -3,62 +3,509 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Yuukajeux - Page finale</title>
+  <title>Récompense finale</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-1: #0b1224;
+      --bg-2: #0f172a;
+      --panel: rgba(23, 31, 50, 0.92);
+      --muted: #cbd5e1;
+      --accent: #8b5cf6;
+      --accent-2: #22d3ee;
+      --success: #22c55e;
+      --danger: #ef4444;
+    }
+
+    * { box-sizing: border-box; }
+
     body {
       margin: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(124, 58, 237, 0.18), transparent 35%),
-                  radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.18), transparent 32%),
-                  linear-gradient(135deg, #0b1224 0%, #0f172a 60%, #0b1224 100%);
-      color: #e2e8f0;
-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
+      background:
+        radial-gradient(circle at 20% 15%, rgba(34, 211, 238, 0.16), transparent 32%),
+        radial-gradient(circle at 75% 10%, rgba(139, 92, 246, 0.2), transparent 30%),
+        linear-gradient(140deg, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-1) 100%);
+      color: #e2e8f0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      padding: 28px 16px 60px;
     }
+
+    .wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      gap: 18px;
+    }
+
+    header { display: grid; gap: 8px; text-align: center; }
+    h1 { margin: 0; font-size: clamp(30px, 5vw, 46px); font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; }
+    p { margin: 0; line-height: 1.6; color: var(--muted); }
 
     .panel {
-      background: rgba(23, 31, 50, 0.92);
-      border: 1px solid rgba(148, 163, 184, 0.25);
-      border-radius: 18px;
-      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
-      padding: 26px;
-      max-width: 720px;
-      width: 100%;
-      text-align: center;
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.38);
     }
 
-    h1 { margin: 0 0 12px; font-size: clamp(26px, 4vw, 36px); }
-    p { margin: 10px 0; color: #cbd5e1; line-height: 1.6; }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+    }
 
-    .pill {
+    .step-pill {
+      border-radius: 14px;
+      padding: 12px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: border 0.2s ease, transform 0.2s ease;
+    }
+
+    .step-pill.active {
+      border-color: rgba(34, 211, 238, 0.8);
+      box-shadow: 0 10px 24px rgba(34, 211, 238, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .step-pill .badge { margin-left: auto; }
+
+    .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
+      gap: 6px;
+      padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(124, 58, 237, 0.18);
-      border: 1px solid rgba(124, 58, 237, 0.32);
-      color: #e9d5ff;
+      background: rgba(255, 255, 255, 0.08);
+      color: #cbd5e1;
       font-weight: 700;
-      margin-bottom: 12px;
+      font-size: 13px;
     }
 
-    a {
-      color: #bfdbfe;
-      text-decoration: none;
-      font-weight: 700;
+    .badge.success { background: rgba(34, 197, 94, 0.16); color: #bbf7d0; }
+    .badge.pending { background: rgba(234, 179, 8, 0.15); color: #fed7aa; }
+
+    .stage {
+      display: none;
+      margin-top: 6px;
+      gap: 12px;
     }
+
+    .stage.active { display: grid; }
+
+    .grid-hint {
+      color: #e0f2fe;
+      background: rgba(59, 130, 246, 0.12);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      padding: 12px;
+      border-radius: 12px;
+      margin: 0 0 8px;
+    }
+
+    .crossword {
+      display: grid;
+      grid-template-columns: repeat(11, 36px);
+      gap: 4px;
+      width: fit-content;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .cell {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-transform: uppercase;
+      color: #e2e8f0;
+      text-align: center;
+      font-weight: 700;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .cell:focus { border-color: rgba(139, 92, 246, 0.8); box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.25); }
+    .block { width: 36px; height: 36px; border-radius: 10px; background: rgba(255,255,255,0.08); }
+
+    .sentences { display: grid; gap: 8px; }
+
+    .charade { display: grid; gap: 8px; line-height: 1.6; }
+
+    .word-input {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .slots { display: flex; gap: 8px; }
+    .slot {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 18px;
+      color: #e2e8f0;
+      background: rgba(255, 255, 255, 0.04);
+    }
+
+    .word-input input {
+      flex: 1;
+      min-width: 200px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+    button {
+      appearance: none;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+      background: linear-gradient(120deg, #3b82f6, #8b5cf6);
+      color: white;
+      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    button.secondary { background: rgba(255, 255, 255, 0.08); box-shadow: none; }
+    button:hover { transform: translateY(-1px); filter: brightness(1.05); }
+    button:active { transform: translateY(0); filter: brightness(0.98); }
+
+    .success-card {
+      background: linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(34, 211, 238, 0.18));
+      color: #e2fbe8;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      border-radius: 20px;
+      padding: 26px;
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .final-screen {
+      display: none;
+      min-height: 60vh;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: radial-gradient(circle at 20% 20%, rgba(34, 197, 94, 0.16), transparent 35%),
+                  radial-gradient(circle at 80% 0%, rgba(34, 211, 238, 0.16), transparent 32%),
+                  linear-gradient(135deg, #0b1224 0%, #0f172a 60%, #0b1224 100%);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 26px;
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+    }
+
+    .final-screen.active { display: grid; }
+
+    .final-screen h2 { font-size: clamp(32px, 6vw, 56px); margin: 0 0 12px; }
+    .final-screen p { color: #cbd5e1; font-size: 18px; }
+
+    .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   </style>
 </head>
 <body>
-  <div class="panel">
-    <div class="pill"><i class="fas fa-unlock"></i> Portail final</div>
-    <h1>Prêt pour l’étape suivante</h1>
-    <p>Tu as gagné tous les mini-jeux. Dis-moi ce que tu veux afficher ici et je mettrai cette page à jour.</p>
-    <p><a href="bouton6.html"><i class="fas fa-arrow-left"></i> Retourner au hub</a></p>
+  <div class="wrapper">
+    <header>
+      <div class="badge"><i class="fas fa-unlock"></i> Récompense finale</div>
+      <h1>Quatre étapes pour deviner la phrase</h1>
+      <p>Une étape par mot. Les progrès se sauvegardent automatiquement : reprends où tu t’es arrêté, valide chaque étape, puis découvre le message final.</p>
+      <p><a href="bouton6.html" style="color:#bfdbfe;font-weight:700;text-decoration:none;"><i class="fas fa-arrow-left"></i> Retour au hub</a></p>
+    </header>
+
+    <div class="panel">
+      <div class="steps" id="stepsNav"></div>
+
+      <div id="stagesContainer"></div>
+
+      <div class="nav-row">
+        <button class="secondary" id="prevStep"><i class="fas fa-arrow-left"></i> Étape précédente</button>
+        <div class="badge" id="saveInfo"><i class="fas fa-cloud"></i> Sauvegarde locale active</div>
+        <button id="nextStep">Étape suivante <i class="fas fa-arrow-right"></i></button>
+      </div>
+    </div>
+
+    <div class="final-screen" id="finalScreen">
+      <div>
+        <div class="badge success"><i class="fas fa-crown"></i> Récompense débloquée</div>
+        <h2>Bravo, tu as gagné le droit de me donner ta main !</h2>
+        <p>Tu as déchiffré chaque étape et reconstitué la phrase complète : <strong>Donne moi ta main</strong>.</p>
+      </div>
+    </div>
   </div>
+
+  <script>
+    const REWARD_KEY = "yuukonlineReward";
+    const STEPS = [
+      { id: "donne", title: "Étape 1 • Mot croisé", target: "DONNE" },
+      { id: "moi", title: "Étape 2 • Acrostiche", target: "MOI" },
+      { id: "ta", title: "Étape 3 • Mot offert", target: "TA" },
+      { id: "main", title: "Étape 4 • Charade", target: "MAIN" },
+    ];
+
+    const CROSSWORD = {
+      rows: 6,
+      cols: 11,
+      cells: {
+        "0-2": "D","0-3": "R","0-4": "A","0-5": "P","0-6": "S",
+        "1-1": "R","1-2": "O","1-3": "M","1-4": "A","1-5": "N","1-6": "T","1-7": "I","1-8": "Q","1-9": "U","1-10": "E",
+        "2-0": "S","2-1": "A","2-2": "H","2-3": "N","2-4": "N","2-5": "O","2-6": "N",
+        "3-0": "M","3-1": "X","3-2": "E","3-3": "N","3-4": "R",
+        "4-0": "A","4-1": "I","4-2": "S","4-3": "E","4-4": "E",
+        "5-4": "I","5-5": "Q","5-6": "U","5-7": "E"
+      }
+    };
+
+    const defaultState = () => ({
+      currentStep: 0,
+      answers: { donne: "", moi: "", ta: "", main: "" },
+      grid: {}
+    });
+
+    let state = defaultState();
+
+    function loadState() {
+      const raw = localStorage.getItem(REWARD_KEY);
+      if (raw) {
+        try {
+          const parsed = JSON.parse(raw);
+          state = { ...state, ...parsed, answers: { ...defaultState().answers, ...(parsed.answers || {}) }, grid: parsed.grid || {} };
+        } catch (_) { /* ignore */ }
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem(REWARD_KEY, JSON.stringify(state));
+      document.getElementById("saveInfo").textContent = "Sauvegarde locale mise à jour";
+      setTimeout(() => { document.getElementById("saveInfo").textContent = "Sauvegarde locale active"; }, 1200);
+    }
+
+    function renderSteps() {
+      const nav = document.getElementById("stepsNav");
+      nav.innerHTML = "";
+      STEPS.forEach((step, index) => {
+        const pill = document.createElement("div");
+        pill.className = "step-pill" + (index === state.currentStep ? " active" : "");
+        pill.dataset.index = index;
+        pill.innerHTML = `<span>${step.title}</span>`;
+        const badge = document.createElement("div");
+        badge.className = "badge " + (isStepDone(step.id) ? "success" : "pending");
+        badge.textContent = isStepDone(step.id) ? "Validé" : "À faire";
+        pill.appendChild(badge);
+        pill.addEventListener("click", () => changeStep(index));
+        nav.appendChild(pill);
+      });
+    }
+
+    function isStepDone(id) {
+      return (state.answers[id] || "").toUpperCase() === STEPS.find(s => s.id === id).target;
+    }
+
+    function renderSlots(container, word, stepId) {
+      container.innerHTML = "";
+      const target = word.length;
+      for (let i = 0; i < target; i++) {
+        const slot = document.createElement("div");
+        slot.className = "slot";
+        slot.textContent = (state.answers[stepId] || "").toUpperCase()[i] || "_";
+        container.appendChild(slot);
+      }
+    }
+
+    function currentStepId() {
+      return STEPS[state.currentStep].id;
+    }
+
+    function renderStages() {
+      const host = document.getElementById("stagesContainer");
+      host.innerHTML = "";
+      STEPS.forEach((step, index) => {
+        const stage = document.createElement("div");
+        stage.className = "stage" + (index === state.currentStep ? " active" : "");
+        stage.id = `stage-${step.id}`;
+
+        const slotsWrapper = document.createElement("div");
+        slotsWrapper.className = "word-input";
+        const slots = document.createElement("div");
+        slots.className = "slots";
+        slotsWrapper.appendChild(slots);
+
+        const input = document.createElement("input");
+        input.id = `input-${step.id}`;
+        input.placeholder = "Tape ta réponse ici";
+        input.value = state.answers[step.id] || "";
+        slotsWrapper.appendChild(input);
+
+        let content = "";
+        if (step.id === "donne") {
+          content = `
+            <div class="grid-hint">Recopie la grille à partir de la photo fournie, puis valide. Le mot caché verticalement sera ton indice.</div>
+            <div class="crossword" id="crossword"></div>
+            <div class="actions">
+              <button id="checkCrossword"><i class="fas fa-check"></i> Vérifier la grille</button>
+              <button class="secondary" id="resetCrossword"><i class="fas fa-eraser"></i> Effacer</button>
+            </div>
+          `;
+        } else if (step.id === "moi") {
+          content = `
+            <div class="sentences">
+              <strong>Indices :</strong>
+              <span>Meme si la vie ne nous simplifie pas les choses,</span>
+              <span>On se comprend probablement mieux que beaucoup de personnes, et</span>
+              <span>Ici meme on pourra un jour se retrouver et constater qu'on a enfin reussi a franchir ce pas.</span>
+            </div>
+          `;
+        } else if (step.id === "ta") {
+          content = `
+            <p>Indice direct : YAAAATATATATATA</p>
+            <p>Le mot à trouver est court et déjà en toutes lettres sur la ligne.</p>
+          `;
+        } else if (step.id === "main") {
+          content = `
+            <div class="charade">
+              <p>Mon premier est une partie osseuse située près d’un membre antérieur chez certains vertébrés, formée d’un assemblage particulièrement dense de petits os articulés entre eux.</p>
+              <p>Mon deuxième est une petite unité sonore que l’on retrouve dans plusieurs mots de la langue parfois au cœur d’un prénom, parfois discrètement glissée dans une terminaison, si brève qu’on l’entend presque plus qu’on ne la remarque.</p>
+              <p>Mon troisième peut être droite dans un serment, fermée dans un combat, ouverte dans un geste d’accueil ou tendue comme un pont fragile entre deux personnes.</p>
+              <p>Mon tout travaille, écrit, dessine, protège, frappe parfois et console souvent. Il peut retenir une promesse, porter un secret ou trembler quand les émotions débordent. Et lorsque deux d’entre eux se croisent… le monde semble soudain un peu moins lourd.</p>
+            </div>
+          `;
+        }
+
+        stage.innerHTML = `
+          <h2 style="margin:0 0 6px;">${step.title}</h2>
+          ${content}
+        `;
+        stage.appendChild(slotsWrapper);
+        host.appendChild(stage);
+
+        renderSlots(slots, step.target, step.id);
+        input.addEventListener("input", () => {
+          const normalized = input.value.toUpperCase();
+          state.answers[step.id] = normalized === step.target ? step.target : normalized;
+          renderSlots(slots, step.target, step.id);
+          saveState();
+          refreshFinal();
+          renderSteps();
+        });
+      });
+
+      setupCrossword();
+      document.getElementById("prevStep").disabled = state.currentStep === 0;
+      document.getElementById("nextStep").textContent = state.currentStep === STEPS.length - 1 ? "Terminer" : "Étape suivante →";
+    }
+
+    function changeStep(index) {
+      state.currentStep = Math.max(0, Math.min(STEPS.length - 1, index));
+      saveState();
+      renderSteps();
+      renderStages();
+    }
+
+    function setupCrossword() {
+      const gridHost = document.getElementById("crossword");
+      if (!gridHost) return;
+      gridHost.innerHTML = "";
+      for (let r = 0; r < CROSSWORD.rows; r++) {
+        for (let c = 0; c < CROSSWORD.cols; c++) {
+          const key = `${r}-${c}`;
+          if (CROSSWORD.cells[key]) {
+            const input = document.createElement("input");
+            input.maxLength = 1;
+            input.className = "cell";
+            input.dataset.key = key;
+            input.value = (state.grid[key] || "").toUpperCase();
+            input.addEventListener("input", () => {
+              state.grid[key] = input.value.toUpperCase();
+              saveState();
+            });
+            gridHost.appendChild(input);
+          } else {
+            const block = document.createElement("div");
+            block.className = "block";
+            gridHost.appendChild(block);
+          }
+        }
+      }
+
+      const checkBtn = document.getElementById("checkCrossword");
+      const resetBtn = document.getElementById("resetCrossword");
+      if (checkBtn) {
+        checkBtn.addEventListener("click", () => {
+          const entries = Object.keys(CROSSWORD.cells);
+          const allGood = entries.every(k => (state.grid[k] || "").toUpperCase() === CROSSWORD.cells[k].toUpperCase());
+          if (allGood) {
+            state.answers.donne = "DONNE";
+            saveState();
+            alert("Grille validée ! Le mot caché est « DONNE ».");
+            renderStages();
+            renderSteps();
+            refreshFinal();
+          } else {
+            alert("Il manque encore quelques lettres, compare avec la grille fournie en photo.");
+          }
+        });
+      }
+      if (resetBtn) {
+        resetBtn.addEventListener("click", () => {
+          state.grid = {};
+          saveState();
+          setupCrossword();
+        });
+      }
+    }
+
+    function checkAnswer(stepId) {
+      const target = STEPS.find(s => s.id === stepId).target;
+      state.answers[stepId] = target;
+      saveState();
+      renderSteps();
+      renderStages();
+      refreshFinal();
+    }
+
+    function refreshFinal() {
+      const allDone = STEPS.every(s => isStepDone(s.id));
+      document.getElementById("finalScreen").classList.toggle("active", allDone);
+    }
+
+    document.getElementById("prevStep").addEventListener("click", () => changeStep(state.currentStep - 1));
+    document.getElementById("nextStep").addEventListener("click", () => {
+      const stepId = currentStepId();
+      if (!isStepDone(stepId)) {
+        alert("Valide cette étape avant de continuer.");
+        return;
+      }
+      if (state.currentStep < STEPS.length - 1) changeStep(state.currentStep + 1);
+      else refreshFinal();
+    });
+
+    loadState();
+    renderSteps();
+    renderStages();
+    refreshFinal();
+  </script>
 </body>
 </html>
