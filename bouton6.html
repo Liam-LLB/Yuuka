@@ -3,21 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yuukajeux</title>
+  <title>Yuukajeux - Hub</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
-      --bg: #0f172a;
-      --panel: rgba(30, 41, 59, 0.85);
-      --card: rgba(30, 41, 59, 0.9);
+      --bg: #0b1224;
+      --panel: rgba(30, 41, 59, 0.9);
+      --card: rgba(23, 31, 50, 0.9);
       --muted: #cbd5e1;
       --text: #e2e8f0;
-      --accent: #60a5fa;
-      --accent-2: #f472b6;
-      --accent-3: #22d3ee;
-      --border: rgba(148, 163, 184, 0.35);
+      --accent: #7c3aed;
+      --accent-2: #22d3ee;
+      --accent-3: #f59e0b;
+      --border: rgba(148, 163, 184, 0.25);
       --success: #22c55e;
-      --warning: #f59e0b;
+      --warning: #f97316;
+      --danger: #ef4444;
     }
 
     * { box-sizing: border-box; }
@@ -25,400 +26,330 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.22), transparent 25%),
-        radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.15), transparent 22%),
-        linear-gradient(135deg, #0b1224 0%, #0f172a 100%);
-      --panel: #1e293b;
-      --card: #1f2937;
-      --accent: #3b82f6;
-      --accent-2: #f472b6;
-      --text: #e5e7eb;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      margin: 0;
-      background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.2), transparent 25%),
-                  radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.15), transparent 22%),
-                  var(--bg);
+        radial-gradient(circle at 15% 25%, rgba(124, 58, 237, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.18), transparent 25%),
+        linear-gradient(135deg, #0b1224 0%, #0f172a 55%, #0b1224 100%);
       color: var(--text);
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
     }
 
     nav {
-      background: rgba(15, 23, 42, 0.85);
-      backdrop-filter: blur(10px);
+      background: rgba(12, 16, 32, 0.92);
       backdrop-filter: blur(8px);
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 24px;
+      gap: 10px;
+      padding: 16px 20px;
       position: sticky;
       top: 0;
       z-index: 10;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
-    }
-
-    .center-menu {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex: 1;
-      flex-wrap: wrap;
     }
 
     nav a {
       color: white;
       text-decoration: none;
-      padding: 10px 16px;
+      padding: 10px 14px;
       font-weight: 600;
-      font-size: 0.95em;
-      border-radius: 999px;
+      font-size: 0.95rem;
+      border-radius: 12px;
       transition: all 0.25s ease;
-      position: relative;
     }
 
     nav a:hover {
-      color: #c7d2fe;
-      background: rgba(59, 130, 246, 0.15);
+      background: rgba(124, 58, 237, 0.14);
+      color: #ede9fe;
+    }
+
+    .center-menu {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+      flex-wrap: wrap;
     }
 
     main {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1180px;
       margin: 0 auto;
-      padding: 50px 18px 70px;
+      padding: 40px 16px 80px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      padding: 22px;
+      backdrop-filter: blur(8px);
+    }
+
+    .hero {
+      background: radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.22), transparent 35%),
+                  radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.18), transparent 32%),
+                  var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 60%);
+      pointer-events: none;
     }
 
     .pill {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 9px 14px;
+      gap: 8px;
+      padding: 8px 14px;
       border-radius: 999px;
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      background: rgba(59, 130, 246, 0.18);
-      color: #dbeafe;
+      background: rgba(124, 58, 237, 0.14);
+      color: #e9d5ff;
       font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 22px 20px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-      backdrop-filter: blur(6px);
-    }
-
-    .hero {
-      text-align: left;
-      display: grid;
-      gap: 10px;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      width: fit-content;
     }
 
     .hero h1 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 42px);
-    .hero {
-      text-align: center;
-      padding: 60px 18px 30px;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .hero h1 {
-      font-size: clamp(28px, 4vw, 42px);
-      margin-bottom: 14px;
-      letter-spacing: 1px;
+      margin: 12px 0 6px;
+      font-size: clamp(26px, 4vw, 40px);
+      letter-spacing: 0.4px;
     }
 
     .hero p {
-      margin: 0;
+      margin: 0 0 18px;
       color: var(--muted);
-      line-height: 1.65;
-      max-width: 840px;
+      line-height: 1.6;
     }
 
-    .scoreboard {
+    .rule-cloud {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-      align-items: center;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
     }
 
-    .score-item {
-      background: linear-gradient(135deg, rgba(96, 165, 250, 0.16), rgba(15, 23, 42, 0.8));
-      border: 1px solid var(--border);
+    .rule-bubble {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 16px;
-      padding: 16px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
-    }
-
-    .score-item .icon {
-      width: 42px;
-      height: 42px;
-      border-radius: 12px;
-      display: grid;
-      place-items: center;
-      background: rgba(59, 130, 246, 0.18);
-      color: white;
-      font-size: 18px;
-    }
-
-    .score-item strong {
-      font-size: 1.2em;
-    }
-
-    .progress-wrapper {
+      padding: 12px 12px;
       display: flex;
       gap: 10px;
       align-items: center;
-      width: 100%;
+      color: #e2e8f0;
     }
 
-    .progress-track {
-      flex: 1;
-      height: 14px;
-      border-radius: 999px;
-      background: rgba(148, 163, 184, 0.2);
-      overflow: hidden;
+    .rule-bubble i {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(124, 58, 237, 0.18);
+      color: #e9d5ff;
+    }
+
+    .rule-bubble strong { display: block; font-size: 1rem; }
+    .rule-bubble span { color: var(--muted); font-size: 0.95rem; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric-card {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(12, 18, 32, 0.9));
+      border: 1px solid rgba(124, 58, 237, 0.28);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 6px;
       position: relative;
+    }
+
+    .metric-card .label { color: var(--muted); font-size: 0.95rem; }
+    .metric-card .value { font-size: 1.4rem; font-weight: 800; }
+
+    .progress-bar {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
     }
 
     .progress-fill {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #60a5fa, #22d3ee);
+      background: linear-gradient(90deg, #22d3ee, #a855f7);
       transition: width 0.35s ease;
     }
 
-    .grid {
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+    }
+
+    .status-chip.success { color: #bbf7d0; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.4); }
+    .status-chip.pending { color: #fed7aa; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .unlock-card {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(124, 58, 237, 0.2));
+      border: 1px solid rgba(34, 211, 238, 0.28);
     }
 
-    .game-card {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      padding: 18px;
+    .unlock-description { color: var(--muted); margin: 0; }
+
+    .lock-button {
+      width: 100%;
+      padding: 16px 18px;
       border-radius: 14px;
-      background: linear-gradient(140deg, rgba(59, 130, 246, 0.14), rgba(15, 23, 42, 0.92));
-      border: 1px solid rgba(59, 130, 246, 0.22);
-      box-shadow: 0 15px 38px rgba(0, 0, 0, 0.3);
-    }
-
-    .game-header {
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.15);
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: not-allowed;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .game-header .icon {
-      width: 46px;
-      height: 46px;
-      border-radius: 12px;
-      background: rgba(244, 114, 182, 0.18);
-      color: #fde7f3;
-      display: grid;
-      place-items: center;
-      color: #cbd5e1;
-      line-height: 1.6;
-      margin: 0 auto;
-      max-width: 700px;
+    .lock-button.unlocked {
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+      border-color: rgba(34, 197, 94, 0.6);
+      cursor: pointer;
     }
+
+    .lock-button.unlocked:hover { transform: translateY(-2px); }
 
     .games-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
-      padding: 0 22px 60px;
-      max-width: 1100px;
-      width: 100%;
-      margin: 0 auto;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
     }
 
     .game-card {
-      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(15, 23, 42, 0.95));
-      border: 1px solid rgba(59, 130, 246, 0.15);
-      border-radius: 16px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(11, 18, 36, 0.95));
+      border: 1px solid rgba(124, 58, 237, 0.18);
+      border-radius: 14px;
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
       position: relative;
       overflow: hidden;
-      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
 
     .game-card:hover {
-      transform: translateY(-4px);
-      border-color: rgba(244, 114, 182, 0.35);
-      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+      border-color: rgba(34, 211, 238, 0.35);
+    }
+
+    .game-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .game-icon {
-      width: 46px;
-      height: 46px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       display: grid;
       place-items: center;
-      border-radius: 12px;
-      background: rgba(59, 130, 246, 0.2);
-      color: #fff;
-      font-size: 20px;
+      background: rgba(124, 58, 237, 0.2);
+      color: #e9d5ff;
+      font-size: 18px;
     }
 
-    .game-card h3 {
-      margin: 0;
-      font-size: 1.2em;
-      font-size: 1.1em;
-      letter-spacing: 0.3px;
+    .game-card h3 { margin: 0; }
+    .game-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
-    .game-card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.5;
-      font-size: 0.98em;
+    .pill-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
     .btn {
       padding: 10px 14px;
       border-radius: 12px;
-      border: 1px solid rgba(59, 130, 246, 0.4);
-      background: rgba(59, 130, 246, 0.2);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      background: rgba(124, 58, 237, 0.16);
       color: #e2e8f0;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
-    .btn:hover { background: rgba(59, 130, 246, 0.28); }
+    .btn:hover { background: rgba(124, 58, 237, 0.28); }
     .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .status {
-      font-weight: 700;
-      color: var(--warning);
-    }
-
-    .status.success { color: var(--success); }
-    .status.pending { color: var(--warning); }
-
-    .game-block input {
-      width: 100%;
-      padding: 12px 10px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .chip {
-      display: inline-flex;
-      gap: 8px;
-      align-items: center;
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: rgba(59, 130, 246, 0.12);
-      color: var(--muted);
-      border: 1px solid rgba(59, 130, 246, 0.25);
-      font-size: 0.9em;
-    }
-
-    .board, .game-block {
-    .board {
+    .game-screen {
+      margin-top: 10px;
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 10px;
     }
 
-    .tile {
-      padding: 18px;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-      color: #fff;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.1s ease, background 0.2s ease, border-color 0.2s ease;
-      user-select: none;
-    }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .badge { background: rgba(255, 255, 255, 0.08); padding: 8px 12px; border-radius: 12px; color: var(--muted); }
+    .tile { padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); cursor: pointer; text-align: center; }
+    .tile.active { background: rgba(34, 211, 238, 0.2); border-color: rgba(34, 211, 238, 0.6); }
+    .tile.correct { background: rgba(34, 197, 94, 0.18); border-color: rgba(34, 197, 94, 0.6); }
+    .tile.wrong { background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.6); }
 
-    .tile:hover { transform: translateY(-2px); }
-    .tile.active { background: rgba(59, 130, 246, 0.25); border-color: rgba(59, 130, 246, 0.5); }
-    .tile.correct { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.6); }
-    .tile.wrong { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.6); }
+    .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
 
-    .reward {
-      border: 1px solid rgba(34, 197, 94, 0.35);
-      background: linear-gradient(135deg, rgba(34, 197, 94, 0.12), rgba(15, 23, 42, 0.94));
-      color: #dcfce7;
-      text-align: center;
-    }
+    .game-block input { width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); }
 
     .hidden { display: none; }
-    .actions { display: flex; gap: 10px; flex-wrap: wrap; }
-      color: #cbd5e1;
-      line-height: 1.5;
-      font-size: 0.95em;
-    }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(244, 114, 182, 0.15);
-      color: #fbcfe8;
-      font-weight: 700;
-      font-size: 0.85em;
-      border: 1px solid rgba(244, 114, 182, 0.3);
-      width: fit-content;
-    }
+    .note { color: var(--muted); margin: 0; }
 
-    footer {
-      text-align: center;
-      padding: 30px 16px 50px;
-      color: #94a3b8;
-      font-size: 0.95em;
-    }
-
-    .cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px;
-      background: rgba(59, 130, 246, 0.16);
-      color: #bfdbfe;
-      border-radius: 12px;
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.25s ease;
-    }
-
-    .cta:hover {
-      background: rgba(59, 130, 246, 0.25);
-      color: #e0f2fe;
-    }
+    .reward { background: linear-gradient(120deg, rgba(34, 197, 94, 0.15), rgba(14, 165, 233, 0.15)); border: 1px solid rgba(34, 197, 94, 0.35); color: #dcfce7; text-align: center; }
   </style>
 </head>
 <body>
@@ -437,139 +368,184 @@
 
   <main>
     <section class="card hero">
-      <div class="pill"><i class="fas fa-sparkles"></i> Hub Yuukajeux</div>
-      <h1>Accumule des points, valide chaque mini-jeu, débloque les récompenses.</h1>
-      <p>Chaque mini-jeu octroie des points selon ta performance. La progression est enregistrée automatiquement dans ton navigateur (pas de compte requis) : termine tous les défis pour remplir la barre et accéder aux récompenses. Tu peux rejouer pour améliorer ton meilleur score.</p>
+      <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuukajeux</div>
+      <h1>Refonte du hub : règles claires, progression visible, actions immédiates.</h1>
+      <p>Retrouve ici chaque mini-jeu avec un accès direct. Les règles et indicateurs sont regroupés en bulles modernes pour que tu saches exactement quoi faire pour débloquer la suite.</p>
+
+      <div class="rule-cloud">
+        <div class="rule-bubble">
+          <i class="fas fa-flag-checkered"></i>
+          <div><strong>Valide les 6 défis</strong><span>Chaque mini-jeu doit être gagné pour ouvrir la suite.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-microchip"></i>
+          <div><strong>Progression locale</strong><span>Scores et validations sauvegardés dans ton navigateur.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-gauge-high"></i>
+          <div><strong>Barre de progression</strong><span>Remplis-la à 100% pour déverrouiller le bouton final.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-rotate"></i>
+          <div><strong>Rejoue à volonté</strong><span>Améliore tes scores, les meilleurs essais sont conservés.</span></div>
+        </div>
+      </div>
+
+      <div class="metrics">
+        <div class="metric-card">
+          <div class="label">Total de points</div>
+          <div class="value" id="totalPoints">0 pts</div>
+          <div class="status-chip" id="completedCount">0 / 6 jeux validés</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Progression globale</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="value" id="progressText">0%</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Récompense</div>
+          <div class="value" id="rewardStatus">Bloquée</div>
+          <div class="status-chip pending" id="rewardHint"><i class="fas fa-lock"></i> Termine tout pour déverrouiller</div>
+        </div>
+      </div>
     </section>
 
-    <section class="scoreboard">
-      <div class="score-item">
-        <div class="icon"><i class="fas fa-coins"></i></div>
-        <div>
-          <div>Total de points</div>
-          <strong id="totalPoints">0 pts</strong>
-          <div class="chip" id="completedCount">0 / 6 jeux validés</div>
-          <div class="chip" id="completedCount">0 / 3 jeux validés</div>
-        </div>
+    <section class="card unlock-card">
+      <div>
+        <h2 style="margin: 0 0 6px">Portail final</h2>
+        <p class="unlock-description">Une fois les six mini-jeux gagnés, le bouton se déverrouille et t’emmène vers la page finale où tu pourras découvrir la suite.</p>
+        <p class="note" id="unlockNote">Encore quelques victoires avant l’ouverture.</p>
       </div>
-      <div class="score-item">
-        <div class="icon"><i class="fas fa-battery-three-quarters"></i></div>
-        <div class="progress-wrapper">
-          <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-          <strong id="progressText">0%</strong>
-        </div>
-      </div>
-      <div class="score-item">
-        <div class="icon"><i class="fas fa-gift"></i></div>
-        <div>
-          <div>Récompenses</div>
-          <strong id="rewardStatus" class="status pending">Bloquées</strong>
-          <div class="chip">Termine tous les Yuukajeux pour débloquer</div>
-          <div class="chip">Termine les 3 jeux pour débloquer</div>
-        </div>
-      </div>
+      <button class="lock-button" id="finalButton" disabled>
+        <i class="fas fa-lock"></i>
+        <span>Portail verrouillé</span>
+      </button>
     </section>
 
-    <section class="grid" id="hubView">
+    <section class="games-grid" id="hubView">
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-bolt"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-bolt"></i></div>
           <div>
             <h3>YuukaFlash</h3>
             <p>Réflexe éclair : clique dès que le signal apparaît.</p>
           </div>
         </div>
-        <div class="chip">Jusqu’à 30 pts</div>
-        <button class="btn" data-game="reflex">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="status-chip pending" id="status-reflex">À valider</span>
+          <span class="pill-small" id="best-reflex">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="reflex">Accéder au mini-jeu</button>
       </article>
 
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-brain"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-brain"></i></div>
           <div>
             <h3>Yuukolor</h3>
             <p>Mémoire chroma : reproduis la séquence de couleurs.</p>
           </div>
         </div>
-        <div class="chip">25 pts</div>
-        <button class="btn" data-game="memory">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">25 pts</span>
+          <span class="status-chip pending" id="status-memory">À valider</span>
+          <span class="pill-small" id="best-memory">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="memory">Accéder au mini-jeu</button>
       </article>
 
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-question-circle"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-question-circle"></i></div>
           <div>
             <h3>Yuukwizz</h3>
-            <p>Un mini-quiz express en 3 questions.</p>
+            <p>Mini-quiz express en trois questions.</p>
           </div>
         </div>
-        <div class="chip">30 pts</div>
-        <button class="btn" data-game="quiz">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="status-chip pending" id="status-quiz">À valider</span>
+          <span class="pill-small" id="best-quiz">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="quiz">Accéder au mini-jeu</button>
       </article>
 
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-font"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-font"></i></div>
           <div>
             <h3>Yuukagram</h3>
             <p>Réarrange les lettres pour trouver le mot mystère.</p>
           </div>
         </div>
-        <div class="chip">25 pts</div>
-        <button class="btn" data-game="anagram">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">25 pts</span>
+          <span class="status-chip pending" id="status-anagram">À valider</span>
+          <span class="pill-small" id="best-anagram">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="anagram">Accéder au mini-jeu</button>
       </article>
 
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-key"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-key"></i></div>
           <div>
             <h3>Yuukode</h3>
             <p>Devine le code secret en un minimum d’essais.</p>
           </div>
         </div>
-        <div class="chip">25 pts</div>
-        <button class="btn" data-game="code">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">25 pts</span>
+          <span class="status-chip pending" id="status-code">À valider</span>
+          <span class="pill-small" id="best-code">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="code">Accéder au mini-jeu</button>
       </article>
 
       <article class="game-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-hand-pointer"></i></div>
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-hand-pointer"></i></div>
           <div>
             <h3>Yuukadash</h3>
             <p>Challenge clicker : clique un maximum en 10 secondes.</p>
           </div>
         </div>
-        <div class="chip">30 pts</div>
-        <button class="btn" data-game="clicker">Jouer</button>
+        <div class="meta-row">
+          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="status-chip pending" id="status-clicker">À valider</span>
+          <span class="pill-small" id="best-clicker">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="clicker">Accéder au mini-jeu</button>
       </article>
     </section>
 
     <!-- Écrans de jeux -->
     <section class="card game-screen hidden" id="screen-reflex">
       <div class="actions">
-        <button class="btn" id="backFromReflex">Retour au hub</button>
+        <button class="btn" id="backFromReflex"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</span>
       </div>
       <h2>YuukaFlash</h2>
       <p>Attends le signal bleu et clique immédiatement.</p>
-      <div class="chip">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</div>
       <div class="actions">
         <button class="btn" id="reflexStart">Lancer</button>
-        <span id="reflexStatus" class="status pending">En attente</span>
+        <span id="reflexStatus" class="status-chip pending">En attente</span>
       </div>
       <div id="reflexTarget" class="tile">Attends le signal…</div>
-      <div class="chip" id="reflexScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="reflexScore">Meilleur : 0 pts</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-memory">
       <div class="actions">
-        <button class="btn" id="backFromMemory">Retour au hub</button>
+        <button class="btn" id="backFromMemory"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">25 pts • Séquence exacte requise</span>
       </div>
       <h2>Yuukolor</h2>
       <p>Observe la séquence, puis reproduis-la.</p>
-      <div class="chip">25 pts • Réussite si la séquence est exacte</div>
       <div class="actions">
         <button class="btn" id="memoryStart">Montrer la séquence</button>
-        <span id="memoryStatus" class="status pending">En attente</span>
+        <span id="memoryStatus" class="status-chip pending">En attente</span>
       </div>
       <div class="board" id="memoryBoard">
         <div class="tile" data-color="cyan">Cyan</div>
@@ -577,34 +553,34 @@
         <div class="tile" data-color="indigo">Indigo</div>
         <div class="tile" data-color="lime">Lime</div>
       </div>
-      <div class="chip" id="memoryScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="memoryScore">Meilleur : 0 pts</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-quiz">
       <div class="actions">
-        <button class="btn" id="backFromQuiz">Retour au hub</button>
+        <button class="btn" id="backFromQuiz"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Jusqu’à 30 pts • Sans faute pour valider</span>
       </div>
       <h2>Yuukwizz</h2>
       <p>Réponds correctement aux 3 questions.</p>
-      <div class="chip">Jusqu’à 30 pts • Sans faute pour valider</div>
       <div id="quizArea">
         <div id="quizQuestion">Prêt à commencer ?</div>
         <div class="actions" id="quizOptions"></div>
       </div>
       <div class="actions">
         <button class="btn" id="quizStart">Démarrer le quiz</button>
-        <span id="quizStatus" class="status pending">En attente</span>
+        <span id="quizStatus" class="status-chip pending">En attente</span>
       </div>
-      <div class="chip" id="quizScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="quizScore">Meilleur : 0 pts</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-anagram">
       <div class="actions">
-        <button class="btn" id="backFromAnagram">Retour au hub</button>
+        <button class="btn" id="backFromAnagram"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">25 pts • 1 essai réussi = validé</span>
       </div>
       <h2>Yuukagram</h2>
       <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
-      <div class="chip">25 pts • 1 essai réussi = validé</div>
       <div class="game-block">
         <div class="badge" id="anagramScramble">YUUKA</div>
         <input id="anagramInput" type="text" placeholder="Ta réponse" />
@@ -612,36 +588,36 @@
           <button class="btn" id="anagramCheck">Valider</button>
           <button class="btn" id="anagramNext">Nouvelle grille</button>
         </div>
-        <div class="chip" id="anagramStatus">En attente</div>
-        <div class="chip" id="anagramScore">Meilleur : 0 pts</div>
+        <div class="status-chip pending" id="anagramStatus">En attente</div>
+        <div class="pill-small" id="anagramScore">Meilleur : 0 pts</div>
       </div>
     </section>
 
     <section class="card game-screen hidden" id="screen-code">
       <div class="actions">
-        <button class="btn" id="backFromCode">Retour au hub</button>
+        <button class="btn" id="backFromCode"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">25 pts • 5 essais maximum</span>
       </div>
       <h2>Yuukode</h2>
       <p>Devine le code secret (1 à 20) en 5 essais maximum.</p>
-      <div class="chip">25 pts • Trouve avant d’épuiser les essais</div>
       <div class="game-block">
         <input id="codeInput" type="number" min="1" max="20" placeholder="1-20" />
         <div class="actions">
           <button class="btn" id="codeTry">Proposer</button>
           <button class="btn" id="codeRestart">Nouveau code</button>
         </div>
-        <div class="chip" id="codeStatus">En attente</div>
-        <div class="chip" id="codeScore">Meilleur : 0 pts</div>
+        <div class="status-chip pending" id="codeStatus">En attente</div>
+        <div class="pill-small" id="codeScore">Meilleur : 0 pts</div>
       </div>
     </section>
 
     <section class="card game-screen hidden" id="screen-clicker">
       <div class="actions">
-        <button class="btn" id="backFromClicker">Retour au hub</button>
+        <button class="btn" id="backFromClicker"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Jusqu’à 30 pts • Réussite à 20 clics</span>
       </div>
       <h2>Yuukadash</h2>
       <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
-      <div class="chip">30 pts • Réussite à 20 clics ou plus</div>
       <div class="game-block">
         <div class="badge" id="clickerTimer">10s</div>
         <div class="badge" id="clickerCount">0 clic</div>
@@ -649,83 +625,23 @@
           <button class="btn" id="clickerStart">Lancer</button>
           <button class="btn" id="clickerTap">Clique ici</button>
         </div>
-        <div class="chip" id="clickerStatus">En attente</div>
-        <div class="chip" id="clickerScore">Meilleur : 0 pts</div>
+        <div class="status-chip pending" id="clickerStatus">En attente</div>
+        <div class="pill-small" id="clickerScore">Meilleur : 0 pts</div>
       </div>
-    <section class="grid">
-      <article class="game-card" id="reflex-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-bolt"></i></div>
-          <div>
-            <h3>Réflexe éclair</h3>
-            <p>Attends le signal puis clique le plus vite possible. Plus ta réaction est rapide, plus tu marques de points.</p>
-          </div>
-        </div>
-        <div class="chip">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</div>
-        <div class="actions">
-          <button class="btn" id="reflexStart">Lancer</button>
-          <span id="reflexStatus" class="status pending">En attente</span>
-        </div>
-        <div id="reflexTarget" class="tile">Attends le signal…</div>
-        <div class="chip" id="reflexScore">Meilleur : 0 pts</div>
-      </article>
-
-      <article class="game-card" id="memory-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-brain"></i></div>
-          <div>
-            <h3>Mémoire chroma</h3>
-            <p>Mémorise la séquence de couleurs puis reproduis-la. Bonne séquence = points assurés.</p>
-          </div>
-        </div>
-        <div class="chip">25 pts • Réussite si la séquence est exacte</div>
-        <div class="actions">
-          <button class="btn" id="memoryStart">Montrer la séquence</button>
-          <span id="memoryStatus" class="status pending">En attente</span>
-        </div>
-        <div class="board" id="memoryBoard">
-          <div class="tile" data-color="cyan">Cyan</div>
-          <div class="tile" data-color="rose">Rose</div>
-          <div class="tile" data-color="indigo">Indigo</div>
-          <div class="tile" data-color="lime">Lime</div>
-        </div>
-        <div class="chip" id="memoryScore">Meilleur : 0 pts</div>
-      </article>
-
-      <article class="game-card" id="quiz-card">
-        <div class="game-header">
-          <div class="icon"><i class="fas fa-question-circle"></i></div>
-          <div>
-            <h3>Yuukwizz express</h3>
-            <p>Réponds à trois questions. Un sans faute te rapporte le maximum de points.</p>
-          </div>
-        </div>
-        <div class="chip">Jusqu’à 30 pts • Réussite à 3/3</div>
-        <div id="quizArea">
-          <div id="quizQuestion">Prêt à commencer ?</div>
-          <div class="actions" id="quizOptions"></div>
-        </div>
-        <div class="actions">
-          <button class="btn" id="quizStart">Démarrer le quiz</button>
-          <span id="quizStatus" class="status pending">En attente</span>
-        </div>
-        <div class="chip" id="quizScore">Meilleur : 0 pts</div>
-      </article>
     </section>
 
     <section class="card reward hidden" id="rewardCard">
-      <h2>Récompenses débloquées !</h2>
-      <p>Bravo, tu as validé tous les mini-jeux. Voici ton lien magique : <strong>yuukareward://joue encore</strong></p>
-      <p>Tu peux rejouer pour améliorer tes scores : la progression et la récompense restent sauvegardées en local.</p>
+      <h2>Récompense débloquée</h2>
+      <p>Bravo, tu as validé tous les mini-jeux. Le portail final est désormais ouvert.</p>
     </section>
   </main>
 
   <script>
     const STORAGE_KEY = "yuukajeuxProgress";
     const games = {
-      reflex: { name: "Réflexe éclair", max: 30 },
-      memory: { name: "Mémoire chroma", max: 25 },
-      quiz: { name: "Yuukwizz express", max: 30 },
+      reflex: { name: "YuukaFlash", max: 30 },
+      memory: { name: "Yuukolor", max: 25 },
+      quiz: { name: "Yuukwizz", max: 30 },
       anagram: { name: "Yuukagram", max: 25 },
       code: { name: "Yuukode", max: 25 },
       clicker: { name: "Yuukadash", max: 30 },
@@ -734,11 +650,6 @@
     let state = {
       scores: { reflex: 0, memory: 0, quiz: 0, anagram: 0, code: 0, clicker: 0 },
       completed: { reflex: false, memory: false, quiz: false, anagram: false, code: false, clicker: false },
-    };
-
-    let state = {
-      scores: { reflex: 0, memory: 0, quiz: 0 },
-      completed: { reflex: false, memory: false, quiz: false },
     };
 
     const totalGames = Object.keys(games).length;
@@ -751,10 +662,38 @@
           state = { ...state, ...parsed };
         } catch (_) { /* ignore */ }
       }
+      // Ensure all keys exist even if l’ancien stockage était partiel
+      for (const key of Object.keys(games)) {
+        if (!(key in state.scores)) state.scores[key] = 0;
+        if (!(key in state.completed)) state.completed[key] = false;
+      }
     }
 
     function saveState() {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    const rewardStatus = document.getElementById("rewardStatus");
+    const rewardHint = document.getElementById("rewardHint");
+    const rewardCard = document.getElementById("rewardCard");
+    const finalButton = document.getElementById("finalButton");
+    const unlockNote = document.getElementById("unlockNote");
+
+    function updateCardState(key) {
+      const statusChip = document.getElementById(`status-${key}`);
+      const bestChip = document.getElementById(`best-${key}`);
+      if (statusChip) {
+        if (state.completed[key]) {
+          statusChip.textContent = "Validé";
+          statusChip.classList.add("success");
+          statusChip.classList.remove("pending");
+        } else {
+          statusChip.textContent = "À valider";
+          statusChip.classList.add("pending");
+          statusChip.classList.remove("success");
+        }
+      }
+      if (bestChip) bestChip.textContent = `Meilleur : ${state.scores[key]} pts`;
     }
 
     function updateScoreboard() {
@@ -767,18 +706,28 @@
       document.getElementById("progressText").textContent = `${progress}%`;
       document.getElementById("progressFill").style.width = `${progress}%`;
 
-      const rewardStatus = document.getElementById("rewardStatus");
-      const rewardCard = document.getElementById("rewardCard");
       if (completedCount === totalGames) {
-        rewardStatus.textContent = "Débloquées";
+        rewardStatus.textContent = "Débloquée";
         rewardStatus.classList.add("success");
         rewardStatus.classList.remove("pending");
+        rewardHint.innerHTML = '<i class="fas fa-unlock"></i> Prêt pour la page finale';
+        rewardHint.classList.add("success");
+        rewardHint.classList.remove("pending");
         rewardCard.classList.remove("hidden");
+        finalButton.disabled = false;
+        finalButton.classList.add("unlocked");
+        finalButton.innerHTML = '<i class="fas fa-unlock"></i><span>Accéder à la page finale</span>';
+        unlockNote.textContent = "Tout est validé, tu peux ouvrir le portail.";
       } else {
-        rewardStatus.textContent = "Bloquées";
-        rewardStatus.classList.add("pending");
+        rewardStatus.textContent = "Bloquée";
         rewardStatus.classList.remove("success");
+        rewardHint.innerHTML = '<i class="fas fa-lock"></i> Termine tout pour déverrouiller';
+        rewardHint.classList.add("pending");
         rewardCard.classList.add("hidden");
+        finalButton.disabled = true;
+        finalButton.classList.remove("unlocked");
+        finalButton.innerHTML = '<i class="fas fa-lock"></i><span>Portail verrouillé</span>';
+        unlockNote.textContent = "Encore quelques victoires avant l’ouverture.";
       }
 
       document.getElementById("reflexScore").textContent = `Meilleur : ${state.scores.reflex} pts`;
@@ -787,6 +736,8 @@
       document.getElementById("anagramScore").textContent = `Meilleur : ${state.scores.anagram} pts`;
       document.getElementById("codeScore").textContent = `Meilleur : ${state.scores.code} pts`;
       document.getElementById("clickerScore").textContent = `Meilleur : ${state.scores.clicker} pts`;
+
+      Object.keys(games).forEach(updateCardState);
     }
 
     // Navigation jeux
@@ -796,13 +747,17 @@
     function showHub() {
       screens.forEach(s => s.classList.add("hidden"));
       hubView.classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function goToGame(id) {
       hubView.classList.add("hidden");
       screens.forEach(s => s.classList.add("hidden"));
       const target = document.getElementById(`screen-${id}`);
-      if (target) target.classList.remove("hidden");
+      if (target) {
+        target.classList.remove("hidden");
+        target.scrollIntoView({ behavior: "smooth" });
+      }
     }
 
     document.querySelectorAll('[data-game]').forEach(btn => {
@@ -816,7 +771,10 @@
     document.getElementById("backFromCode").addEventListener("click", showHub);
     document.getElementById("backFromClicker").addEventListener("click", showHub);
 
-    }
+    finalButton.addEventListener("click", () => {
+      if (finalButton.disabled) return;
+      window.location.href = "finale.html";
+    });
 
     // Réflexe éclair
     const reflexStartBtn = document.getElementById("reflexStart");
@@ -837,6 +795,8 @@
     reflexStartBtn.addEventListener("click", () => {
       resetReflex();
       reflexStatus.textContent = "Prépare-toi…";
+      reflexStatus.classList.remove("success");
+      reflexStatus.classList.add("pending");
       reflexStartBtn.disabled = true;
       reflexTimeout = setTimeout(() => {
         reflexTarget.textContent = "Clique maintenant !";
@@ -889,7 +849,7 @@
         indigo: "rgba(99,102,241,0.28)",
         lime: "rgba(163,230,53,0.28)",
       };
-      return map[color] || "rgba(59,130,246,0.25)";
+      return map[color] || "rgba(124,58,237,0.25)";
     }
 
     function flashTile(tile) {
@@ -917,6 +877,8 @@
       memorySequence = Array.from({ length: 4 }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
       playSequence(memorySequence);
       memoryStatus.textContent = "Reproduis la séquence";
+      memoryStatus.classList.remove("success");
+      memoryStatus.classList.add("pending");
       memoryActive = true;
     });
 
@@ -930,6 +892,7 @@
         if (chosen !== expected) {
           tile.classList.add("wrong");
           memoryStatus.textContent = "Raté, essaie encore !";
+          memoryStatus.classList.remove("success");
           memoryActive = false;
           return;
         }
@@ -954,18 +917,18 @@
     const quizQuestions = [
       {
         q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?",
-        options: ["2", "3", "5"],
-        answer: "3",
+        options: ["2", "3", "6"],
+        answer: "6",
       },
       {
         q: "Quel type de jeu teste ta rapidité ?",
-        options: ["Réflexe éclair", "Mémoire chroma", "Yuukwizz express"],
-        answer: "Réflexe éclair",
+        options: ["YuukaFlash", "Yuukolor", "Yuukagram"],
+        answer: "YuukaFlash",
       },
       {
-        q: "Qu’enregistre le hub Yuukajeux ?",
-        options: ["Tes points dans le navigateur", "Un compte en ligne", "Rien du tout"],
-        answer: "Tes points dans le navigateur",
+        q: "Comment est stockée ta progression ?",
+        options: ["Dans ton navigateur", "Sur un compte en ligne", "Elle n'est pas sauvegardée"],
+        answer: "Dans ton navigateur",
       },
     ];
     let currentQuizIndex = 0;
@@ -1019,12 +982,13 @@
       quizActive = true;
       quizStatus.textContent = "En cours…";
       quizStatus.classList.remove("success");
+      quizStatus.classList.add("pending");
       quizStartBtn.disabled = true;
       renderQuizQuestion();
     });
 
     // Anagramme
-    const anagramWords = ["yuuka", "yuukaflash", "yuukawizz", "yuukagram", "yuukode", "yuukadash", "yuukonline"];
+    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline"];
     const anagramScramble = document.getElementById("anagramScramble");
     const anagramInput = document.getElementById("anagramInput");
     const anagramStatus = document.getElementById("anagramStatus");
@@ -1042,6 +1006,7 @@
       anagramInput.value = "";
       anagramStatus.textContent = "En attente";
       anagramStatus.classList.remove("success");
+      anagramStatus.classList.add("pending");
     }
 
     anagramCheckBtn.addEventListener("click", () => {
@@ -1076,6 +1041,7 @@
       codeInput.value = "";
       codeStatus.textContent = "Nouveau code généré.";
       codeStatus.classList.remove("success");
+      codeStatus.classList.add("pending");
     }
 
     codeTryBtn.addEventListener("click", () => {
@@ -1121,6 +1087,7 @@
       clickerTimer.textContent = "10s";
       clickerStatus.textContent = "En attente";
       clickerStatus.classList.remove("success");
+      clickerStatus.classList.add("pending");
       clickerTap.disabled = true;
     }
 
@@ -1161,51 +1128,11 @@
     // Init
     loadState();
     updateScoreboard();
+    showHub();
     quizQuestion.textContent = "Prêt à commencer ?";
     loadAnagram();
     resetCode();
     resetClicker();
   </script>
-  </script>
-  <header class="hero">
-    <div class="badge"><i class="fas fa-sparkles"></i> Interface prototype</div>
-    <h1>Le hub Yuukajeux arrive bientôt</h1>
-    <p>Découvrez le nouveau terrain de jeu du Yuukonline. Une collection de mini-jeux pensés pour s’amuser, relever des défis et partager de bons moments. Voici un aperçu de l’interface avant le branchement des jeux.</p>
-  </header>
-
-  <section class="games-grid">
-    <article class="game-card">
-      <div class="game-icon"><i class="fas fa-puzzle-piece"></i></div>
-      <h3>Yuupuzzle</h3>
-      <p>Assemble les pièces le plus vite possible. Chrono, niveaux de difficulté et images surprises au programme.</p>
-      <span class="badge">Maquette</span>
-    </article>
-
-    <article class="game-card">
-      <div class="game-icon"><i class="fas fa-brain"></i></div>
-      <h3>Yuukwizz</h3>
-      <p>Un quiz rapide en plusieurs manches. Scores en direct et thèmes variés pour tester tes connaissances.</p>
-      <span class="badge">Bientôt</span>
-    </article>
-
-    <article class="game-card">
-      <div class="game-icon"><i class="fas fa-bullseye"></i></div>
-      <h3>Yuushooter</h3>
-      <p>Jeu d’adresse minimaliste : clique sur les cibles qui apparaissent. Effets sonores et combos à venir.</p>
-      <span class="badge">Prototype</span>
-    </article>
-
-    <article class="game-card">
-      <div class="game-icon"><i class="fas fa-dice"></i></div>
-      <h3>Yuulabo</h3>
-      <p>Une sélection changeante de mini-expériences : jeux de dés, memory, réactions éclair... à découvrir.</p>
-      <span class="badge">En cours</span>
-    </article>
-  </section>
-
-  <footer>
-    <p>Interface uniquement visuelle pour le moment. Les mini-jeux seront connectés très bientôt.</p>
-    <a class="cta" href="index.html"><i class="fas fa-arrow-left"></i> Retour au menu</a>
-  </footer>
 </body>
 </html>
