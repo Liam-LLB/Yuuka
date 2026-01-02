@@ -59,6 +59,9 @@
       transition: all 0.25s ease;
     }
 
+    nav a:hover { background: rgba(124, 58, 237, 0.14); color: #ede9fe; }
+
+    .center-menu { display: flex; gap: 12px; justify-content: center; flex: 1; flex-wrap: wrap; }
     nav a:hover {
       background: rgba(124, 58, 237, 0.14);
       color: #ede9fe;
@@ -89,6 +92,98 @@
       box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
       padding: 22px;
       backdrop-filter: blur(8px);
+    }
+
+    .hero {
+      background: radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.22), transparent 35%),
+                  radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.18), transparent 32%),
+                  var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 60%);
+      pointer-events: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      color: #e9d5ff;
+      font-weight: 700;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      width: fit-content;
+    }
+
+    .hero h1 { margin: 12px 0 6px; font-size: clamp(26px, 4vw, 40px); letter-spacing: 0.4px; }
+    .hero p { margin: 0 0 18px; color: var(--muted); line-height: 1.6; }
+
+    .rule-cloud { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-top: 8px; }
+
+    .rule-bubble {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: #e2e8f0;
+    }
+
+    .rule-bubble i { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: rgba(124, 58, 237, 0.18); color: #e9d5ff; }
+    .rule-bubble strong { display: block; font-size: 1rem; }
+    .rule-bubble span { color: var(--muted); font-size: 0.95rem; }
+
+    .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px; margin-top: 14px; }
+
+    .metric-card { background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(12, 18, 32, 0.9)); border: 1px solid rgba(124, 58, 237, 0.28); border-radius: 14px; padding: 14px; display: grid; gap: 6px; }
+    .metric-card .label { color: var(--muted); font-size: 0.95rem; }
+    .metric-card .value { font-size: 1.4rem; font-weight: 800; }
+
+    .progress-bar { height: 12px; background: rgba(255, 255, 255, 0.06); border-radius: 999px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.08); }
+    .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #22d3ee, #a855f7); transition: width 0.35s ease; }
+
+    .status-chip { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; font-weight: 700; font-size: 0.85rem; background: rgba(255, 255, 255, 0.06); color: #e2e8f0; }
+    .status-chip.success { color: #bbf7d0; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.4); }
+    .status-chip.pending { color: #fed7aa; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .unlock-card { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 12px; align-items: center; background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(124, 58, 237, 0.2)); border: 1px solid rgba(34, 211, 238, 0.28); }
+    .unlock-description { color: var(--muted); margin: 0; }
+
+    .lock-button { width: 100%; padding: 16px 18px; border-radius: 14px; border: 1px solid rgba(255, 255, 255, 0.12); background: rgba(0, 0, 0, 0.15); color: #e2e8f0; font-weight: 800; font-size: 1rem; cursor: not-allowed; display: flex; align-items: center; justify-content: center; gap: 10px; transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease; }
+    .lock-button.unlocked { background: linear-gradient(135deg, #22c55e, #0ea5e9); box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4); border-color: rgba(34, 197, 94, 0.6); cursor: pointer; }
+    .lock-button.unlocked:hover { transform: translateY(-2px); }
+
+    .games-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+
+    .game-card { background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(11, 18, 36, 0.95)); border: 1px solid rgba(124, 58, 237, 0.18); border-radius: 14px; padding: 16px; display: grid; gap: 8px; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; position: relative; overflow: hidden; }
+    .game-card:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4); border-color: rgba(34, 211, 238, 0.35); }
+
+    .game-top { display: flex; align-items: center; gap: 10px; }
+    .game-icon { width: 42px; height: 42px; border-radius: 12px; display: grid; place-items: center; background: rgba(124, 58, 237, 0.2); color: #e9d5ff; font-size: 18px; }
+    .game-card h3 { margin: 0; }
+    .game-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    .meta-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .pill-small { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px; background: rgba(255, 255, 255, 0.06); color: #e2e8f0; font-weight: 700; font-size: 0.9rem; border: 1px solid rgba(255, 255, 255, 0.1); }
+
+    .btn { padding: 10px 14px; border-radius: 12px; border: 1px solid rgba(124, 58, 237, 0.35); background: rgba(124, 58, 237, 0.16); color: #e2e8f0; font-weight: 700; cursor: pointer; transition: all 0.2s ease; }
+    .btn:hover { background: rgba(124, 58, 237, 0.28); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .game-screen { margin-top: 10px; display: grid; gap: 12px; }
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .badge { background: rgba(255, 255, 255, 0.08); padding: 8px 12px; border-radius: 12px; color: var(--muted); }
+    .tile { padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); cursor: pointer; text-align: center; user-select: none; }
     }
 
     .hero {
@@ -342,6 +437,13 @@
     .tile.wrong { background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.6); }
 
     .board { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+    .game-block input { width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); }
+
+    .difficulty { display: inline-flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .difficulty label { display: inline-flex; gap: 6px; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 6px 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); }
+
+    .hidden { display: none; }
+    .note { color: var(--muted); margin: 0; }
 
     .game-block input { width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); }
 
@@ -369,12 +471,27 @@
   <main>
     <section class="card hero">
       <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuukajeux</div>
+      <h1>12 mini-jeux, 3 niveaux chacun : valide tout pour ouvrir le portail final.</h1>
+      <p>Chaque défi dispose de trois difficultés (facile, normal, difficile). Choisis ton niveau, gagne le jeu et suis ta progression en direct. Tout est sauvegardé dans ton navigateur.</p>
       <h1>Refonte du hub : règles claires, progression visible, actions immédiates.</h1>
       <p>Retrouve ici chaque mini-jeu avec un accès direct. Les règles et indicateurs sont regroupés en bulles modernes pour que tu saches exactement quoi faire pour débloquer la suite.</p>
 
       <div class="rule-cloud">
         <div class="rule-bubble">
           <i class="fas fa-flag-checkered"></i>
+          <div><strong>12 défis à valider</strong><span>Chaque mini-jeu doit être gagné au moins une fois.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-sliders-h"></i>
+          <div><strong>3 niveaux</strong><span>Facile pour démarrer, difficile pour briller.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-gauge-high"></i>
+          <div><strong>Progression locale</strong><span>Scores et meilleurs niveaux gardés en mémoire.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-door-open"></i>
+          <div><strong>Portail final</strong><span>Déverrouillé dès que les 12 jeux sont validés.</span></div>
           <div><strong>Valide les 6 défis</strong><span>Chaque mini-jeu doit être gagné pour ouvrir la suite.</span></div>
         </div>
         <div class="rule-bubble">
@@ -395,6 +512,7 @@
         <div class="metric-card">
           <div class="label">Total de points</div>
           <div class="value" id="totalPoints">0 pts</div>
+          <div class="status-chip" id="completedCount">0 / 12 jeux validés</div>
           <div class="status-chip" id="completedCount">0 / 6 jeux validés</div>
         </div>
         <div class="metric-card">
@@ -407,7 +525,29 @@
           <div class="value" id="rewardStatus">Bloquée</div>
           <div class="status-chip pending" id="rewardHint"><i class="fas fa-lock"></i> Termine tout pour déverrouiller</div>
         </div>
+        <div class="metric-card">
+          <div class="label">Progression globale</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="value" id="progressText">0%</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Récompense</div>
+          <div class="value" id="rewardStatus">Bloquée</div>
+          <div class="status-chip pending" id="rewardHint"><i class="fas fa-lock"></i> Termine tout pour déverrouiller</div>
+        </div>
       </div>
+    </section>
+
+    <section class="card unlock-card">
+      <div>
+        <h2 style="margin: 0 0 6px">Portail final</h2>
+        <p class="unlock-description">Quand les douze mini-jeux sont gagnés, le bouton se déverrouille et t’emmène vers la page finale.</p>
+        <p class="note" id="unlockNote">Encore quelques victoires avant l’ouverture.</p>
+      </div>
+      <button class="lock-button" id="finalButton" disabled>
+        <i class="fas fa-lock"></i>
+        <span>Portail verrouillé</span>
+      </button>
     </section>
 
     <section class="card unlock-card">
@@ -432,6 +572,7 @@
           </div>
         </div>
         <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
           <span class="pill-small">Jusqu’à 30 pts</span>
           <span class="status-chip pending" id="status-reflex">À valider</span>
           <span class="pill-small" id="best-reflex">Meilleur : 0 pts</span>
@@ -444,10 +585,11 @@
           <div class="game-icon"><i class="fas fa-brain"></i></div>
           <div>
             <h3>Yuukolor</h3>
-            <p>Mémoire chroma : reproduis la séquence de couleurs.</p>
+            <p>Mémoire chroma : reproduis la séquence.</p>
           </div>
         </div>
         <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
           <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-memory">À valider</span>
           <span class="pill-small" id="best-memory">Meilleur : 0 pts</span>
@@ -460,6 +602,11 @@
           <div class="game-icon"><i class="fas fa-question-circle"></i></div>
           <div>
             <h3>Yuukwizz</h3>
+            <p>Mini-quiz express.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
             <p>Mini-quiz express en trois questions.</p>
           </div>
         </div>
@@ -480,6 +627,7 @@
           </div>
         </div>
         <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
           <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-anagram">À valider</span>
           <span class="pill-small" id="best-anagram">Meilleur : 0 pts</span>
@@ -496,6 +644,7 @@
           </div>
         </div>
         <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
           <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-code">À valider</span>
           <span class="pill-small" id="best-code">Meilleur : 0 pts</span>
@@ -508,10 +657,111 @@
           <div class="game-icon"><i class="fas fa-hand-pointer"></i></div>
           <div>
             <h3>Yuukadash</h3>
-            <p>Challenge clicker : clique un maximum en 10 secondes.</p>
+            <p>Clicker : fais un maximum de clics en 10s.</p>
           </div>
         </div>
         <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-clicker">À valider</span>
+          <span class="pill-small" id="best-clicker">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="clicker">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-landmark"></i></div>
+          <div>
+            <h3>ChronoPrésidents</h3>
+            <p>Replace les présidents de la Vᵉ République dans l’ordre.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-presidents">À valider</span>
+          <span class="pill-small" id="best-presidents">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="presidents">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-horse"></i></div>
+          <div>
+            <h3>Yuukquine</h3>
+            <p>Choisis l’allure adaptée selon les situations d’équitation.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-equitation">À valider</span>
+          <span class="pill-small" id="best-equitation">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="equitation">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-book-open"></i></div>
+          <div>
+            <h3>Anti-Tana</h3>
+            <p>QCM de situations : reste classe ou deviens une « tana ».</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-tana">À valider</span>
+          <span class="pill-small" id="best-tana">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="tana">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-utensil-spoon"></i></div>
+          <div>
+            <h3>Soupe Magique</h3>
+            <p>Fais manger la soupe pour faire grandir le personnage.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-soupe">À valider</span>
+          <span class="pill-small" id="best-soupe">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="soupe">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-dove"></i></div>
+          <div>
+            <h3>Pigeon Chill</h3>
+            <p>Caresse le pigeon jusqu’à ce qu’il roucoule de joie.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-pigeon">À valider</span>
+          <span class="pill-small" id="best-pigeon">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="pigeon">Accéder au mini-jeu</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-top">
+          <div class="game-icon"><i class="fas fa-music"></i></div>
+          <div>
+            <h3>Yuuktempo</h3>
+            <p>Arrête le chronomètre au tempo indiqué.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">3 difficultés</span>
+          <span class="status-chip pending" id="status-tempo">À valider</span>
+          <span class="pill-small" id="best-tempo">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="tempo">Accéder au mini-jeu</button>
           <span class="pill-small">Jusqu’à 30 pts</span>
           <span class="status-chip pending" id="status-clicker">À valider</span>
           <span class="pill-small" id="best-clicker">Meilleur : 0 pts</span>
@@ -524,9 +774,14 @@
     <section class="card game-screen hidden" id="screen-reflex">
       <div class="actions">
         <button class="btn" id="backFromReflex"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Réflexe éclair</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="reflex-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="reflex-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="reflex-difficulty" value="difficile" /> Difficile</label>
         <span class="pill-small">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</span>
       </div>
-      <h2>YuukaFlash</h2>
       <p>Attends le signal bleu et clique immédiatement.</p>
       <div class="actions">
         <button class="btn" id="reflexStart">Lancer</button>
@@ -539,9 +794,14 @@
     <section class="card game-screen hidden" id="screen-memory">
       <div class="actions">
         <button class="btn" id="backFromMemory"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Mémoire chroma</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="memory-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="memory-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="memory-difficulty" value="difficile" /> Difficile</label>
         <span class="pill-small">25 pts • Séquence exacte requise</span>
       </div>
-      <h2>Yuukolor</h2>
       <p>Observe la séquence, puis reproduis-la.</p>
       <div class="actions">
         <button class="btn" id="memoryStart">Montrer la séquence</button>
@@ -559,6 +819,14 @@
     <section class="card game-screen hidden" id="screen-quiz">
       <div class="actions">
         <button class="btn" id="backFromQuiz"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Mini-quiz</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="quiz-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="quiz-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="quiz-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Réponds correctement aux questions.</p>
         <span class="pill-small">Jusqu’à 30 pts • Sans faute pour valider</span>
       </div>
       <h2>Yuukwizz</h2>
@@ -577,9 +845,14 @@
     <section class="card game-screen hidden" id="screen-anagram">
       <div class="actions">
         <button class="btn" id="backFromAnagram"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Anagrammes</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="anagram-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="anagram-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="anagram-difficulty" value="difficile" /> Difficile</label>
         <span class="pill-small">25 pts • 1 essai réussi = validé</span>
       </div>
-      <h2>Yuukagram</h2>
       <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
       <div class="game-block">
         <div class="badge" id="anagramScramble">YUUKA</div>
@@ -596,12 +869,20 @@
     <section class="card game-screen hidden" id="screen-code">
       <div class="actions">
         <button class="btn" id="backFromCode"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Code secret</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="code-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="code-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="code-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Devine le code secret (1 à 25) en un nombre limité d’essais.</p>
         <span class="pill-small">25 pts • 5 essais maximum</span>
       </div>
       <h2>Yuukode</h2>
       <p>Devine le code secret (1 à 20) en 5 essais maximum.</p>
       <div class="game-block">
-        <input id="codeInput" type="number" min="1" max="20" placeholder="1-20" />
+        <input id="codeInput" type="number" min="1" max="25" placeholder="1-25" />
         <div class="actions">
           <button class="btn" id="codeTry">Proposer</button>
           <button class="btn" id="codeRestart">Nouveau code</button>
@@ -614,9 +895,14 @@
     <section class="card game-screen hidden" id="screen-clicker">
       <div class="actions">
         <button class="btn" id="backFromClicker"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Clicker</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="clicker-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="clicker-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="clicker-difficulty" value="difficile" /> Difficile</label>
         <span class="pill-small">Jusqu’à 30 pts • Réussite à 20 clics</span>
       </div>
-      <h2>Yuukadash</h2>
       <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
       <div class="game-block">
         <div class="badge" id="clickerTimer">10s</div>
@@ -630,6 +916,127 @@
       </div>
     </section>
 
+    <section class="card game-screen hidden" id="screen-presidents">
+      <div class="actions">
+        <button class="btn" id="backFromPresidents"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Chronologie des présidents</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="presidents-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="presidents-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="presidents-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Attribue le rang chronologique correct à chaque président de la Vᵉ République.</p>
+      <div id="presidentList"></div>
+      <div class="actions">
+        <button class="btn" id="presidentCheck">Vérifier</button>
+        <span class="status-chip pending" id="presidentStatus">En attente</span>
+      </div>
+      <div class="pill-small" id="presidentScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-equitation">
+      <div class="actions">
+        <button class="btn" id="backFromEquitation"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Scénarios d’équitation</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="equitation-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="equitation-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="equitation-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Choisis l’allure adaptée pour chaque situation.</p>
+      <div class="badge" id="equitationPrompt">Clique sur « Démarrer »</div>
+      <div class="actions">
+        <button class="btn" id="equitationStart">Démarrer</button>
+        <button class="btn" data-gait="Pas">Pas</button>
+        <button class="btn" data-gait="Trot">Trot</button>
+        <button class="btn" data-gait="Galop">Galop</button>
+      </div>
+      <div class="status-chip pending" id="equitationStatus">En attente</div>
+      <div class="pill-small" id="equitationScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-tana">
+      <div class="actions">
+        <button class="btn" id="backFromTana"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Anti-tana</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="tana-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="tana-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="tana-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Réponds aux mises en situation. En cas de mauvais choix : « nan là t’es une grosse tana ahah ».</p>
+      <div class="badge" id="tanaQuestion">Clique sur démarrer</div>
+      <div class="actions" id="tanaOptions"></div>
+      <div class="actions">
+        <button class="btn" id="tanaStart">Démarrer</button>
+        <span class="status-chip pending" id="tanaStatus">En attente</span>
+      </div>
+      <div class="pill-small" id="tanaScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-soupe">
+      <div class="actions">
+        <button class="btn" id="backFromSoupe"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Soupe magique</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="soupe-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="soupe-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="soupe-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Donne des cuillères de soupe pour faire grandir le personnage.</p>
+      <div class="badge" id="soupeHeight">Taille actuelle : 1.30 m</div>
+      <div class="badge" id="soupeInfo">Objectif affiché après avoir choisi la difficulté.</div>
+      <div class="actions">
+        <button class="btn" id="soupeFeed">Donner une cuillère</button>
+        <button class="btn" id="soupeReset">Réinitialiser</button>
+      </div>
+      <div class="status-chip pending" id="soupeStatus">En attente</div>
+      <div class="pill-small" id="soupeScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-pigeon">
+      <div class="actions">
+        <button class="btn" id="backFromPigeon"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Pigeon chill</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="pigeon-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="pigeon-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="pigeon-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Caresse le pigeon le nombre de fois requis.</p>
+      <div class="badge" id="pigeonCoo">Le pigeon t’observe.</div>
+      <div class="actions">
+        <button class="btn" id="pigeonPet">Caresser</button>
+        <button class="btn" id="pigeonReset">Réinitialiser</button>
+      </div>
+      <div class="status-chip pending" id="pigeonStatus">En attente</div>
+      <div class="pill-small" id="pigeonScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-tempo">
+      <div class="actions">
+        <button class="btn" id="backFromTempo"><i class="fas fa-chevron-left"></i> Retour au hub</button>
+        <span class="pill-small">Timing</span>
+      </div>
+      <div class="difficulty">
+        <label><input type="radio" name="tempo-difficulty" value="facile" checked /> Facile</label>
+        <label><input type="radio" name="tempo-difficulty" value="normal" /> Normal</label>
+        <label><input type="radio" name="tempo-difficulty" value="difficile" /> Difficile</label>
+      </div>
+      <p>Arrête le chronomètre le plus proche possible du tempo cible.</p>
+      <div class="badge" id="tempoTarget">Tempo cible : 2.5s</div>
+      <div class="actions">
+        <button class="btn" id="tempoToggle">Démarrer</button>
+      </div>
+      <div class="status-chip pending" id="tempoStatus">En attente</div>
+      <div class="pill-small" id="tempoScore">Meilleur : 0 pts</div>
+    </section>
+
     <section class="card reward hidden" id="rewardCard">
       <h2>Récompense débloquée</h2>
       <p>Bravo, tu as validé tous les mini-jeux. Le portail final est désormais ouvert.</p>
@@ -638,6 +1045,12 @@
 
   <script>
     const STORAGE_KEY = "yuukajeuxProgress";
+    const difficultySettings = {
+      facile: { label: "Facile", bonus: 1, tolerance: "large" },
+      normal: { label: "Normal", bonus: 1.2, tolerance: "moyenne" },
+      difficile: { label: "Difficile", bonus: 1.45, tolerance: "serrée" },
+    };
+
     const games = {
       reflex: { name: "YuukaFlash", max: 30 },
       memory: { name: "Yuukolor", max: 25 },
@@ -645,11 +1058,25 @@
       anagram: { name: "Yuukagram", max: 25 },
       code: { name: "Yuukode", max: 25 },
       clicker: { name: "Yuukadash", max: 30 },
+      presidents: { name: "ChronoPrésidents", max: 35 },
+      equitation: { name: "Yuukquine", max: 25 },
+      tana: { name: "Anti-Tana", max: 30 },
+      soupe: { name: "Soupe magique", max: 20 },
+      pigeon: { name: "Pigeon chill", max: 15 },
+      tempo: { name: "Yuuktempo", max: 25 },
+    };
+
+    const defaultScores = () => {
+      const entry = {};
+      Object.keys(games).forEach(key => {
+        entry[key] = { facile: 0, normal: 0, difficile: 0 };
+      });
+      return entry;
     };
 
     let state = {
-      scores: { reflex: 0, memory: 0, quiz: 0, anagram: 0, code: 0, clicker: 0 },
-      completed: { reflex: false, memory: false, quiz: false, anagram: false, code: false, clicker: false },
+      scores: defaultScores(),
+      completed: Object.fromEntries(Object.keys(games).map(k => [k, null])),
     };
 
     const totalGames = Object.keys(games).length;
@@ -662,6 +1089,13 @@
           state = { ...state, ...parsed };
         } catch (_) { /* ignore */ }
       }
+      // ensure structure
+      for (const key of Object.keys(games)) {
+        if (!state.scores[key]) state.scores[key] = { facile: 0, normal: 0, difficile: 0 };
+        else {
+          state.scores[key] = { facile: 0, normal: 0, difficile: 0, ...state.scores[key] };
+        }
+        if (!(key in state.completed)) state.completed[key] = null;
       // Ensure all keys exist even if l’ancien stockage était partiel
       for (const key of Object.keys(games)) {
         if (!(key in state.scores)) state.scores[key] = 0;
@@ -679,11 +1113,21 @@
     const finalButton = document.getElementById("finalButton");
     const unlockNote = document.getElementById("unlockNote");
 
+    function bestScore(key) {
+      const entry = state.scores[key] || { facile: 0, normal: 0, difficile: 0 };
+      return Math.max(entry.facile || 0, entry.normal || 0, entry.difficile || 0);
+    }
+
+    function completedLabel(diffKey) {
+      return diffKey ? `Validé (${difficultySettings[diffKey].label})` : "À valider";
+    }
+
     function updateCardState(key) {
       const statusChip = document.getElementById(`status-${key}`);
       const bestChip = document.getElementById(`best-${key}`);
       if (statusChip) {
         if (state.completed[key]) {
+          statusChip.textContent = completedLabel(state.completed[key]);
           statusChip.textContent = "Validé";
           statusChip.classList.add("success");
           statusChip.classList.remove("pending");
@@ -693,11 +1137,12 @@
           statusChip.classList.remove("success");
         }
       }
+      if (bestChip) bestChip.textContent = `Meilleur : ${bestScore(key)} pts`;
       if (bestChip) bestChip.textContent = `Meilleur : ${state.scores[key]} pts`;
     }
 
     function updateScoreboard() {
-      const totalPoints = Object.values(state.scores).reduce((a, b) => a + b, 0);
+      const totalPoints = Object.keys(games).reduce((acc, key) => acc + bestScore(key), 0);
       const completedCount = Object.values(state.completed).filter(Boolean).length;
       const progress = Math.round((completedCount / totalGames) * 100);
 
@@ -730,6 +1175,21 @@
         unlockNote.textContent = "Encore quelques victoires avant l’ouverture.";
       }
 
+      Object.keys(games).forEach(updateCardState);
+
+      // scores sur écrans
+      document.getElementById("reflexScore").textContent = `Meilleur : ${bestScore("reflex")} pts`;
+      document.getElementById("memoryScore").textContent = `Meilleur : ${bestScore("memory")} pts`;
+      document.getElementById("quizScore").textContent = `Meilleur : ${bestScore("quiz")} pts`;
+      document.getElementById("anagramScore").textContent = `Meilleur : ${bestScore("anagram")} pts`;
+      document.getElementById("codeScore").textContent = `Meilleur : ${bestScore("code")} pts`;
+      document.getElementById("clickerScore").textContent = `Meilleur : ${bestScore("clicker")} pts`;
+      document.getElementById("presidentScore").textContent = `Meilleur : ${bestScore("presidents")} pts`;
+      document.getElementById("equitationScore").textContent = `Meilleur : ${bestScore("equitation")} pts`;
+      document.getElementById("tanaScore").textContent = `Meilleur : ${bestScore("tana")} pts`;
+      document.getElementById("soupeScore").textContent = `Meilleur : ${bestScore("soupe")} pts`;
+      document.getElementById("pigeonScore").textContent = `Meilleur : ${bestScore("pigeon")} pts`;
+      document.getElementById("tempoScore").textContent = `Meilleur : ${bestScore("tempo")} pts`;
       document.getElementById("reflexScore").textContent = `Meilleur : ${state.scores.reflex} pts`;
       document.getElementById("memoryScore").textContent = `Meilleur : ${state.scores.memory} pts`;
       document.getElementById("quizScore").textContent = `Meilleur : ${state.scores.quiz} pts`;
@@ -770,7 +1230,32 @@
     document.getElementById("backFromAnagram").addEventListener("click", showHub);
     document.getElementById("backFromCode").addEventListener("click", showHub);
     document.getElementById("backFromClicker").addEventListener("click", showHub);
+    document.getElementById("backFromPresidents").addEventListener("click", showHub);
+    document.getElementById("backFromEquitation").addEventListener("click", showHub);
+    document.getElementById("backFromTana").addEventListener("click", showHub);
+    document.getElementById("backFromSoupe").addEventListener("click", showHub);
+    document.getElementById("backFromPigeon").addEventListener("click", showHub);
+    document.getElementById("backFromTempo").addEventListener("click", showHub);
 
+    finalButton.addEventListener("click", () => {
+      if (finalButton.disabled) return;
+      window.location.href = "finale.html";
+    });
+
+    function getSelectedDifficulty(gameKey) {
+      const input = document.querySelector(`input[name="${gameKey}-difficulty"]:checked`);
+      return input ? input.value : "facile";
+    }
+
+    function applyScore(gameKey, base, diffKey) {
+      const points = Math.round(base * difficultySettings[diffKey].bonus);
+      if (!state.scores[gameKey]) state.scores[gameKey] = { facile: 0, normal: 0, difficile: 0 };
+      state.scores[gameKey][diffKey] = Math.max(state.scores[gameKey][diffKey], points);
+      state.completed[gameKey] = diffKey;
+      saveState();
+      updateScoreboard();
+      return points;
+    }
     finalButton.addEventListener("click", () => {
       if (finalButton.disabled) return;
       window.location.href = "finale.html";
@@ -817,19 +1302,18 @@
       const reaction = performance.now() - reflexStartTime;
       reflexTarget.classList.remove("active");
       reflexReady = false;
+      const diffKey = getSelectedDifficulty("reflex");
+      const limit = diffKey === "facile" ? 1200 : diffKey === "normal" ? 900 : 750;
 
-      const points = Math.max(5, Math.min(30, Math.round(30 - reaction / 30)));
-      if (reaction <= 900) {
+      const points = Math.max(5, Math.min(games.reflex.max, Math.round(games.reflex.max - reaction / 30)));
+      if (reaction <= limit) {
         reflexStatus.textContent = `Validé : ${Math.round(reaction)} ms`;
         reflexStatus.classList.add("success");
-        state.completed.reflex = true;
-        state.scores.reflex = Math.max(state.scores.reflex, points);
+        applyScore("reflex", points, diffKey);
       } else {
-        reflexStatus.textContent = `Un peu lent (${Math.round(reaction)} ms) — réessaie !`;
+        reflexStatus.textContent = `Un peu lent (${Math.round(reaction)} ms) — retente !`;
         reflexStatus.classList.remove("success");
       }
-      saveState();
-      updateScoreboard();
       reflexStartBtn.disabled = false;
     });
 
@@ -874,7 +1358,9 @@
 
     memoryStartBtn.addEventListener("click", () => {
       resetMemory();
-      memorySequence = Array.from({ length: 4 }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
+      const diffKey = getSelectedDifficulty("memory");
+      const length = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
+      memorySequence = Array.from({ length }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
       playSequence(memorySequence);
       memoryStatus.textContent = "Reproduis la séquence";
       memoryStatus.classList.remove("success");
@@ -900,10 +1386,8 @@
           tile.classList.add("correct");
           memoryStatus.textContent = "Séquence validée !";
           memoryStatus.classList.add("success");
-          state.completed.memory = true;
-          state.scores.memory = Math.max(state.scores.memory, games.memory.max);
-          saveState();
-          updateScoreboard();
+          const diffKey = getSelectedDifficulty("memory");
+          applyScore("memory", games.memory.max, diffKey);
           memoryActive = false;
         }
       });
@@ -915,6 +1399,12 @@
     const quizQuestion = document.getElementById("quizQuestion");
     const quizOptions = document.getElementById("quizOptions");
     const quizQuestions = [
+      { q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?", options: ["6", "9", "12"], answer: "12" },
+      { q: "Comment est stockée ta progression ?", options: ["Dans ton navigateur", "Sur un serveur externe", "Elle n'est pas sauvegardée"], answer: "Dans ton navigateur" },
+      { q: "Quel mini-jeu demande du réflexe ?", options: ["YuukaFlash", "Soupe magique", "ChronoPrésidents"], answer: "YuukaFlash" },
+      { q: "Combien de niveaux de difficulté par jeu ?", options: ["1", "2", "3"], answer: "3" },
+      { q: "Quel mini-jeu te fait nourrir un personnage ?", options: ["Soupe magique", "Yuukquine", "Pigeon chill"], answer: "Soupe magique" },
+      { q: "Le bouton final s'ouvre quand...", options: ["Tout est validé", "Il est 18h", "Tu cliques 50 fois"], answer: "Tout est validé" },
       {
         q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?",
         options: ["2", "3", "6"],
@@ -934,6 +1424,7 @@
     let currentQuizIndex = 0;
     let correctAnswers = 0;
     let quizActive = false;
+    let quizTarget = 3;
 
     function renderQuizQuestion() {
       const { q, options } = quizQuestions[currentQuizIndex];
@@ -953,17 +1444,22 @@
       const current = quizQuestions[currentQuizIndex];
       if (choice === current.answer) correctAnswers++;
       currentQuizIndex++;
-      if (currentQuizIndex >= quizQuestions.length) {
+      if (currentQuizIndex >= quizTarget) {
+        const diffKey = getSelectedDifficulty("quiz");
+        const needed = diffKey === "facile" ? quizTarget : diffKey === "normal" ? quizTarget : quizTarget;
+        const perfect = correctAnswers === quizTarget;
         const points = correctAnswers * 10;
-        if (correctAnswers === quizQuestions.length) {
+        if (correctAnswers >= needed && perfect) {
           quizStatus.textContent = "Sans faute !";
           quizStatus.classList.add("success");
-          state.completed.quiz = true;
-          state.scores.quiz = Math.max(state.scores.quiz, points);
+          applyScore("quiz", points, diffKey);
+        } else if (correctAnswers >= needed - 1 && diffKey === "facile") {
+          quizStatus.textContent = `${correctAnswers}/${quizTarget} — validé en facile`; 
+          quizStatus.classList.add("success");
+          applyScore("quiz", points, diffKey);
         } else {
-          quizStatus.textContent = `${correctAnswers}/3 — réessaie pour valider`;
+          quizStatus.textContent = `${correctAnswers}/${quizTarget} — réessaie`; 
           quizStatus.classList.remove("success");
-          state.scores.quiz = Math.max(state.scores.quiz, points);
         }
         saveState();
         updateScoreboard();
@@ -977,6 +1473,8 @@
     }
 
     quizStartBtn.addEventListener("click", () => {
+      const diffKey = getSelectedDifficulty("quiz");
+      quizTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
       currentQuizIndex = 0;
       correctAnswers = 0;
       quizActive = true;
@@ -988,6 +1486,7 @@
     });
 
     // Anagramme
+    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "president", "pigeon", "soupe", "tempo", "tana"];
     const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline"];
     const anagramScramble = document.getElementById("anagramScramble");
     const anagramInput = document.getElementById("anagramInput");
@@ -1001,7 +1500,13 @@
     }
 
     function loadAnagram() {
-      currentAnagram = anagramWords[Math.floor(Math.random() * anagramWords.length)];
+      const diffKey = getSelectedDifficulty("anagram");
+      const pool = anagramWords.filter(w => {
+        if (diffKey === "facile") return w.length <= 7;
+        if (diffKey === "normal") return w.length <= 9;
+        return true;
+      });
+      currentAnagram = pool[Math.floor(Math.random() * pool.length)];
       anagramScramble.textContent = shuffleWord(currentAnagram);
       anagramInput.value = "";
       anagramStatus.textContent = "En attente";
@@ -1015,10 +1520,8 @@
       if (guess === currentAnagram) {
         anagramStatus.textContent = "Trouvé !";
         anagramStatus.classList.add("success");
-        state.completed.anagram = true;
-        state.scores.anagram = Math.max(state.scores.anagram, games.anagram.max);
-        saveState();
-        updateScoreboard();
+        const diffKey = getSelectedDifficulty("anagram");
+        applyScore("anagram", games.anagram.max, diffKey);
       } else {
         anagramStatus.textContent = "Raté, réessaie ou passe à un autre mot.";
         anagramStatus.classList.remove("success");
@@ -1034,12 +1537,18 @@
     const codeRestartBtn = document.getElementById("codeRestart");
     let secretCode = 0;
     let codeAttempts = 0;
+    let codeMax = 20;
+    let codeLimit = 5;
 
     function resetCode() {
-      secretCode = 1 + Math.floor(Math.random() * 20);
+      const diffKey = getSelectedDifficulty("code");
+      codeMax = diffKey === "facile" ? 15 : diffKey === "normal" ? 20 : 25;
+      codeLimit = diffKey === "facile" ? 7 : diffKey === "normal" ? 5 : 4;
+      secretCode = 1 + Math.floor(Math.random() * codeMax);
       codeAttempts = 0;
       codeInput.value = "";
-      codeStatus.textContent = "Nouveau code généré.";
+      codeInput.max = codeMax;
+      codeStatus.textContent = `Nouveau code entre 1 et ${codeMax}.`;
       codeStatus.classList.remove("success");
       codeStatus.classList.add("pending");
     }
@@ -1049,14 +1558,12 @@
       if (Number.isNaN(val)) return;
       codeAttempts++;
       if (val === secretCode) {
+        const diffKey = getSelectedDifficulty("code");
         codeStatus.textContent = `Code trouvé en ${codeAttempts} essais !`;
         codeStatus.classList.add("success");
-        state.completed.code = true;
         const pts = Math.max(10, games.code.max - (codeAttempts - 1) * 3);
-        state.scores.code = Math.max(state.scores.code, pts);
-        saveState();
-        updateScoreboard();
-      } else if (codeAttempts >= 5) {
+        applyScore("code", pts, diffKey);
+      } else if (codeAttempts >= codeLimit) {
         codeStatus.textContent = `Perdu ! Le code était ${secretCode}. Relance.`;
         codeStatus.classList.remove("success");
       } else {
@@ -1103,14 +1610,13 @@
           clearInterval(clickerInterval);
           clickerActive = false;
           clickerTap.disabled = true;
+          const diffKey = getSelectedDifficulty("clicker");
+          const target = diffKey === "facile" ? 15 : diffKey === "normal" ? 20 : 25;
           const pts = Math.min(games.clicker.max, clickerClicks);
-          if (clickerClicks >= 20) {
+          if (clickerClicks >= target) {
             clickerStatus.textContent = `Validé : ${clickerClicks} clics`;
             clickerStatus.classList.add("success");
-            state.completed.clicker = true;
-            state.scores.clicker = Math.max(state.scores.clicker, pts);
-            saveState();
-            updateScoreboard();
+            applyScore("clicker", pts, diffKey);
           } else {
             clickerStatus.textContent = `Seulement ${clickerClicks} clics, retente !`;
             clickerStatus.classList.remove("success");
@@ -1125,14 +1631,321 @@
       clickerCount.textContent = `${clickerClicks} clic${clickerClicks > 1 ? "s" : ""}`;
     });
 
+    // Chrono présidents
+    const presidentList = document.getElementById("presidentList");
+    const presidentStatus = document.getElementById("presidentStatus");
+    const presidentCheck = document.getElementById("presidentCheck");
+    const presidentsData = [
+      { name: "Charles de Gaulle", years: "1959-1969", note: "Constitution de 1962" },
+      { name: "Georges Pompidou", years: "1969-1974", note: "Industrialisation" },
+      { name: "Valéry Giscard d'Estaing", years: "1974-1981", note: "Abaissement de la majorité à 18 ans" },
+      { name: "François Mitterrand", years: "1981-1995", note: "Abolition de la peine de mort" },
+      { name: "Jacques Chirac", years: "1995-2007", note: "Non à la guerre en Irak" },
+      { name: "Nicolas Sarkozy", years: "2007-2012", note: "Réforme des retraites" },
+      { name: "François Hollande", years: "2012-2017", note: "Mariage pour tous" },
+      { name: "Emmanuel Macron", years: "2017-…", note: "Plan France Relance" },
+    ];
+
+    function renderPresidents() {
+      presidentList.innerHTML = "";
+      presidentsData.forEach((p, idx) => {
+        const row = document.createElement("div");
+        row.className = "actions";
+        row.innerHTML = `<span class="pill-small">${p.years}</span><div class="badge" style="flex:1">${p.name} • ${p.note}</div>`;
+        const select = document.createElement("select");
+        select.dataset.index = idx;
+        for (let i = 1; i <= presidentsData.length; i++) {
+          const opt = document.createElement("option");
+          opt.value = i;
+          opt.textContent = i;
+          select.appendChild(opt);
+        }
+        row.appendChild(select);
+        presidentList.appendChild(row);
+      });
+    }
+
+    presidentCheck.addEventListener("click", () => {
+      const diffKey = getSelectedDifficulty("presidents");
+      const tolerance = diffKey === "facile" ? 2 : diffKey === "normal" ? 1 : 0;
+      let errors = 0;
+      presidentList.querySelectorAll("select").forEach((sel, idx) => {
+        const val = parseInt(sel.value, 10);
+        if (val !== idx + 1) errors++;
+      });
+      if (errors <= tolerance) {
+        presidentStatus.textContent = "Ordre validé !";
+        presidentStatus.classList.add("success");
+        applyScore("presidents", games.presidents.max - errors * 3, diffKey);
+      } else {
+        presidentStatus.textContent = `${errors} erreur(s) : révise l'ordre !`;
+        presidentStatus.classList.remove("success");
+      }
+    });
+
+    // Equitation
+    const equitationPrompt = document.getElementById("equitationPrompt");
+    const equitationStatus = document.getElementById("equitationStatus");
+    const equitationStart = document.getElementById("equitationStart");
+    const equitationButtons = Array.from(document.querySelectorAll('#screen-equitation [data-gait]'));
+    const equitationSituations = [
+      { text: "Approche d'un obstacle bas", answer: "Trot" },
+      { text: "Grande ligne droite en extérieur", answer: "Galop" },
+      { text: "Détente en carrière", answer: "Pas" },
+      { text: "Travail sur un cercle", answer: "Trot" },
+      { text: "Dernière foulée avant un oxer", answer: "Galop" },
+      { text: "Passage d'un gué", answer: "Pas" },
+    ];
+    let equitationRound = 0;
+    let equitationTarget = 3;
+    let equitationScore = 0;
+    let equitationActive = false;
+
+    function startEquitation() {
+      const diffKey = getSelectedDifficulty("equitation");
+      equitationTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
+      equitationRound = 0;
+      equitationScore = 0;
+      equitationActive = true;
+      equitationStatus.textContent = "En cours…";
+      equitationStatus.classList.remove("success");
+      nextEquitation();
+    }
+
+    function nextEquitation() {
+      if (!equitationActive) return;
+      if (equitationRound >= equitationTarget) {
+        const diffKey = getSelectedDifficulty("equitation");
+        if (equitationScore === equitationTarget) {
+          equitationStatus.textContent = "Parcours validé !";
+          equitationStatus.classList.add("success");
+          applyScore("equitation", games.equitation.max, diffKey);
+        } else {
+          equitationStatus.textContent = `${equitationScore}/${equitationTarget} corrects`;
+          equitationStatus.classList.remove("success");
+        }
+        equitationActive = false;
+        return;
+      }
+      const situation = equitationSituations[Math.floor(Math.random() * equitationSituations.length)];
+      equitationPrompt.textContent = situation.text;
+      equitationPrompt.dataset.answer = situation.answer;
+      equitationRound++;
+    }
+
+    equitationStart.addEventListener("click", startEquitation);
+    equitationButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        if (!equitationActive) return;
+        const choice = btn.dataset.gait;
+        if (choice === equitationPrompt.dataset.answer) equitationScore++;
+        nextEquitation();
+      });
+    });
+
+    // Anti-Tana
+    const tanaStart = document.getElementById("tanaStart");
+    const tanaQuestion = document.getElementById("tanaQuestion");
+    const tanaOptions = document.getElementById("tanaOptions");
+    const tanaStatus = document.getElementById("tanaStatus");
+    const tanaScenarios = [
+      { q: "Tu arrives en retard à un dîner.", options: ["Tu t'excuses et aides", "Tu te plains du menu", "Tu prends la place de chef"], answer: "Tu t'excuses et aides" },
+      { q: "Quelqu'un te confie un secret.", options: ["Tu le répètes", "Tu le gardes", "Tu fais un TikTok"], answer: "Tu le gardes" },
+      { q: "Un ami oublie de payer sa part.", options: ["Tu insultes", "Tu proposes un rappel gentil", "Tu pars sans payer"], answer: "Tu proposes un rappel gentil" },
+      { q: "Un collègue fait une erreur.", options: ["Tu te moques", "Tu aides à corriger", "Tu l'affiches en story"], answer: "Tu aides à corriger" },
+    ];
+    let tanaIndex = 0;
+    let tanaCorrect = 0;
+    let tanaTarget = 3;
+    let tanaActive = false;
+
+    function renderTanaQuestion() {
+      const { q, options } = tanaScenarios[tanaIndex];
+      tanaQuestion.textContent = q;
+      tanaOptions.innerHTML = "";
+      options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.className = "btn";
+        btn.textContent = opt;
+        btn.addEventListener("click", () => handleTana(opt));
+        tanaOptions.appendChild(btn);
+      });
+    }
+
+    function handleTana(choice) {
+      if (!tanaActive) return;
+      const correct = tanaScenarios[tanaIndex].answer;
+      if (choice === correct) {
+        tanaCorrect++;
+        tanaStatus.textContent = "Classe !";
+      } else {
+        tanaStatus.textContent = "Nan là t’es une grosse tana ahah";
+      }
+      tanaIndex++;
+      if (tanaIndex >= tanaTarget) {
+        const diffKey = getSelectedDifficulty("tana");
+        const needed = diffKey === "facile" ? 2 : diffKey === "normal" ? 3 : 3;
+        if (tanaCorrect >= needed) {
+          tanaStatus.textContent = `${tanaCorrect}/${tanaTarget} validé !`;
+          tanaStatus.classList.add("success");
+          applyScore("tana", games.tana.max - (tanaTarget - tanaCorrect) * 3, diffKey);
+        } else {
+          tanaStatus.textContent += ` (${tanaCorrect}/${tanaTarget})`;
+          tanaStatus.classList.remove("success");
+        }
+        tanaActive = false;
+        return;
+      }
+      renderTanaQuestion();
+    }
+
+    tanaStart.addEventListener("click", () => {
+      const diffKey = getSelectedDifficulty("tana");
+      tanaTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 3 : 4;
+      tanaIndex = 0;
+      tanaCorrect = 0;
+      tanaActive = true;
+      tanaStatus.textContent = "En cours…";
+      tanaStatus.classList.remove("success");
+      renderTanaQuestion();
+    });
+
+    // Soupe
+    const soupeStatus = document.getElementById("soupeStatus");
+    const soupeHeight = document.getElementById("soupeHeight");
+    const soupeInfo = document.getElementById("soupeInfo");
+    const soupeFeed = document.getElementById("soupeFeed");
+    const soupeReset = document.getElementById("soupeReset");
+    let soupeCurrent = 1.3;
+    let soupeTarget = 1.5;
+    let soupeRemaining = 7;
+
+    function refreshSoupeTexts() {
+      soupeHeight.textContent = `Taille actuelle : ${soupeCurrent.toFixed(2)} m`;
+      soupeInfo.textContent = `Objectif : ${soupeTarget.toFixed(2)} m • Cuillères restantes : ${soupeRemaining}`;
+    }
+
+    function resetSoupe() {
+      const diffKey = getSelectedDifficulty("soupe");
+      soupeCurrent = 1.3;
+      soupeTarget = diffKey === "facile" ? 1.45 : diffKey === "normal" ? 1.55 : 1.65;
+      soupeRemaining = diffKey === "facile" ? 7 : diffKey === "normal" ? 6 : 5;
+      soupeStatus.textContent = "En attente";
+      soupeStatus.classList.remove("success");
+      soupeStatus.classList.add("pending");
+      refreshSoupeTexts();
+    }
+
+    soupeFeed.addEventListener("click", () => {
+      if (soupeRemaining <= 0) return;
+      soupeRemaining--;
+      soupeCurrent += 0.04 + Math.random() * 0.07;
+      if (soupeCurrent >= soupeTarget) {
+        soupeCurrent = soupeTarget;
+        soupeStatus.textContent = "Bravo, elle a grandi !";
+        soupeStatus.classList.add("success");
+        const diffKey = getSelectedDifficulty("soupe");
+        applyScore("soupe", games.soupe.max, diffKey);
+      } else if (soupeRemaining === 0) {
+        soupeStatus.textContent = "Plus de soupe, réessaie.";
+        soupeStatus.classList.remove("success");
+      } else {
+        soupeStatus.textContent = "Encore quelques cuillères…";
+      }
+      refreshSoupeTexts();
+    });
+
+    soupeReset.addEventListener("click", resetSoupe);
+
+    // Pigeon
+    const pigeonCoo = document.getElementById("pigeonCoo");
+    const pigeonStatus = document.getElementById("pigeonStatus");
+    const pigeonPet = document.getElementById("pigeonPet");
+    const pigeonReset = document.getElementById("pigeonReset");
+    let pigeonPets = 0;
+    let pigeonTarget = 5;
+
+    function resetPigeon() {
+      const diffKey = getSelectedDifficulty("pigeon");
+      pigeonTarget = diffKey === "facile" ? 4 : diffKey === "normal" ? 6 : 9;
+      pigeonPets = 0;
+      pigeonCoo.textContent = `Le pigeon attend une caresse (${pigeonTarget} requises).`;
+      pigeonStatus.textContent = "En attente";
+      pigeonStatus.classList.remove("success");
+      pigeonStatus.classList.add("pending");
+    }
+
+    pigeonPet.addEventListener("click", () => {
+      pigeonPets++;
+      if (pigeonPets >= pigeonTarget) {
+        pigeonCoo.textContent = "Roucouuu !";
+        pigeonStatus.textContent = "Mission caresse réussie.";
+        pigeonStatus.classList.add("success");
+        const diffKey = getSelectedDifficulty("pigeon");
+        applyScore("pigeon", games.pigeon.max, diffKey);
+      } else {
+        pigeonCoo.textContent = `Roucoulement ${pigeonPets}/${pigeonTarget}`;
+      }
+    });
+
+    pigeonReset.addEventListener("click", resetPigeon);
+
+    // Tempo
+    const tempoToggle = document.getElementById("tempoToggle");
+    const tempoStatus = document.getElementById("tempoStatus");
+    const tempoTarget = document.getElementById("tempoTarget");
+    let tempoRunning = false;
+    let tempoStartTime = 0;
+
+    function updateTempoTarget() {
+      const diffKey = getSelectedDifficulty("tempo");
+      tempoTarget.dataset.target = diffKey === "facile" ? 2.5 : diffKey === "normal" ? 2.2 : 1.8;
+      tempoTarget.textContent = `Tempo cible : ${tempoTarget.dataset.target}s`;
+      tempoStatus.textContent = "En attente";
+      tempoStatus.classList.remove("success");
+      tempoStatus.classList.add("pending");
+      tempoToggle.textContent = "Démarrer";
+      tempoRunning = false;
+    }
+
+    tempoToggle.addEventListener("click", () => {
+      if (!tempoRunning) {
+        tempoRunning = true;
+        tempoStartTime = performance.now();
+        tempoStatus.textContent = "Top…";
+        tempoToggle.textContent = "Arrêter";
+      } else {
+        const diffKey = getSelectedDifficulty("tempo");
+        tempoRunning = false;
+        const elapsed = (performance.now() - tempoStartTime) / 1000;
+        const target = parseFloat(tempoTarget.dataset.target || "2.5");
+        const delta = Math.abs(elapsed - target);
+        const tolerance = diffKey === "facile" ? 0.6 : diffKey === "normal" ? 0.4 : 0.25;
+        const score = Math.max(5, Math.round(games.tempo.max - delta * 20));
+        if (delta <= tolerance) {
+          tempoStatus.textContent = `Parfait ! (${elapsed.toFixed(2)}s)`;
+          tempoStatus.classList.add("success");
+          applyScore("tempo", score, diffKey);
+        } else {
+          tempoStatus.textContent = `Raté de ${delta.toFixed(2)}s (tu as fait ${elapsed.toFixed(2)}s)`;
+          tempoStatus.classList.remove("success");
+        }
+        tempoToggle.textContent = "Démarrer";
+      }
+    });
+
     // Init
     loadState();
+    renderPresidents();
     updateScoreboard();
     showHub();
     quizQuestion.textContent = "Prêt à commencer ?";
     loadAnagram();
     resetCode();
     resetClicker();
+    resetSoupe();
+    resetPigeon();
+    updateTempoTarget();
   </script>
 </body>
 </html>
