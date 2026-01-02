@@ -104,6 +104,30 @@
       font-weight: 700;
       margin-bottom: 16px;
     }
+
+    @media (max-width: 768px) {
+      body { padding-top: 0; }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        padding: 14px 16px;
+      }
+
+      .center-menu {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 4px 0;
+      }
+
+      .center-menu::-webkit-scrollbar { display: none; }
+      .center-menu { scrollbar-width: none; -ms-overflow-style: none; }
+      nav a { white-space: nowrap; }
+      .content { padding: 130px 20px 60px; }
+    }
   </style>
 </head>
 <body>
