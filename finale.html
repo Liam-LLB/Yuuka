@@ -92,6 +92,19 @@
     .badge.success { background: rgba(34, 197, 94, 0.16); color: #bbf7d0; }
     .badge.pending { background: rgba(234, 179, 8, 0.15); color: #fed7aa; }
 
+    .phrase-progress {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #e0f2fe;
+    }
+
     .stage {
       display: none;
       margin-top: 6px;
@@ -111,7 +124,7 @@
 
     .crossword {
       display: grid;
-      grid-template-columns: repeat(11, 36px);
+      grid-template-columns: repeat(11, minmax(28px, 36px));
       gap: 4px;
       width: fit-content;
       background: rgba(255, 255, 255, 0.03);
@@ -121,7 +134,7 @@
     }
 
     .cell {
-      width: 36px;
+      width: 100%;
       height: 36px;
       border-radius: 10px;
       background: rgba(15, 23, 42, 0.9);
@@ -240,6 +253,7 @@
       <div class="steps" id="stepsNav"></div>
 
       <div id="stagesContainer"></div>
+      <div class="phrase-progress" id="phraseProgress">Phrase : _____</div>
 
       <div class="nav-row">
         <button class="secondary" id="prevStep"><i class="fas fa-arrow-left"></i> Étape précédente</button>
@@ -267,15 +281,21 @@
     ];
 
     const CROSSWORD = {
-      rows: 6,
+      rows: 9,
       cols: 11,
       cells: {
-        "0-2": "D","0-3": "R","0-4": "A","0-5": "P","0-6": "S",
+        "0-1": "D","0-2": "R","0-3": "A","0-4": "P","0-5": "S",
         "1-1": "R","1-2": "O","1-3": "M","1-4": "A","1-5": "N","1-6": "T","1-7": "I","1-8": "Q","1-9": "U","1-10": "E",
         "2-0": "S","2-1": "A","2-2": "H","2-3": "N","2-4": "N","2-5": "O","2-6": "N",
-        "3-0": "M","3-1": "X","3-2": "E","3-3": "N","3-4": "R",
-        "4-0": "A","4-1": "I","4-2": "S","4-3": "E","4-4": "E",
-        "5-4": "I","5-5": "Q","5-6": "U","5-7": "E"
+        "3-1": "M","3-3": "E","3-4": "N","3-5": "R",
+        "4-1": "A","4-2": "I","4-3": "S","4-4": "E","4-5": "E",
+        "5-3": "I",
+        "6-3": "Q",
+        "7-3": "U",
+        "8-3": "E"
+      },
+      fixed: {
+        "0-1": "D","1-1": "R","2-0": "S","3-1": "M","4-1": "A","5-3": "I","6-3": "Q","7-3": "U","8-3": "E"
       }
     };
 
@@ -318,10 +338,22 @@
         pill.addEventListener("click", () => changeStep(index));
         nav.appendChild(pill);
       });
+      updatePhraseProgress();
     }
 
     function isStepDone(id) {
       return (state.answers[id] || "").toUpperCase() === STEPS.find(s => s.id === id).target;
+    }
+
+    function updatePhraseProgress() {
+      const target = document.getElementById("phraseProgress");
+      if (!target) return;
+      const parts = STEPS.map(step => {
+        const answer = (state.answers[step.id] || "").toUpperCase();
+        const padded = (answer + "_".repeat(step.target.length)).slice(0, step.target.length);
+        return padded;
+      });
+      target.textContent = `Phrase : ${parts.join(" ")}`;
     }
 
     function renderSlots(container, word, stepId) {
@@ -362,7 +394,7 @@
         let content = "";
         if (step.id === "donne") {
           content = `
-            <div class="grid-hint">Recopie la grille à partir de la photo fournie, puis valide. Le mot caché verticalement sera ton indice.</div>
+            <div class="grid-hint">Recopie la grille ci-dessous (certaines lettres sont déjà placées pour t’aider). Sur la ligne 4, le N central est facultatif : écris « SAHNNON » ou « SAHN(N)ON » selon ta préférence.</div>
             <div class="crossword" id="crossword"></div>
             <div class="actions">
               <button id="checkCrossword"><i class="fas fa-check"></i> Vérifier la grille</button>
@@ -409,6 +441,7 @@
           saveState();
           refreshFinal();
           renderSteps();
+          updatePhraseProgress();
         });
       });
 
@@ -422,6 +455,7 @@
       saveState();
       renderSteps();
       renderStages();
+      updatePhraseProgress();
     }
 
     function setupCrossword() {
@@ -436,7 +470,13 @@
             input.maxLength = 1;
             input.className = "cell";
             input.dataset.key = key;
-            input.value = (state.grid[key] || "").toUpperCase();
+            const isFixed = CROSSWORD.fixed && CROSSWORD.fixed[key];
+            input.value = (isFixed || state.grid[key] || "").toUpperCase();
+            if (isFixed) {
+              input.disabled = true;
+              input.style.background = "rgba(124, 58, 237, 0.25)";
+              input.style.borderColor = "rgba(124, 58, 237, 0.6)";
+            }
             input.addEventListener("input", () => {
               state.grid[key] = input.value.toUpperCase();
               saveState();
@@ -453,27 +493,36 @@
       const checkBtn = document.getElementById("checkCrossword");
       const resetBtn = document.getElementById("resetCrossword");
       if (checkBtn) {
-        checkBtn.addEventListener("click", () => {
+        checkBtn.onclick = () => {
           const entries = Object.keys(CROSSWORD.cells);
-          const allGood = entries.every(k => (state.grid[k] || "").toUpperCase() === CROSSWORD.cells[k].toUpperCase());
-          if (allGood) {
+          let errors = 0;
+          entries.forEach(k => {
+            const expected = CROSSWORD.cells[k].toUpperCase();
+            const value = (state.grid[k] || CROSSWORD.fixed?.[k] || "").toUpperCase();
+            const nullable = k === "2-3"; // autorise SAHNNON ou SAHN(N)ON
+            if (nullable && value === "") return;
+            if (value !== expected) errors++;
+          });
+
+          if (errors === 0) {
             state.answers.donne = "DONNE";
             saveState();
             alert("Grille validée ! Le mot caché est « DONNE ».");
             renderStages();
             renderSteps();
             refreshFinal();
+            updatePhraseProgress();
           } else {
-            alert("Il manque encore quelques lettres, compare avec la grille fournie en photo.");
+            alert("Il manque encore quelques lettres, complète ou corrige la grille.");
           }
-        });
+        };
       }
       if (resetBtn) {
-        resetBtn.addEventListener("click", () => {
+        resetBtn.onclick = () => {
           state.grid = {};
           saveState();
           setupCrossword();
-        });
+        };
       }
     }
 
@@ -506,6 +555,7 @@
     renderSteps();
     renderStages();
     refreshFinal();
+    updatePhraseProgress();
   </script>
 </body>
 </html>
