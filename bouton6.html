@@ -320,6 +320,16 @@
     .status.success { color: var(--success); }
     .status.pending { color: var(--warning); }
 
+    .game-block input {
+      width: 100%;
+      padding: 12px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      margin-bottom: 12px;
+    }
+
     .chip {
       display: inline-flex;
       gap: 8px;
@@ -332,6 +342,7 @@
       font-size: 0.9em;
     }
 
+    .board, .game-block {
     .board {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
@@ -437,6 +448,7 @@
         <div>
           <div>Total de points</div>
           <strong id="totalPoints">0 pts</strong>
+          <div class="chip" id="completedCount">0 / 6 jeux validés</div>
           <div class="chip" id="completedCount">0 / 3 jeux validés</div>
         </div>
       </div>
@@ -452,11 +464,194 @@
         <div>
           <div>Récompenses</div>
           <strong id="rewardStatus" class="status pending">Bloquées</strong>
+          <div class="chip">Termine tous les Yuukajeux pour débloquer</div>
           <div class="chip">Termine les 3 jeux pour débloquer</div>
         </div>
       </div>
     </section>
 
+    <section class="grid" id="hubView">
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-bolt"></i></div>
+          <div>
+            <h3>YuukaFlash</h3>
+            <p>Réflexe éclair : clique dès que le signal apparaît.</p>
+          </div>
+        </div>
+        <div class="chip">Jusqu’à 30 pts</div>
+        <button class="btn" data-game="reflex">Jouer</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-brain"></i></div>
+          <div>
+            <h3>Yuukolor</h3>
+            <p>Mémoire chroma : reproduis la séquence de couleurs.</p>
+          </div>
+        </div>
+        <div class="chip">25 pts</div>
+        <button class="btn" data-game="memory">Jouer</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-question-circle"></i></div>
+          <div>
+            <h3>Yuukwizz</h3>
+            <p>Un mini-quiz express en 3 questions.</p>
+          </div>
+        </div>
+        <div class="chip">30 pts</div>
+        <button class="btn" data-game="quiz">Jouer</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-font"></i></div>
+          <div>
+            <h3>Yuukagram</h3>
+            <p>Réarrange les lettres pour trouver le mot mystère.</p>
+          </div>
+        </div>
+        <div class="chip">25 pts</div>
+        <button class="btn" data-game="anagram">Jouer</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-key"></i></div>
+          <div>
+            <h3>Yuukode</h3>
+            <p>Devine le code secret en un minimum d’essais.</p>
+          </div>
+        </div>
+        <div class="chip">25 pts</div>
+        <button class="btn" data-game="code">Jouer</button>
+      </article>
+
+      <article class="game-card">
+        <div class="game-header">
+          <div class="icon"><i class="fas fa-hand-pointer"></i></div>
+          <div>
+            <h3>Yuukadash</h3>
+            <p>Challenge clicker : clique un maximum en 10 secondes.</p>
+          </div>
+        </div>
+        <div class="chip">30 pts</div>
+        <button class="btn" data-game="clicker">Jouer</button>
+      </article>
+    </section>
+
+    <!-- Écrans de jeux -->
+    <section class="card game-screen hidden" id="screen-reflex">
+      <div class="actions">
+        <button class="btn" id="backFromReflex">Retour au hub</button>
+      </div>
+      <h2>YuukaFlash</h2>
+      <p>Attends le signal bleu et clique immédiatement.</p>
+      <div class="chip">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</div>
+      <div class="actions">
+        <button class="btn" id="reflexStart">Lancer</button>
+        <span id="reflexStatus" class="status pending">En attente</span>
+      </div>
+      <div id="reflexTarget" class="tile">Attends le signal…</div>
+      <div class="chip" id="reflexScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-memory">
+      <div class="actions">
+        <button class="btn" id="backFromMemory">Retour au hub</button>
+      </div>
+      <h2>Yuukolor</h2>
+      <p>Observe la séquence, puis reproduis-la.</p>
+      <div class="chip">25 pts • Réussite si la séquence est exacte</div>
+      <div class="actions">
+        <button class="btn" id="memoryStart">Montrer la séquence</button>
+        <span id="memoryStatus" class="status pending">En attente</span>
+      </div>
+      <div class="board" id="memoryBoard">
+        <div class="tile" data-color="cyan">Cyan</div>
+        <div class="tile" data-color="rose">Rose</div>
+        <div class="tile" data-color="indigo">Indigo</div>
+        <div class="tile" data-color="lime">Lime</div>
+      </div>
+      <div class="chip" id="memoryScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-quiz">
+      <div class="actions">
+        <button class="btn" id="backFromQuiz">Retour au hub</button>
+      </div>
+      <h2>Yuukwizz</h2>
+      <p>Réponds correctement aux 3 questions.</p>
+      <div class="chip">Jusqu’à 30 pts • Sans faute pour valider</div>
+      <div id="quizArea">
+        <div id="quizQuestion">Prêt à commencer ?</div>
+        <div class="actions" id="quizOptions"></div>
+      </div>
+      <div class="actions">
+        <button class="btn" id="quizStart">Démarrer le quiz</button>
+        <span id="quizStatus" class="status pending">En attente</span>
+      </div>
+      <div class="chip" id="quizScore">Meilleur : 0 pts</div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-anagram">
+      <div class="actions">
+        <button class="btn" id="backFromAnagram">Retour au hub</button>
+      </div>
+      <h2>Yuukagram</h2>
+      <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
+      <div class="chip">25 pts • 1 essai réussi = validé</div>
+      <div class="game-block">
+        <div class="badge" id="anagramScramble">YUUKA</div>
+        <input id="anagramInput" type="text" placeholder="Ta réponse" />
+        <div class="actions">
+          <button class="btn" id="anagramCheck">Valider</button>
+          <button class="btn" id="anagramNext">Nouvelle grille</button>
+        </div>
+        <div class="chip" id="anagramStatus">En attente</div>
+        <div class="chip" id="anagramScore">Meilleur : 0 pts</div>
+      </div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-code">
+      <div class="actions">
+        <button class="btn" id="backFromCode">Retour au hub</button>
+      </div>
+      <h2>Yuukode</h2>
+      <p>Devine le code secret (1 à 20) en 5 essais maximum.</p>
+      <div class="chip">25 pts • Trouve avant d’épuiser les essais</div>
+      <div class="game-block">
+        <input id="codeInput" type="number" min="1" max="20" placeholder="1-20" />
+        <div class="actions">
+          <button class="btn" id="codeTry">Proposer</button>
+          <button class="btn" id="codeRestart">Nouveau code</button>
+        </div>
+        <div class="chip" id="codeStatus">En attente</div>
+        <div class="chip" id="codeScore">Meilleur : 0 pts</div>
+      </div>
+    </section>
+
+    <section class="card game-screen hidden" id="screen-clicker">
+      <div class="actions">
+        <button class="btn" id="backFromClicker">Retour au hub</button>
+      </div>
+      <h2>Yuukadash</h2>
+      <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
+      <div class="chip">30 pts • Réussite à 20 clics ou plus</div>
+      <div class="game-block">
+        <div class="badge" id="clickerTimer">10s</div>
+        <div class="badge" id="clickerCount">0 clic</div>
+        <div class="actions">
+          <button class="btn" id="clickerStart">Lancer</button>
+          <button class="btn" id="clickerTap">Clique ici</button>
+        </div>
+        <div class="chip" id="clickerStatus">En attente</div>
+        <div class="chip" id="clickerScore">Meilleur : 0 pts</div>
+      </div>
     <section class="grid">
       <article class="game-card" id="reflex-card">
         <div class="game-header">
@@ -531,6 +726,14 @@
       reflex: { name: "Réflexe éclair", max: 30 },
       memory: { name: "Mémoire chroma", max: 25 },
       quiz: { name: "Yuukwizz express", max: 30 },
+      anagram: { name: "Yuukagram", max: 25 },
+      code: { name: "Yuukode", max: 25 },
+      clicker: { name: "Yuukadash", max: 30 },
+    };
+
+    let state = {
+      scores: { reflex: 0, memory: 0, quiz: 0, anagram: 0, code: 0, clicker: 0 },
+      completed: { reflex: false, memory: false, quiz: false, anagram: false, code: false, clicker: false },
     };
 
     let state = {
@@ -581,6 +784,38 @@
       document.getElementById("reflexScore").textContent = `Meilleur : ${state.scores.reflex} pts`;
       document.getElementById("memoryScore").textContent = `Meilleur : ${state.scores.memory} pts`;
       document.getElementById("quizScore").textContent = `Meilleur : ${state.scores.quiz} pts`;
+      document.getElementById("anagramScore").textContent = `Meilleur : ${state.scores.anagram} pts`;
+      document.getElementById("codeScore").textContent = `Meilleur : ${state.scores.code} pts`;
+      document.getElementById("clickerScore").textContent = `Meilleur : ${state.scores.clicker} pts`;
+    }
+
+    // Navigation jeux
+    const screens = Array.from(document.querySelectorAll(".game-screen"));
+    const hubView = document.getElementById("hubView");
+
+    function showHub() {
+      screens.forEach(s => s.classList.add("hidden"));
+      hubView.classList.remove("hidden");
+    }
+
+    function goToGame(id) {
+      hubView.classList.add("hidden");
+      screens.forEach(s => s.classList.add("hidden"));
+      const target = document.getElementById(`screen-${id}`);
+      if (target) target.classList.remove("hidden");
+    }
+
+    document.querySelectorAll('[data-game]').forEach(btn => {
+      btn.addEventListener("click", () => goToGame(btn.dataset.game));
+    });
+
+    document.getElementById("backFromReflex").addEventListener("click", showHub);
+    document.getElementById("backFromMemory").addEventListener("click", showHub);
+    document.getElementById("backFromQuiz").addEventListener("click", showHub);
+    document.getElementById("backFromAnagram").addEventListener("click", showHub);
+    document.getElementById("backFromCode").addEventListener("click", showHub);
+    document.getElementById("backFromClicker").addEventListener("click", showHub);
+
     }
 
     // Réflexe éclair
@@ -788,10 +1023,149 @@
       renderQuizQuestion();
     });
 
+    // Anagramme
+    const anagramWords = ["yuuka", "yuukaflash", "yuukawizz", "yuukagram", "yuukode", "yuukadash", "yuukonline"];
+    const anagramScramble = document.getElementById("anagramScramble");
+    const anagramInput = document.getElementById("anagramInput");
+    const anagramStatus = document.getElementById("anagramStatus");
+    const anagramNextBtn = document.getElementById("anagramNext");
+    const anagramCheckBtn = document.getElementById("anagramCheck");
+    let currentAnagram = "";
+
+    function shuffleWord(word) {
+      return word.split("").sort(() => Math.random() - 0.5).join("").toUpperCase();
+    }
+
+    function loadAnagram() {
+      currentAnagram = anagramWords[Math.floor(Math.random() * anagramWords.length)];
+      anagramScramble.textContent = shuffleWord(currentAnagram);
+      anagramInput.value = "";
+      anagramStatus.textContent = "En attente";
+      anagramStatus.classList.remove("success");
+    }
+
+    anagramCheckBtn.addEventListener("click", () => {
+      const guess = anagramInput.value.trim().toLowerCase();
+      if (!guess) return;
+      if (guess === currentAnagram) {
+        anagramStatus.textContent = "Trouvé !";
+        anagramStatus.classList.add("success");
+        state.completed.anagram = true;
+        state.scores.anagram = Math.max(state.scores.anagram, games.anagram.max);
+        saveState();
+        updateScoreboard();
+      } else {
+        anagramStatus.textContent = "Raté, réessaie ou passe à un autre mot.";
+        anagramStatus.classList.remove("success");
+      }
+    });
+
+    anagramNextBtn.addEventListener("click", loadAnagram);
+
+    // Yuukode (guess)
+    const codeStatus = document.getElementById("codeStatus");
+    const codeInput = document.getElementById("codeInput");
+    const codeTryBtn = document.getElementById("codeTry");
+    const codeRestartBtn = document.getElementById("codeRestart");
+    let secretCode = 0;
+    let codeAttempts = 0;
+
+    function resetCode() {
+      secretCode = 1 + Math.floor(Math.random() * 20);
+      codeAttempts = 0;
+      codeInput.value = "";
+      codeStatus.textContent = "Nouveau code généré.";
+      codeStatus.classList.remove("success");
+    }
+
+    codeTryBtn.addEventListener("click", () => {
+      const val = parseInt(codeInput.value, 10);
+      if (Number.isNaN(val)) return;
+      codeAttempts++;
+      if (val === secretCode) {
+        codeStatus.textContent = `Code trouvé en ${codeAttempts} essais !`;
+        codeStatus.classList.add("success");
+        state.completed.code = true;
+        const pts = Math.max(10, games.code.max - (codeAttempts - 1) * 3);
+        state.scores.code = Math.max(state.scores.code, pts);
+        saveState();
+        updateScoreboard();
+      } else if (codeAttempts >= 5) {
+        codeStatus.textContent = `Perdu ! Le code était ${secretCode}. Relance.`;
+        codeStatus.classList.remove("success");
+      } else {
+        codeStatus.textContent = val < secretCode ? "Plus haut" : "Plus bas";
+        codeStatus.classList.remove("success");
+      }
+    });
+
+    codeRestartBtn.addEventListener("click", resetCode);
+
+    // Clicker
+    const clickerStart = document.getElementById("clickerStart");
+    const clickerTap = document.getElementById("clickerTap");
+    const clickerTimer = document.getElementById("clickerTimer");
+    const clickerCount = document.getElementById("clickerCount");
+    const clickerStatus = document.getElementById("clickerStatus");
+    let clickerClicks = 0;
+    let clickerTimeLeft = 10;
+    let clickerInterval;
+    let clickerActive = false;
+
+    function resetClicker() {
+      clearInterval(clickerInterval);
+      clickerClicks = 0;
+      clickerTimeLeft = 10;
+      clickerActive = false;
+      clickerCount.textContent = "0 clic";
+      clickerTimer.textContent = "10s";
+      clickerStatus.textContent = "En attente";
+      clickerStatus.classList.remove("success");
+      clickerTap.disabled = true;
+    }
+
+    clickerStart.addEventListener("click", () => {
+      resetClicker();
+      clickerActive = true;
+      clickerTap.disabled = false;
+      clickerStatus.textContent = "Go !";
+      clickerInterval = setInterval(() => {
+        clickerTimeLeft--;
+        clickerTimer.textContent = `${clickerTimeLeft}s`;
+        if (clickerTimeLeft <= 0) {
+          clearInterval(clickerInterval);
+          clickerActive = false;
+          clickerTap.disabled = true;
+          const pts = Math.min(games.clicker.max, clickerClicks);
+          if (clickerClicks >= 20) {
+            clickerStatus.textContent = `Validé : ${clickerClicks} clics`;
+            clickerStatus.classList.add("success");
+            state.completed.clicker = true;
+            state.scores.clicker = Math.max(state.scores.clicker, pts);
+            saveState();
+            updateScoreboard();
+          } else {
+            clickerStatus.textContent = `Seulement ${clickerClicks} clics, retente !`;
+            clickerStatus.classList.remove("success");
+          }
+        }
+      }, 1000);
+    });
+
+    clickerTap.addEventListener("click", () => {
+      if (!clickerActive) return;
+      clickerClicks++;
+      clickerCount.textContent = `${clickerClicks} clic${clickerClicks > 1 ? "s" : ""}`;
+    });
+
     // Init
     loadState();
     updateScoreboard();
     quizQuestion.textContent = "Prêt à commencer ?";
+    loadAnagram();
+    resetCode();
+    resetClicker();
+  </script>
   </script>
   <header class="hero">
     <div class="badge"><i class="fas fa-sparkles"></i> Interface prototype</div>
