@@ -62,6 +62,18 @@
     nav a:hover { background: rgba(124, 58, 237, 0.14); color: #ede9fe; }
 
     .center-menu { display: flex; gap: 12px; justify-content: center; flex: 1; flex-wrap: wrap; }
+    nav a:hover {
+      background: rgba(124, 58, 237, 0.14);
+      color: #ede9fe;
+    }
+
+    .center-menu {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex: 1;
+      flex-wrap: wrap;
+    }
 
     main {
       width: 100%;
@@ -172,6 +184,254 @@
     .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .badge { background: rgba(255, 255, 255, 0.08); padding: 8px 12px; border-radius: 12px; color: var(--muted); }
     .tile { padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); cursor: pointer; text-align: center; user-select: none; }
+    }
+
+    .hero {
+      background: radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.22), transparent 35%),
+                  radial-gradient(circle at 90% 10%, rgba(34, 211, 238, 0.18), transparent 32%),
+                  var(--panel);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 60%);
+      pointer-events: none;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(124, 58, 237, 0.14);
+      color: #e9d5ff;
+      font-weight: 700;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      width: fit-content;
+    }
+
+    .hero h1 {
+      margin: 12px 0 6px;
+      font-size: clamp(26px, 4vw, 40px);
+      letter-spacing: 0.4px;
+    }
+
+    .hero p {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .rule-cloud {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    .rule-bubble {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 12px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      color: #e2e8f0;
+    }
+
+    .rule-bubble i {
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(124, 58, 237, 0.18);
+      color: #e9d5ff;
+    }
+
+    .rule-bubble strong { display: block; font-size: 1rem; }
+    .rule-bubble span { color: var(--muted); font-size: 0.95rem; }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .metric-card {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15), rgba(12, 18, 32, 0.9));
+      border: 1px solid rgba(124, 58, 237, 0.28);
+      border-radius: 14px;
+      padding: 14px;
+      display: grid;
+      gap: 6px;
+      position: relative;
+    }
+
+    .metric-card .label { color: var(--muted); font-size: 0.95rem; }
+    .metric-card .value { font-size: 1.4rem; font-weight: 800; }
+
+    .progress-bar {
+      height: 12px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22d3ee, #a855f7);
+      transition: width 0.35s ease;
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+    }
+
+    .status-chip.success { color: #bbf7d0; background: rgba(34, 197, 94, 0.12); border: 1px solid rgba(34, 197, 94, 0.4); }
+    .status-chip.pending { color: #fed7aa; background: rgba(234, 179, 8, 0.1); border: 1px solid rgba(234, 179, 8, 0.3); }
+
+    .unlock-card {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 12px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.18), rgba(124, 58, 237, 0.2));
+      border: 1px solid rgba(34, 211, 238, 0.28);
+    }
+
+    .unlock-description { color: var(--muted); margin: 0; }
+
+    .lock-button {
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(0, 0, 0, 0.15);
+      color: #e2e8f0;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: not-allowed;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .lock-button.unlocked {
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      box-shadow: 0 12px 30px rgba(34, 197, 94, 0.4);
+      border-color: rgba(34, 197, 94, 0.6);
+      cursor: pointer;
+    }
+
+    .lock-button.unlocked:hover { transform: translateY(-2px); }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+
+    .game-card {
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.12), rgba(11, 18, 36, 0.95));
+      border: 1px solid rgba(124, 58, 237, 0.18);
+      border-radius: 14px;
+      padding: 16px;
+      display: grid;
+      gap: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .game-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+      border-color: rgba(34, 211, 238, 0.35);
+    }
+
+    .game-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .game-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: rgba(124, 58, 237, 0.2);
+      color: #e9d5ff;
+      font-size: 18px;
+    }
+
+    .game-card h3 { margin: 0; }
+    .game-card p { margin: 0; color: var(--muted); line-height: 1.5; }
+
+    .meta-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .pill-small {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #e2e8f0;
+      font-weight: 700;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .btn {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      background: rgba(124, 58, 237, 0.16);
+      color: #e2e8f0;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn:hover { background: rgba(124, 58, 237, 0.28); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .game-screen {
+      margin-top: 10px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+    .badge { background: rgba(255, 255, 255, 0.08); padding: 8px 12px; border-radius: 12px; color: var(--muted); }
+    .tile { padding: 16px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); cursor: pointer; text-align: center; }
     .tile.active { background: rgba(34, 211, 238, 0.2); border-color: rgba(34, 211, 238, 0.6); }
     .tile.correct { background: rgba(34, 197, 94, 0.18); border-color: rgba(34, 197, 94, 0.6); }
     .tile.wrong { background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.6); }
@@ -184,6 +444,13 @@
 
     .hidden { display: none; }
     .note { color: var(--muted); margin: 0; }
+
+    .game-block input { width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); }
+
+    .hidden { display: none; }
+
+    .note { color: var(--muted); margin: 0; }
+
     .reward { background: linear-gradient(120deg, rgba(34, 197, 94, 0.15), rgba(14, 165, 233, 0.15)); border: 1px solid rgba(34, 197, 94, 0.35); color: #dcfce7; text-align: center; }
   </style>
 </head>
@@ -206,6 +473,8 @@
       <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuukajeux</div>
       <h1>12 mini-jeux, 3 niveaux chacun : valide tout pour ouvrir le portail final.</h1>
       <p>Chaque défi dispose de trois difficultés (facile, normal, difficile). Choisis ton niveau, gagne le jeu et suis ta progression en direct. Tout est sauvegardé dans ton navigateur.</p>
+      <h1>Refonte du hub : règles claires, progression visible, actions immédiates.</h1>
+      <p>Retrouve ici chaque mini-jeu avec un accès direct. Les règles et indicateurs sont regroupés en bulles modernes pour que tu saches exactement quoi faire pour débloquer la suite.</p>
 
       <div class="rule-cloud">
         <div class="rule-bubble">
@@ -223,6 +492,19 @@
         <div class="rule-bubble">
           <i class="fas fa-door-open"></i>
           <div><strong>Portail final</strong><span>Déverrouillé dès que les 12 jeux sont validés.</span></div>
+          <div><strong>Valide les 6 défis</strong><span>Chaque mini-jeu doit être gagné pour ouvrir la suite.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-microchip"></i>
+          <div><strong>Progression locale</strong><span>Scores et validations sauvegardés dans ton navigateur.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-gauge-high"></i>
+          <div><strong>Barre de progression</strong><span>Remplis-la à 100% pour déverrouiller le bouton final.</span></div>
+        </div>
+        <div class="rule-bubble">
+          <i class="fas fa-rotate"></i>
+          <div><strong>Rejoue à volonté</strong><span>Améliore tes scores, les meilleurs essais sont conservés.</span></div>
         </div>
       </div>
 
@@ -231,6 +513,17 @@
           <div class="label">Total de points</div>
           <div class="value" id="totalPoints">0 pts</div>
           <div class="status-chip" id="completedCount">0 / 12 jeux validés</div>
+          <div class="status-chip" id="completedCount">0 / 6 jeux validés</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Progression globale</div>
+          <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="value" id="progressText">0%</div>
+        </div>
+        <div class="metric-card">
+          <div class="label">Récompense</div>
+          <div class="value" id="rewardStatus">Bloquée</div>
+          <div class="status-chip pending" id="rewardHint"><i class="fas fa-lock"></i> Termine tout pour déverrouiller</div>
         </div>
         <div class="metric-card">
           <div class="label">Progression globale</div>
@@ -257,6 +550,18 @@
       </button>
     </section>
 
+    <section class="card unlock-card">
+      <div>
+        <h2 style="margin: 0 0 6px">Portail final</h2>
+        <p class="unlock-description">Une fois les six mini-jeux gagnés, le bouton se déverrouille et t’emmène vers la page finale où tu pourras découvrir la suite.</p>
+        <p class="note" id="unlockNote">Encore quelques victoires avant l’ouverture.</p>
+      </div>
+      <button class="lock-button" id="finalButton" disabled>
+        <i class="fas fa-lock"></i>
+        <span>Portail verrouillé</span>
+      </button>
+    </section>
+
     <section class="games-grid" id="hubView">
       <article class="game-card">
         <div class="game-top">
@@ -268,6 +573,7 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
+          <span class="pill-small">Jusqu’à 30 pts</span>
           <span class="status-chip pending" id="status-reflex">À valider</span>
           <span class="pill-small" id="best-reflex">Meilleur : 0 pts</span>
         </div>
@@ -284,6 +590,7 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
+          <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-memory">À valider</span>
           <span class="pill-small" id="best-memory">Meilleur : 0 pts</span>
         </div>
@@ -300,6 +607,11 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
+            <p>Mini-quiz express en trois questions.</p>
+          </div>
+        </div>
+        <div class="meta-row">
+          <span class="pill-small">Jusqu’à 30 pts</span>
           <span class="status-chip pending" id="status-quiz">À valider</span>
           <span class="pill-small" id="best-quiz">Meilleur : 0 pts</span>
         </div>
@@ -316,6 +628,7 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
+          <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-anagram">À valider</span>
           <span class="pill-small" id="best-anagram">Meilleur : 0 pts</span>
         </div>
@@ -332,6 +645,7 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
+          <span class="pill-small">25 pts</span>
           <span class="status-chip pending" id="status-code">À valider</span>
           <span class="pill-small" id="best-code">Meilleur : 0 pts</span>
         </div>
@@ -448,6 +762,11 @@
           <span class="pill-small" id="best-tempo">Meilleur : 0 pts</span>
         </div>
         <button class="btn" data-game="tempo">Accéder au mini-jeu</button>
+          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="status-chip pending" id="status-clicker">À valider</span>
+          <span class="pill-small" id="best-clicker">Meilleur : 0 pts</span>
+        </div>
+        <button class="btn" data-game="clicker">Accéder au mini-jeu</button>
       </article>
     </section>
 
@@ -461,6 +780,7 @@
         <label><input type="radio" name="reflex-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="reflex-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="reflex-difficulty" value="difficile" /> Difficile</label>
+        <span class="pill-small">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</span>
       </div>
       <p>Attends le signal bleu et clique immédiatement.</p>
       <div class="actions">
@@ -480,6 +800,7 @@
         <label><input type="radio" name="memory-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="memory-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="memory-difficulty" value="difficile" /> Difficile</label>
+        <span class="pill-small">25 pts • Séquence exacte requise</span>
       </div>
       <p>Observe la séquence, puis reproduis-la.</p>
       <div class="actions">
@@ -506,6 +827,10 @@
         <label><input type="radio" name="quiz-difficulty" value="difficile" /> Difficile</label>
       </div>
       <p>Réponds correctement aux questions.</p>
+        <span class="pill-small">Jusqu’à 30 pts • Sans faute pour valider</span>
+      </div>
+      <h2>Yuukwizz</h2>
+      <p>Réponds correctement aux 3 questions.</p>
       <div id="quizArea">
         <div id="quizQuestion">Prêt à commencer ?</div>
         <div class="actions" id="quizOptions"></div>
@@ -526,6 +851,7 @@
         <label><input type="radio" name="anagram-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="anagram-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="anagram-difficulty" value="difficile" /> Difficile</label>
+        <span class="pill-small">25 pts • 1 essai réussi = validé</span>
       </div>
       <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
       <div class="game-block">
@@ -551,6 +877,10 @@
         <label><input type="radio" name="code-difficulty" value="difficile" /> Difficile</label>
       </div>
       <p>Devine le code secret (1 à 25) en un nombre limité d’essais.</p>
+        <span class="pill-small">25 pts • 5 essais maximum</span>
+      </div>
+      <h2>Yuukode</h2>
+      <p>Devine le code secret (1 à 20) en 5 essais maximum.</p>
       <div class="game-block">
         <input id="codeInput" type="number" min="1" max="25" placeholder="1-25" />
         <div class="actions">
@@ -571,6 +901,7 @@
         <label><input type="radio" name="clicker-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="clicker-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="clicker-difficulty" value="difficile" /> Difficile</label>
+        <span class="pill-small">Jusqu’à 30 pts • Réussite à 20 clics</span>
       </div>
       <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
       <div class="game-block">
@@ -765,6 +1096,10 @@
           state.scores[key] = { facile: 0, normal: 0, difficile: 0, ...state.scores[key] };
         }
         if (!(key in state.completed)) state.completed[key] = null;
+      // Ensure all keys exist even if l’ancien stockage était partiel
+      for (const key of Object.keys(games)) {
+        if (!(key in state.scores)) state.scores[key] = 0;
+        if (!(key in state.completed)) state.completed[key] = false;
       }
     }
 
@@ -793,6 +1128,7 @@
       if (statusChip) {
         if (state.completed[key]) {
           statusChip.textContent = completedLabel(state.completed[key]);
+          statusChip.textContent = "Validé";
           statusChip.classList.add("success");
           statusChip.classList.remove("pending");
         } else {
@@ -802,6 +1138,7 @@
         }
       }
       if (bestChip) bestChip.textContent = `Meilleur : ${bestScore(key)} pts`;
+      if (bestChip) bestChip.textContent = `Meilleur : ${state.scores[key]} pts`;
     }
 
     function updateScoreboard() {
@@ -853,6 +1190,14 @@
       document.getElementById("soupeScore").textContent = `Meilleur : ${bestScore("soupe")} pts`;
       document.getElementById("pigeonScore").textContent = `Meilleur : ${bestScore("pigeon")} pts`;
       document.getElementById("tempoScore").textContent = `Meilleur : ${bestScore("tempo")} pts`;
+      document.getElementById("reflexScore").textContent = `Meilleur : ${state.scores.reflex} pts`;
+      document.getElementById("memoryScore").textContent = `Meilleur : ${state.scores.memory} pts`;
+      document.getElementById("quizScore").textContent = `Meilleur : ${state.scores.quiz} pts`;
+      document.getElementById("anagramScore").textContent = `Meilleur : ${state.scores.anagram} pts`;
+      document.getElementById("codeScore").textContent = `Meilleur : ${state.scores.code} pts`;
+      document.getElementById("clickerScore").textContent = `Meilleur : ${state.scores.clicker} pts`;
+
+      Object.keys(games).forEach(updateCardState);
     }
 
     // Navigation jeux
@@ -911,6 +1256,10 @@
       updateScoreboard();
       return points;
     }
+    finalButton.addEventListener("click", () => {
+      if (finalButton.disabled) return;
+      window.location.href = "finale.html";
+    });
 
     // Réflexe éclair
     const reflexStartBtn = document.getElementById("reflexStart");
@@ -1056,6 +1405,21 @@
       { q: "Combien de niveaux de difficulté par jeu ?", options: ["1", "2", "3"], answer: "3" },
       { q: "Quel mini-jeu te fait nourrir un personnage ?", options: ["Soupe magique", "Yuukquine", "Pigeon chill"], answer: "Soupe magique" },
       { q: "Le bouton final s'ouvre quand...", options: ["Tout est validé", "Il est 18h", "Tu cliques 50 fois"], answer: "Tout est validé" },
+      {
+        q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?",
+        options: ["2", "3", "6"],
+        answer: "6",
+      },
+      {
+        q: "Quel type de jeu teste ta rapidité ?",
+        options: ["YuukaFlash", "Yuukolor", "Yuukagram"],
+        answer: "YuukaFlash",
+      },
+      {
+        q: "Comment est stockée ta progression ?",
+        options: ["Dans ton navigateur", "Sur un compte en ligne", "Elle n'est pas sauvegardée"],
+        answer: "Dans ton navigateur",
+      },
     ];
     let currentQuizIndex = 0;
     let correctAnswers = 0;
@@ -1123,6 +1487,7 @@
 
     // Anagramme
     const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "president", "pigeon", "soupe", "tempo", "tana"];
+    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline"];
     const anagramScramble = document.getElementById("anagramScramble");
     const anagramInput = document.getElementById("anagramInput");
     const anagramStatus = document.getElementById("anagramStatus");
