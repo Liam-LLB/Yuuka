@@ -237,6 +237,22 @@
     .final-screen h2 { font-size: clamp(32px, 6vw, 56px); margin: 0 0 12px; }
     .final-screen p { color: #cbd5e1; font-size: 18px; }
 
+    .dev-button {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .dev-button:hover { opacity: 1; transform: translateY(-2px); }
+
     .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   </style>
 </head>
@@ -271,8 +287,13 @@
     </div>
   </div>
 
+  <button class="dev-button" id="devButton" title="Mode développeur">
+    <i class="fas fa-user-gear"></i>
+  </button>
+
   <script>
     const REWARD_KEY = "yuukonlineReward";
+    const DEV_PASSWORD = "Yuucheat";
     const STEPS = [
       { id: "donne", title: "Étape 1 • Mot croisé", target: "DONNE" },
       { id: "moi", title: "Étape 2 • Acrostiche", target: "MOI" },
@@ -535,6 +556,28 @@
       refreshFinal();
     }
 
+    function resetFinalProgress() {
+      state = defaultState();
+      localStorage.removeItem(REWARD_KEY);
+      renderSteps();
+      renderStages();
+      refreshFinal();
+      updatePhraseProgress();
+      alert("Progression finale réinitialisée.");
+    }
+
+    function validateFinalProgress() {
+      state.answers = Object.fromEntries(STEPS.map(step => [step.id, step.target]));
+      state.grid = { ...CROSSWORD.cells };
+      state.currentStep = STEPS.length - 1;
+      saveState();
+      renderSteps();
+      renderStages();
+      refreshFinal();
+      updatePhraseProgress();
+      alert("Mode développeur : toutes les étapes finales sont validées.");
+    }
+
     function refreshFinal() {
       const allDone = STEPS.every(s => isStepDone(s.id));
       document.getElementById("finalScreen").classList.toggle("active", allDone);
@@ -550,6 +593,24 @@
       if (state.currentStep < STEPS.length - 1) changeStep(state.currentStep + 1);
       else refreshFinal();
     });
+
+    const devButton = document.getElementById("devButton");
+    if (devButton) {
+      devButton.addEventListener("click", () => {
+        const answer = prompt("Mot de passe développeur ?");
+        if (answer === null) return;
+        if (answer === DEV_PASSWORD) {
+          const choice = prompt("Mode développeur :\n1 • Valider toute la partie finale\n2 • Réinitialiser la progression finale\n(Annuler pour quitter)");
+          if (choice === "1") {
+            validateFinalProgress();
+          } else if (choice === "2") {
+            resetFinalProgress();
+          }
+        } else {
+          alert("Accès refusé.");
+        }
+      });
+    }
 
     loadState();
     renderSteps();
