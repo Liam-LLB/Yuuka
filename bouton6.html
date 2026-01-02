@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yuukajeux - Hub</title>
+  <title>Yuugames - Hub</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <style>
     :root {
@@ -451,6 +451,22 @@
     .soupe-bowl::after { content: "Tapote pour boire"; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #cbd5e1; opacity: 0.75; }
     .soupe-girl.drinking, .soupe-bowl.drinking { animation: sip 0.5s ease; }
     @keyframes sip { 0% { transform: translateY(10px) scale(var(--growth-scale, 1)) rotate(0deg); } 40% { transform: translateY(2px) scale(calc(var(--growth-scale, 1) * 1.02)) rotate(-4deg); } 100% { transform: translateY(10px) scale(var(--growth-scale, 1)); } }
+
+    .dev-button {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      cursor: pointer;
+      opacity: 0.55;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .dev-button:hover { opacity: 1; transform: translateY(-2px); }
   </style>
 </head>
 <body>
@@ -462,22 +478,22 @@
       <a href="bouton3.html"><i class="fas fa-mars"></i> Yuugars</a>
       <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i> Yuukafe place</a>
       <a href="bouton5.html"><i class="fas fa-calendar-alt"></i> Yuukalendrier</a>
-      <a href="bouton6.html"><i class="fas fa-gamepad"></i> Yuukajeux</a>
+      <a href="bouton6.html"><i class="fas fa-gamepad"></i> Yuugames</a>
     </div>
     <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
   </nav>
 
   <main>
     <section class="card hero">
-      <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuukajeux</div>
-      <h1>Bienvenue dans le Yuukajeux</h1>
+      <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuugames</div>
+      <h1>Bienvenue dans le Yuugames</h1>
       <p>12 mini-jeux, 3 niveaux de difficulté chacun : il faut les réussir dans l’ordre (facile → normal → difficile) pour valider un jeu.</p>
       <p>Dans l’esprit du Yuukonline, tout est chaleureux et simple : choisis un défi, progresse palier après palier et vois ta barre se remplir.</p>
 
       <div class="rule-cloud">
         <div class="rule-bubble">
           <i class="fas fa-flag-checkered"></i>
-          <div><strong>12 défis à valider</strong><span>Chaque mini-jeu doit être gagné au moins une fois.</span></div>
+          <div><strong>12 défis à valider</strong><span>Chaque mini-jeu doit être entièrement complété (facile → difficile).</span></div>
         </div>
         <div class="rule-bubble">
           <i class="fas fa-sliders-h"></i>
@@ -485,31 +501,27 @@
         </div>
         <div class="rule-bubble">
           <i class="fas fa-microchip"></i>
-          <div><strong>Progression locale</strong><span>Scores et validations sauvegardés dans ton navigateur.</span></div>
+          <div><strong>Progression locale</strong><span>Validations sauvegardées dans ton navigateur.</span></div>
         </div>
           <div class="rule-bubble">
             <i class="fas fa-gauge-high"></i>
-            <div><strong>Barre de progression</strong><span>Remplis-la à 100% pour déverrouiller le bouton final.</span></div>
-          </div>
-          <div class="rule-bubble">
-            <i class="fas fa-rotate"></i>
-            <div><strong>Rejoue à volonté</strong><span>Améliore tes scores, les meilleurs essais sont conservés.</span></div>
-          </div>
-          <div class="rule-bubble">
-            <i class="fas fa-door-open"></i>
-            <div><strong>Portail final</strong><span>Déverrouillé dès que les 12 jeux sont validés.</span></div>
+            <div><strong>Barre de progression</strong><span>Remplis-la à 100% pour déverrouiller la récompense finale.</span></div>
           </div>
           <div class="rule-bubble">
             <i class="fas fa-lock"></i>
             <div><strong>Progression séquencée</strong><span>Chaque mode difficile se débloque seulement si le niveau précédent est gagné.</span></div>
           </div>
+          <div class="rule-bubble">
+            <i class="fas fa-list-ol"></i>
+            <div><strong>Nombre de niveaux terminés</strong><span>Chaque validation compte pour remplir la progression totale.</span></div>
+          </div>
       </div>
 
       <div class="metrics">
         <div class="metric-card">
-          <div class="label">Total de points</div>
-          <div class="value" id="totalPoints">0 pts</div>
-          <div class="status-chip" id="completedCount">0 / 12 jeux validés</div>
+          <div class="label">Nombre de niveaux terminés</div>
+          <div class="value" id="levelsCount">0 / 36</div>
+          <div class="status-chip" id="completedGames">Nombre de niveaux terminés : 0 / 36</div>
         </div>
         <div class="metric-card">
           <div class="label">Progression globale</div>
@@ -547,9 +559,9 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
-          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="pill-small">Parcours en 3 étapes</span>
           <span class="status-chip pending" id="status-reflex">À valider</span>
-          <span class="pill-small" id="best-reflex">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-reflex">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="reflex">Accéder au mini-jeu</button>
       </article>
@@ -564,9 +576,9 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
-          <span class="pill-small">25 pts</span>
+          <span class="pill-small">Parcours en 3 étapes</span>
           <span class="status-chip pending" id="status-memory">À valider</span>
-          <span class="pill-small" id="best-memory">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-memory">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="memory">Accéder au mini-jeu</button>
       </article>
@@ -581,9 +593,9 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
-          <span class="pill-small">Jusqu’à 30 pts</span>
+          <span class="pill-small">Parcours en 3 étapes</span>
           <span class="status-chip pending" id="status-quiz">À valider</span>
-          <span class="pill-small" id="best-quiz">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-quiz">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="quiz">Accéder au mini-jeu</button>
       </article>
@@ -598,9 +610,9 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
-          <span class="pill-small">25 pts</span>
+          <span class="pill-small">Parcours en 3 étapes</span>
           <span class="status-chip pending" id="status-anagram">À valider</span>
-          <span class="pill-small" id="best-anagram">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-anagram">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="anagram">Accéder au mini-jeu</button>
       </article>
@@ -615,9 +627,9 @@
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
-          <span class="pill-small">25 pts</span>
+          <span class="pill-small">Parcours en 3 étapes</span>
           <span class="status-chip pending" id="status-code">À valider</span>
-          <span class="pill-small" id="best-code">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-code">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="code">Accéder au mini-jeu</button>
       </article>
@@ -633,7 +645,7 @@
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-clicker">À valider</span>
-          <span class="pill-small" id="best-clicker">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-clicker">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="clicker">Accéder au mini-jeu</button>
       </article>
@@ -642,14 +654,14 @@
         <div class="game-top">
           <div class="game-icon"><i class="fas fa-landmark"></i></div>
           <div>
-            <h3>ChronoPrésidents</h3>
+            <h3>Yuukéblique Française</h3>
             <p>Replace les présidents de la Vᵉ République dans l’ordre.</p>
           </div>
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-presidents">À valider</span>
-          <span class="pill-small" id="best-presidents">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-presidents">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="presidents">Accéder au mini-jeu</button>
       </article>
@@ -665,7 +677,7 @@
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-equitation">À valider</span>
-          <span class="pill-small" id="best-equitation">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-equitation">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="equitation">Accéder au mini-jeu</button>
       </article>
@@ -674,14 +686,14 @@
         <div class="game-top">
           <div class="game-icon"><i class="fas fa-book-open"></i></div>
           <div>
-            <h3>Anti-Tana</h3>
+            <h3>Yuutana</h3>
             <p>QCM de situations : reste classe ou deviens une « tana ».</p>
           </div>
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-tana">À valider</span>
-          <span class="pill-small" id="best-tana">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-tana">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="tana">Accéder au mini-jeu</button>
       </article>
@@ -690,14 +702,14 @@
         <div class="game-top">
           <div class="game-icon"><i class="fas fa-utensil-spoon"></i></div>
           <div>
-            <h3>Soupe Magique</h3>
+            <h3>Yuukroissance</h3>
             <p>Fais manger la soupe pour faire grandir le personnage.</p>
           </div>
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-soupe">À valider</span>
-          <span class="pill-small" id="best-soupe">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-soupe">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="soupe">Accéder au mini-jeu</button>
       </article>
@@ -706,14 +718,14 @@
         <div class="game-top">
           <div class="game-icon"><i class="fas fa-dove"></i></div>
           <div>
-            <h3>Pigeon Chill</h3>
+            <h3>Yuugeon</h3>
             <p>Caresse le pigeon jusqu’à ce qu’il roucoule de joie.</p>
           </div>
         </div>
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-pigeon">À valider</span>
-          <span class="pill-small" id="best-pigeon">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-pigeon">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="pigeon">Accéder au mini-jeu</button>
       </article>
@@ -729,7 +741,7 @@
         <div class="meta-row">
           <span class="pill-small">3 difficultés</span>
           <span class="status-chip pending" id="status-tempo">À valider</span>
-          <span class="pill-small" id="best-tempo">Meilleur : 0 pts</span>
+          <span class="pill-small" id="best-tempo">Progression : 0 / 3</span>
         </div>
         <button class="btn" data-game="tempo">Accéder au mini-jeu</button>
       </article>
@@ -745,7 +757,7 @@
         <label><input type="radio" name="reflex-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="reflex-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="reflex-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">Jusqu’à 30 pts • Seuils : 1100 / 800 / 600 ms</span>
+        <span class="pill-small">Seuils : 900 / 650 / 450 ms</span>
       </div>
       <p>Attends le signal bleu et clique immédiatement.</p>
       <div class="actions">
@@ -753,7 +765,7 @@
         <span id="reflexStatus" class="status-chip pending">En attente</span>
       </div>
       <div id="reflexTarget" class="tile">Attends le signal…</div>
-      <div class="pill-small" id="reflexScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="reflexScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-memory">
@@ -765,7 +777,7 @@
         <label><input type="radio" name="memory-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="memory-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="memory-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">25 pts • Séquences 3 / 5 / 7 couleurs</span>
+        <span class="pill-small">Séquences : 4 / 6 / 8 couleurs</span>
       </div>
       <p>Observe la séquence, puis reproduis-la.</p>
       <div class="actions">
@@ -778,7 +790,7 @@
         <div class="tile" data-color="indigo">Indigo</div>
         <div class="tile" data-color="lime">Lime</div>
       </div>
-      <div class="pill-small" id="memoryScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="memoryScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-quiz">
@@ -793,10 +805,10 @@
       </div>
       <p>Réponds correctement aux questions.</p>
       <div class="actions">
-        <span class="pill-small">Jusqu’à 30 pts • Sans faute pour valider</span>
+        <span class="pill-small">Sans faute pour valider</span>
       </div>
       <h2>Yuukwizz</h2>
-      <p>Réponds correctement aux 3 questions.</p>
+      <p>Réponds correctement aux questions demandées.</p>
       <div id="quizArea">
         <div id="quizQuestion">Prêt à commencer ?</div>
         <div class="actions" id="quizOptions"></div>
@@ -805,7 +817,7 @@
         <button class="btn" id="quizStart">Démarrer le quiz</button>
         <span id="quizStatus" class="status-chip pending">En attente</span>
       </div>
-      <div class="pill-small" id="quizScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="quizScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-anagram">
@@ -817,7 +829,7 @@
         <label><input type="radio" name="anagram-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="anagram-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="anagram-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">25 pts • 1 / 2 / 3 mots à trouver</span>
+        <span class="pill-small">2 / 3 / 4 mots à trouver</span>
       </div>
       <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
       <div class="game-block">
@@ -828,7 +840,7 @@
           <button class="btn" id="anagramNext">Nouvelle grille</button>
         </div>
         <div class="status-chip pending" id="anagramStatus">En attente</div>
-        <div class="pill-small" id="anagramScore">Meilleur : 0 pts</div>
+        <div class="pill-small" id="anagramScore">Progression : 0 / 3 niveaux</div>
       </div>
     </section>
 
@@ -842,11 +854,9 @@
         <label><input type="radio" name="code-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="code-difficulty" value="difficile" /> Difficile</label>
       </div>
-      <p>Devine le code secret (1 à 25) en un nombre limité d’essais.</p>
-        <span class="pill-small">25 pts • 5 essais maximum</span>
-      </div>
+      <p>Devine le code secret : la plage de valeurs s’élargit à chaque niveau.</p>
       <h2>Yuukode</h2>
-      <p>Devine le code secret (1 à 20) en 5 essais maximum.</p>
+      <p>Tu as quelques essais pour trouver la bonne valeur.</p>
       <div class="game-block">
         <input id="codeInput" type="number" min="1" max="25" placeholder="1-25" />
         <div class="actions">
@@ -854,7 +864,7 @@
           <button class="btn" id="codeRestart">Nouveau code</button>
         </div>
         <div class="status-chip pending" id="codeStatus">En attente</div>
-        <div class="pill-small" id="codeScore">Meilleur : 0 pts</div>
+        <div class="pill-small" id="codeScore">Progression : 0 / 3 niveaux</div>
       </div>
     </section>
 
@@ -867,7 +877,7 @@
         <label><input type="radio" name="clicker-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="clicker-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="clicker-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">Jusqu’à 30 pts • Objectifs : 16 / 24 / 32 clics</span>
+        <span class="pill-small">Objectifs : 18 / 30 / 42 clics</span>
       </div>
       <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
       <div class="game-block">
@@ -878,7 +888,7 @@
           <button class="btn" id="clickerTap">Clique ici</button>
         </div>
         <div class="status-chip pending" id="clickerStatus">En attente</div>
-        <div class="pill-small" id="clickerScore">Meilleur : 0 pts</div>
+        <div class="pill-small" id="clickerScore">Progression : 0 / 3 niveaux</div>
       </div>
     </section>
 
@@ -898,7 +908,7 @@
         <button class="btn" id="presidentCheck">Vérifier</button>
         <span class="status-chip pending" id="presidentStatus">En attente</span>
       </div>
-      <div class="pill-small" id="presidentScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="presidentScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-equitation">
@@ -920,13 +930,13 @@
         <button class="btn" data-gait="Galop">Galop</button>
       </div>
       <div class="status-chip pending" id="equitationStatus">En attente</div>
-      <div class="pill-small" id="equitationScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="equitationScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-tana">
       <div class="actions">
         <button class="btn" id="backFromTana"><i class="fas fa-chevron-left"></i> Retour au hub</button>
-        <span class="pill-small">Anti-tana</span>
+        <span class="pill-small">Yuutana</span>
       </div>
       <div class="difficulty">
         <label><input type="radio" name="tana-difficulty" value="facile" checked /> Facile</label>
@@ -940,13 +950,13 @@
         <button class="btn" id="tanaStart">Démarrer</button>
         <span class="status-chip pending" id="tanaStatus">En attente</span>
       </div>
-      <div class="pill-small" id="tanaScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="tanaScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-soupe">
       <div class="actions">
         <button class="btn" id="backFromSoupe"><i class="fas fa-chevron-left"></i> Retour au hub</button>
-        <span class="pill-small">Soupe magique</span>
+        <span class="pill-small">Yuukroissance</span>
       </div>
       <div class="difficulty">
         <label><input type="radio" name="soupe-difficulty" value="facile" checked /> Facile</label>
@@ -965,13 +975,13 @@
         <button class="btn" id="soupeReset">Réinitialiser</button>
       </div>
       <div class="status-chip pending" id="soupeStatus">En attente</div>
-      <div class="pill-small" id="soupeScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="soupeScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-pigeon">
       <div class="actions">
         <button class="btn" id="backFromPigeon"><i class="fas fa-chevron-left"></i> Retour au hub</button>
-        <span class="pill-small">Pigeon chill</span>
+        <span class="pill-small">Yuugeon</span>
       </div>
       <div class="difficulty">
         <label><input type="radio" name="pigeon-difficulty" value="facile" checked /> Facile</label>
@@ -989,7 +999,7 @@
         <button class="btn" id="pigeonReset">Réinitialiser</button>
       </div>
       <div class="status-chip pending" id="pigeonStatus">En attente</div>
-      <div class="pill-small" id="pigeonScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="pigeonScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card game-screen hidden" id="screen-tempo">
@@ -1008,7 +1018,7 @@
         <button class="btn" id="tempoToggle">Démarrer</button>
       </div>
       <div class="status-chip pending" id="tempoStatus">En attente</div>
-      <div class="pill-small" id="tempoScore">Meilleur : 0 pts</div>
+      <div class="pill-small" id="tempoScore">Progression : 0 / 3 niveaux</div>
     </section>
 
     <section class="card reward hidden" id="rewardCard">
@@ -1017,8 +1027,12 @@
     </section>
   </main>
 
+  <button class="dev-button" id="devButton" title="Mode développeur">
+    <i class="fas fa-user-gear"></i>
+  </button>
+
   <script>
-    const STORAGE_KEY = "yuukajeuxProgress";
+    const STORAGE_KEY = "yuugamesProgress";
     const difficultySettings = {
       facile: { label: "Facile", bonus: 1, tolerance: "large" },
       normal: { label: "Normal", bonus: 1.2, tolerance: "moyenne" },
@@ -1033,20 +1047,12 @@
       anagram: { name: "Yuukagram", max: 25 },
       code: { name: "Yuukode", max: 25 },
       clicker: { name: "Yuukadash", max: 30 },
-      presidents: { name: "ChronoPrésidents", max: 35 },
+      presidents: { name: "Yuukéblique Française", max: 35 },
       equitation: { name: "Yuukquine", max: 25 },
-      tana: { name: "Anti-Tana", max: 30 },
-      soupe: { name: "Soupe magique", max: 20 },
-      pigeon: { name: "Pigeon chill", max: 15 },
+      tana: { name: "Yuutana", max: 30 },
+      soupe: { name: "Yuukroissance", max: 20 },
+      pigeon: { name: "Yuugeon", max: 15 },
       tempo: { name: "Yuuktempo", max: 25 },
-    };
-
-    const defaultScores = () => {
-      const entry = {};
-      Object.keys(games).forEach(key => {
-        entry[key] = { facile: 0, normal: 0, difficile: 0 };
-      });
-      return entry;
     };
 
     const defaultTiers = () => {
@@ -1058,7 +1064,6 @@
     };
 
     let state = {
-      scores: defaultScores(),
       completed: Object.fromEntries(Object.keys(games).map(k => [k, null])),
       tiers: defaultTiers(),
     };
@@ -1075,10 +1080,6 @@
       }
       // ensure structure
       for (const key of Object.keys(games)) {
-        if (!state.scores[key]) state.scores[key] = { facile: 0, normal: 0, difficile: 0 };
-        else {
-          state.scores[key] = { facile: 0, normal: 0, difficile: 0, ...state.scores[key] };
-        }
         if (!(key in state.completed)) state.completed[key] = null;
         if (!state.tiers[key]) state.tiers[key] = { ...defaultTiers()[key] };
         else state.tiers[key] = { ...defaultTiers()[key], ...state.tiers[key] };
@@ -1098,6 +1099,16 @@
     const rewardCard = document.getElementById("rewardCard");
     const finalButton = document.getElementById("finalButton");
     const unlockNote = document.getElementById("unlockNote");
+    const devButton = document.getElementById("devButton");
+
+    function unlockAllGames() {
+      Object.keys(games).forEach(key => {
+        state.tiers[key] = { facile: true, normal: true, difficile: true };
+        state.completed[key] = "difficile";
+      });
+      saveState();
+      updateScoreboard();
+    }
 
     function isDifficultyUnlocked(gameKey, diffKey) {
       if (diffKey === "facile") return true;
@@ -1119,9 +1130,19 @@
       return difficultyOrder.every(level => tiers[level]);
     }
 
-    function bestScore(key) {
-      const entry = state.scores[key] || { facile: 0, normal: 0, difficile: 0 };
-      return Math.max(entry.facile || 0, entry.normal || 0, entry.difficile || 0);
+    function clearedLevelsCount(gameKey) {
+      const tiers = state.tiers[gameKey] || {};
+      return difficultyOrder.filter(level => tiers[level]).length;
+    }
+
+    function progressionLabel(gameKey) {
+      const count = clearedLevelsCount(gameKey);
+      return `${count} / ${difficultyOrder.length} niveau${count > 1 ? "x" : ""} terminés`;
+    }
+
+    function nextPendingDifficulty(gameKey) {
+      const tiers = state.tiers[gameKey] || {};
+      return difficultyOrder.find(level => !tiers[level]) || null;
     }
 
     function nextDifficultyLabel(gameKey) {
@@ -1152,16 +1173,19 @@
           statusChip.classList.remove("success");
         }
       }
-      if (bestChip) bestChip.textContent = `Meilleur : ${bestScore(key)} pts`;
+      if (bestChip) bestChip.textContent = `Progression : ${progressionLabel(key)}`;
     }
 
     function updateDifficultyLocks(gameKey) {
       const radios = Array.from(document.querySelectorAll(`input[name="${gameKey}-difficulty"]`));
+      const target = nextPendingDifficulty(gameKey);
+      const fullyDone = !target;
       radios.forEach(r => {
         const label = r.closest("label");
         const unlocked = isDifficultyUnlocked(gameKey, r.value);
-        r.disabled = !unlocked;
-        if (label) label.classList.toggle("locked", !unlocked);
+        const allowed = fullyDone ? unlocked : (unlocked && r.value === target);
+        r.disabled = !allowed;
+        if (label) label.classList.toggle("locked", !allowed);
       });
       const selected = radios.find(r => r.checked);
       if (!selected || selected.disabled) {
@@ -1180,16 +1204,17 @@
     }
 
     function updateScoreboard() {
-      const totalPoints = Object.keys(games).reduce((acc, key) => acc + bestScore(key), 0);
-      const completedCount = Object.keys(games).filter(isGameFullyCompleted).length;
-      const progress = Math.round((completedCount / totalGames) * 100);
+      const totalLevels = totalGames * difficultyOrder.length;
+      const completedLevels = Object.keys(games).reduce((acc, key) => acc + clearedLevelsCount(key), 0);
+      const completedGames = Object.keys(games).filter(isGameFullyCompleted).length;
+      const progress = Math.round((completedLevels / totalLevels) * 100);
 
-      document.getElementById("totalPoints").textContent = `${totalPoints} pts`;
-      document.getElementById("completedCount").textContent = `${completedCount} / ${totalGames} jeux validés`;
+      document.getElementById("levelsCount").textContent = `${completedLevels} / ${totalLevels}`;
+      document.getElementById("completedGames").textContent = `Nombre de niveaux terminés : ${completedLevels} / ${totalLevels}`;
       document.getElementById("progressText").textContent = `${progress}%`;
       document.getElementById("progressFill").style.width = `${progress}%`;
 
-      if (completedCount === totalGames) {
+      if (completedGames === totalGames) {
         rewardStatus.textContent = "Débloquée";
         rewardStatus.classList.add("success");
         rewardStatus.classList.remove("pending");
@@ -1218,19 +1243,19 @@
         updateDifficultyLocks(key);
       });
 
-      // scores sur écrans
-      document.getElementById("reflexScore").textContent = `Meilleur : ${bestScore("reflex")} pts`;
-      document.getElementById("memoryScore").textContent = `Meilleur : ${bestScore("memory")} pts`;
-      document.getElementById("quizScore").textContent = `Meilleur : ${bestScore("quiz")} pts`;
-      document.getElementById("anagramScore").textContent = `Meilleur : ${bestScore("anagram")} pts`;
-      document.getElementById("codeScore").textContent = `Meilleur : ${bestScore("code")} pts`;
-      document.getElementById("clickerScore").textContent = `Meilleur : ${bestScore("clicker")} pts`;
-      document.getElementById("presidentScore").textContent = `Meilleur : ${bestScore("presidents")} pts`;
-      document.getElementById("equitationScore").textContent = `Meilleur : ${bestScore("equitation")} pts`;
-      document.getElementById("tanaScore").textContent = `Meilleur : ${bestScore("tana")} pts`;
-      document.getElementById("soupeScore").textContent = `Meilleur : ${bestScore("soupe")} pts`;
-      document.getElementById("pigeonScore").textContent = `Meilleur : ${bestScore("pigeon")} pts`;
-      document.getElementById("tempoScore").textContent = `Meilleur : ${bestScore("tempo")} pts`;
+      // progression sur écrans
+      document.getElementById("reflexScore").textContent = `Progression : ${progressionLabel("reflex")}`;
+      document.getElementById("memoryScore").textContent = `Progression : ${progressionLabel("memory")}`;
+      document.getElementById("quizScore").textContent = `Progression : ${progressionLabel("quiz")}`;
+      document.getElementById("anagramScore").textContent = `Progression : ${progressionLabel("anagram")}`;
+      document.getElementById("codeScore").textContent = `Progression : ${progressionLabel("code")}`;
+      document.getElementById("clickerScore").textContent = `Progression : ${progressionLabel("clicker")}`;
+      document.getElementById("presidentScore").textContent = `Progression : ${progressionLabel("presidents")}`;
+      document.getElementById("equitationScore").textContent = `Progression : ${progressionLabel("equitation")}`;
+      document.getElementById("tanaScore").textContent = `Progression : ${progressionLabel("tana")}`;
+      document.getElementById("soupeScore").textContent = `Progression : ${progressionLabel("soupe")}`;
+      document.getElementById("pigeonScore").textContent = `Progression : ${progressionLabel("pigeon")}`;
+      document.getElementById("tempoScore").textContent = `Progression : ${progressionLabel("tempo")}`;
     }
 
     // Navigation jeux
@@ -1288,23 +1313,48 @@
       window.location.href = "finale.html";
     });
 
+    if (devButton) {
+      devButton.addEventListener("click", () => {
+        const answer = prompt("Mot de passe développeur ?");
+        if (answer === null) return;
+        if (answer === "Yuucheat") {
+          unlockAllGames();
+          alert("Mode développeur activé : tous les mini-jeux sont validés.");
+        } else {
+          alert("Accès refusé.");
+        }
+      });
+    }
+
     function getSelectedDifficulty(gameKey) {
       const input = document.querySelector(`input[name="${gameKey}-difficulty"]:checked`);
       const chosen = input ? input.value : "facile";
       return isDifficultyUnlocked(gameKey, chosen) ? chosen : "facile";
     }
 
-    function applyScore(gameKey, base, diffKey) {
+    function autoAdvanceDifficulty(gameKey) {
+      const next = nextPendingDifficulty(gameKey);
+      if (!next) {
+        updateDifficultyLocks(gameKey);
+        return;
+      }
+      const radios = Array.from(document.querySelectorAll(`input[name="${gameKey}-difficulty"]`));
+      const targetRadio = radios.find(r => r.value === next);
+      if (targetRadio) {
+        targetRadio.checked = true;
+      }
+      updateDifficultyLocks(gameKey);
+    }
+
+    function applyScore(gameKey, _base, diffKey) {
       if (!isDifficultyUnlocked(gameKey, diffKey)) return 0;
-      const points = Math.round(base * difficultySettings[diffKey].bonus);
-      if (!state.scores[gameKey]) state.scores[gameKey] = { facile: 0, normal: 0, difficile: 0 };
-      state.scores[gameKey][diffKey] = Math.max(state.scores[gameKey][diffKey], points);
       if (!state.tiers[gameKey]) state.tiers[gameKey] = { facile: false, normal: false, difficile: false };
       state.tiers[gameKey][diffKey] = true;
       state.completed[gameKey] = highestCleared(gameKey);
       saveState();
       updateScoreboard();
-      return points;
+      autoAdvanceDifficulty(gameKey);
+      return 0;
     }
 
     // Réflexe éclair
@@ -1349,13 +1399,11 @@
       reflexTarget.classList.remove("active");
       reflexReady = false;
       const diffKey = getSelectedDifficulty("reflex");
-      const limit = diffKey === "facile" ? 1100 : diffKey === "normal" ? 800 : 600;
-
-      const points = Math.max(5, Math.min(games.reflex.max, Math.round(games.reflex.max - reaction / 30)));
+      const limit = diffKey === "facile" ? 900 : diffKey === "normal" ? 650 : 450;
       if (reaction <= limit) {
         reflexStatus.textContent = `Validé : ${Math.round(reaction)} ms`;
         reflexStatus.classList.add("success");
-        applyScore("reflex", points, diffKey);
+        applyScore("reflex", 0, diffKey);
       } else {
         reflexStatus.textContent = `Un peu lent (${Math.round(reaction)} ms) — retente !`;
         reflexStatus.classList.remove("success");
@@ -1405,7 +1453,7 @@
     memoryStartBtn.addEventListener("click", () => {
       resetMemory();
       const diffKey = getSelectedDifficulty("memory");
-      const length = diffKey === "facile" ? 3 : diffKey === "normal" ? 5 : 7;
+      const length = diffKey === "facile" ? 4 : diffKey === "normal" ? 6 : 8;
       memorySequence = Array.from({ length }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
       playSequence(memorySequence);
       memoryStatus.textContent = "Reproduis la séquence";
@@ -1433,7 +1481,7 @@
           memoryStatus.textContent = "Séquence validée !";
           memoryStatus.classList.add("success");
           const diffKey = getSelectedDifficulty("memory");
-          applyScore("memory", games.memory.max, diffKey);
+          applyScore("memory", 0, diffKey);
           memoryActive = false;
         }
       });
@@ -1447,15 +1495,15 @@
     const quizQuestions = [
       { q: "Combien de mini-jeux doivent être validés pour débloquer la récompense ?", options: ["6", "9", "12"], answer: "12" },
       { q: "Comment est stockée ta progression ?", options: ["Dans ton navigateur", "Sur un serveur externe", "Elle n'est pas sauvegardée"], answer: "Dans ton navigateur" },
-      { q: "Quel mini-jeu demande du réflexe ?", options: ["YuukaFlash", "Soupe magique", "ChronoPrésidents"], answer: "YuukaFlash" },
+      { q: "Quel mini-jeu demande du réflexe ?", options: ["YuukaFlash", "Yuukroissance", "Yuukéblique Française"], answer: "YuukaFlash" },
       { q: "Combien de niveaux de difficulté par jeu ?", options: ["1", "2", "3"], answer: "3" },
-      { q: "Quel mini-jeu te fait nourrir un personnage ?", options: ["Soupe magique", "Yuukquine", "Pigeon chill"], answer: "Soupe magique" },
+      { q: "Quel mini-jeu te fait nourrir un personnage ?", options: ["Yuukroissance", "Yuukquine", "Yuugeon"], answer: "Yuukroissance" },
       { q: "Le bouton final s'ouvre quand...", options: ["Tout est validé", "Il est 18h", "Tu cliques 50 fois"], answer: "Tout est validé" },
     ];
     let currentQuizIndex = 0;
     let correctAnswers = 0;
     let quizActive = false;
-    let quizTarget = 3;
+    let quizTarget = 4;
 
     function renderQuizQuestion() {
       const { q, options } = quizQuestions[currentQuizIndex];
@@ -1480,11 +1528,10 @@
         const needsPerfect = diffKey !== "facile";
         const needed = diffKey === "facile" ? quizTarget - 1 : quizTarget;
         const perfect = correctAnswers === quizTarget;
-        const points = Math.min(games.quiz.max, correctAnswers * (diffKey === "difficile" ? 12 : 10));
         if ((needsPerfect && perfect) || (!needsPerfect && correctAnswers >= needed)) {
           quizStatus.textContent = needsPerfect ? "Sans faute exigée : réussi !" : `${correctAnswers}/${quizTarget} validé en facile`;
           quizStatus.classList.add("success");
-          applyScore("quiz", points, diffKey);
+          applyScore("quiz", 0, diffKey);
         } else {
           quizStatus.textContent = `${correctAnswers}/${quizTarget} — réessaie`; 
           quizStatus.classList.remove("success");
@@ -1502,7 +1549,7 @@
 
     quizStartBtn.addEventListener("click", () => {
       const diffKey = getSelectedDifficulty("quiz");
-      quizTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
+      quizTarget = diffKey === "facile" ? 4 : diffKey === "normal" ? 5 : 6;
       currentQuizIndex = 0;
       correctAnswers = 0;
       quizActive = true;
@@ -1514,7 +1561,7 @@
     });
 
     // Anagramme
-    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "president", "pigeon", "soupe", "tempo", "tana", "chronopresident", "tapotepigeon", "soupemagique", "modegalop", "aniviersaireyuuka"];
+    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "yuukeblique", "yuugeon", "yuukroissance", "tempo", "yuuutana", "chrono", "tapotepigeon", "bolsoupe", "modegalop", "anniversaireyuuka"];
     const anagramScramble = document.getElementById("anagramScramble");
     const anagramInput = document.getElementById("anagramInput");
     const anagramStatus = document.getElementById("anagramStatus");
@@ -1530,7 +1577,7 @@
 
     function configureAnagramGoal(resetCounter = true) {
       const diffKey = getSelectedDifficulty("anagram");
-      anagramGoal = diffKey === "facile" ? 1 : diffKey === "normal" ? 2 : 3;
+      anagramGoal = diffKey === "facile" ? 2 : diffKey === "normal" ? 3 : 4;
       if (resetCounter) anagramSolved = 0;
     }
 
@@ -1559,7 +1606,7 @@
         anagramStatus.classList.add("success");
         const diffKey = getSelectedDifficulty("anagram");
         if (anagramSolved >= anagramGoal) {
-          applyScore("anagram", games.anagram.max, diffKey);
+          applyScore("anagram", 0, diffKey);
           anagramSolved = 0;
           loadAnagram(true);
         } else {
@@ -1585,8 +1632,8 @@
 
     function resetCode() {
       const diffKey = getSelectedDifficulty("code");
-      codeMax = diffKey === "facile" ? 15 : diffKey === "normal" ? 20 : 25;
-      codeLimit = diffKey === "facile" ? 7 : diffKey === "normal" ? 5 : 4;
+      codeMax = diffKey === "facile" ? 20 : diffKey === "normal" ? 35 : 50;
+      codeLimit = diffKey === "facile" ? 7 : diffKey === "normal" ? 6 : 5;
       secretCode = 1 + Math.floor(Math.random() * codeMax);
       codeAttempts = 0;
       codeInput.value = "";
@@ -1604,8 +1651,7 @@
         const diffKey = getSelectedDifficulty("code");
         codeStatus.textContent = `Code trouvé en ${codeAttempts} essais !`;
         codeStatus.classList.add("success");
-        const pts = Math.max(10, games.code.max - (codeAttempts - 1) * 3);
-        applyScore("code", pts, diffKey);
+        applyScore("code", 0, diffKey);
       } else if (codeAttempts >= codeLimit) {
         codeStatus.textContent = `Perdu ! Le code était ${secretCode}. Relance.`;
         codeStatus.classList.remove("success");
@@ -1654,12 +1700,11 @@
           clickerActive = false;
           clickerTap.disabled = true;
           const diffKey = getSelectedDifficulty("clicker");
-          const target = diffKey === "facile" ? 16 : diffKey === "normal" ? 24 : 32;
-          const pts = Math.min(games.clicker.max, clickerClicks);
+          const target = diffKey === "facile" ? 18 : diffKey === "normal" ? 30 : 42;
           if (clickerClicks >= target) {
             clickerStatus.textContent = `Validé : ${clickerClicks} clics`;
             clickerStatus.classList.add("success");
-            applyScore("clicker", pts, diffKey);
+            applyScore("clicker", 0, diffKey);
           } else {
             clickerStatus.textContent = `Seulement ${clickerClicks} clics, retente !`;
             clickerStatus.classList.remove("success");
@@ -1697,6 +1742,7 @@
       presidentList.innerHTML = "";
       const diffKey = getSelectedDifficulty("presidents");
       const names = presidentsData.map(p => p.name);
+      const shuffled = [...names].sort(() => Math.random() - 0.5);
       if (diffKey === "facile") {
         presidentsData.forEach((p, idx) => {
           const row = document.createElement("div");
@@ -1723,7 +1769,7 @@
           const select = document.createElement("select");
           select.dataset.mode = "successor";
           select.dataset.answer = successor;
-          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(names)}`;
+          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(shuffled)}`;
           row.appendChild(select);
           presidentList.appendChild(row);
         });
@@ -1736,7 +1782,7 @@
           const select = document.createElement("select");
           select.dataset.mode = "predecessor";
           select.dataset.answer = predecessor;
-          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(names)}`;
+          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(shuffled)}`;
           row.appendChild(select);
           presidentList.appendChild(row);
         });
@@ -1756,11 +1802,11 @@
         if ((mode === "successor" || mode === "predecessor") && value !== sel.dataset.answer) errors++;
       });
 
-      const tolerance = diffKey === "facile" ? 1 : 0;
+      const tolerance = 0;
       if (errors <= tolerance && selects.length) {
         presidentStatus.textContent = errors === 0 ? "Lien validé !" : "Tu laisses passer une micro-erreur mais ça passe.";
         presidentStatus.classList.add("success");
-        applyScore("presidents", games.presidents.max - errors * 4, diffKey);
+        applyScore("presidents", 0, diffKey);
       } else {
         presidentStatus.textContent = `${errors} réponse(s) fausse(s) : consolide la chronologie.`;
         presidentStatus.classList.remove("success");
@@ -1803,7 +1849,7 @@
         if (equitationScore === equitationTarget) {
           equitationStatus.textContent = "Parcours validé !";
           equitationStatus.classList.add("success");
-          applyScore("equitation", games.equitation.max, diffKey);
+          applyScore("equitation", 0, diffKey);
         } else {
           equitationStatus.textContent = `${equitationScore}/${equitationTarget} corrects`;
           equitationStatus.classList.remove("success");
@@ -1827,7 +1873,7 @@
       });
     });
 
-    // Anti-Tana
+    // Yuutana
     const tanaStart = document.getElementById("tanaStart");
     const tanaQuestion = document.getElementById("tanaQuestion");
     const tanaOptions = document.getElementById("tanaOptions");
@@ -1873,7 +1919,7 @@
         if (tanaCorrect >= needed) {
           tanaStatus.textContent = `${tanaCorrect}/${tanaTarget} validé !`;
           tanaStatus.classList.add("success");
-          applyScore("tana", games.tana.max - (tanaTarget - tanaCorrect) * 3, diffKey);
+          applyScore("tana", 0, diffKey);
         } else {
           tanaStatus.textContent += ` (${tanaCorrect}/${tanaTarget})`;
           tanaStatus.classList.remove("success");
@@ -1950,7 +1996,7 @@
         soupeStatus.textContent = "Bravo, elle a grandi !";
         soupeStatus.classList.add("success");
         const diffKey = getSelectedDifficulty("soupe");
-        applyScore("soupe", games.soupe.max, diffKey);
+        applyScore("soupe", 0, diffKey);
       } else if (soupeRemaining === 0) {
         soupeStatus.textContent = "Plus de soupe, réessaie.";
         soupeStatus.classList.remove("success");
@@ -2004,7 +2050,7 @@
         pigeonStatus.textContent = "Mission caresse réussie.";
         pigeonStatus.classList.add("success");
         const diffKey = getSelectedDifficulty("pigeon");
-        applyScore("pigeon", games.pigeon.max, diffKey);
+        applyScore("pigeon", 0, diffKey);
       } else {
         pigeonCoo.textContent = `Roucoulement ${pigeonPets}/${pigeonTarget}`;
       }
@@ -2045,11 +2091,10 @@
         const target = parseFloat(tempoTarget.dataset.target || "2.5");
         const delta = Math.abs(elapsed - target);
         const tolerance = diffKey === "facile" ? 0.6 : diffKey === "normal" ? 0.4 : 0.25;
-        const score = Math.max(5, Math.round(games.tempo.max - delta * 20));
         if (delta <= tolerance) {
           tempoStatus.textContent = `Parfait ! (${elapsed.toFixed(2)}s)`;
           tempoStatus.classList.add("success");
-          applyScore("tempo", score, diffKey);
+          applyScore("tempo", 0, diffKey);
         } else {
           tempoStatus.textContent = `Raté de ${delta.toFixed(2)}s (tu as fait ${elapsed.toFixed(2)}s)`;
           tempoStatus.classList.remove("success");
