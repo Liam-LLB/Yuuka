@@ -28,6 +28,22 @@
         radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.22), transparent 25%),
         radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.15), transparent 22%),
         linear-gradient(135deg, #0b1224 0%, #0f172a 100%);
+      --panel: #1e293b;
+      --card: #1f2937;
+      --accent: #3b82f6;
+      --accent-2: #f472b6;
+      --text: #e5e7eb;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.2), transparent 25%),
+                  radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.15), transparent 22%),
+                  var(--bg);
       color: var(--text);
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
@@ -38,6 +54,7 @@
     nav {
       background: rgba(15, 23, 42, 0.85);
       backdrop-filter: blur(10px);
+      backdrop-filter: blur(8px);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -113,6 +130,16 @@
     .hero h1 {
       margin: 0;
       font-size: clamp(28px, 4vw, 42px);
+    .hero {
+      text-align: center;
+      padding: 60px 18px 30px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 4vw, 42px);
+      margin-bottom: 14px;
       letter-spacing: 1px;
     }
 
@@ -210,12 +237,57 @@
       color: #fde7f3;
       display: grid;
       place-items: center;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin: 0 auto;
+      max-width: 700px;
+    }
+
+    .games-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+      padding: 0 22px 60px;
+      max-width: 1100px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .game-card {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.12), rgba(15, 23, 42, 0.95));
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .game-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(244, 114, 182, 0.35);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .game-icon {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 12px;
+      background: rgba(59, 130, 246, 0.2);
+      color: #fff;
       font-size: 20px;
     }
 
     .game-card h3 {
       margin: 0;
       font-size: 1.2em;
+      font-size: 1.1em;
       letter-spacing: 0.3px;
     }
 
@@ -292,6 +364,50 @@
 
     .hidden { display: none; }
     .actions { display: flex; gap: 10px; flex-wrap: wrap; }
+      color: #cbd5e1;
+      line-height: 1.5;
+      font-size: 0.95em;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(244, 114, 182, 0.15);
+      color: #fbcfe8;
+      font-weight: 700;
+      font-size: 0.85em;
+      border: 1px solid rgba(244, 114, 182, 0.3);
+      width: fit-content;
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 16px 50px;
+      color: #94a3b8;
+      font-size: 0.95em;
+    }
+
+    .cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      background: rgba(59, 130, 246, 0.16);
+      color: #bfdbfe;
+      border-radius: 12px;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .cta:hover {
+      background: rgba(59, 130, 246, 0.25);
+      color: #e0f2fe;
+    }
   </style>
 </head>
 <body>
@@ -677,5 +793,45 @@
     updateScoreboard();
     quizQuestion.textContent = "Prêt à commencer ?";
   </script>
+  <header class="hero">
+    <div class="badge"><i class="fas fa-sparkles"></i> Interface prototype</div>
+    <h1>Le hub Yuukajeux arrive bientôt</h1>
+    <p>Découvrez le nouveau terrain de jeu du Yuukonline. Une collection de mini-jeux pensés pour s’amuser, relever des défis et partager de bons moments. Voici un aperçu de l’interface avant le branchement des jeux.</p>
+  </header>
+
+  <section class="games-grid">
+    <article class="game-card">
+      <div class="game-icon"><i class="fas fa-puzzle-piece"></i></div>
+      <h3>Yuupuzzle</h3>
+      <p>Assemble les pièces le plus vite possible. Chrono, niveaux de difficulté et images surprises au programme.</p>
+      <span class="badge">Maquette</span>
+    </article>
+
+    <article class="game-card">
+      <div class="game-icon"><i class="fas fa-brain"></i></div>
+      <h3>Yuukwizz</h3>
+      <p>Un quiz rapide en plusieurs manches. Scores en direct et thèmes variés pour tester tes connaissances.</p>
+      <span class="badge">Bientôt</span>
+    </article>
+
+    <article class="game-card">
+      <div class="game-icon"><i class="fas fa-bullseye"></i></div>
+      <h3>Yuushooter</h3>
+      <p>Jeu d’adresse minimaliste : clique sur les cibles qui apparaissent. Effets sonores et combos à venir.</p>
+      <span class="badge">Prototype</span>
+    </article>
+
+    <article class="game-card">
+      <div class="game-icon"><i class="fas fa-dice"></i></div>
+      <h3>Yuulabo</h3>
+      <p>Une sélection changeante de mini-expériences : jeux de dés, memory, réactions éclair... à découvrir.</p>
+      <span class="badge">En cours</span>
+    </article>
+  </section>
+
+  <footer>
+    <p>Interface uniquement visuelle pour le moment. Les mini-jeux seront connectés très bientôt.</p>
+    <a class="cta" href="index.html"><i class="fas fa-arrow-left"></i> Retour au menu</a>
+  </footer>
 </body>
 </html>
