@@ -428,6 +428,9 @@
 
     .difficulty { display: inline-flex; gap: 10px; flex-wrap: wrap; align-items: center; }
     .difficulty label { display: inline-flex; gap: 6px; align-items: center; background: rgba(255, 255, 255, 0.05); padding: 6px 10px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.08); }
+    .difficulty label.locked { opacity: 0.45; position: relative; cursor: not-allowed; }
+    .difficulty label.locked::after { content: "🔒"; font-size: 0.85rem; margin-left: 6px; }
+    .difficulty .caution { background: rgba(249, 115, 22, 0.2); border-color: rgba(249, 115, 22, 0.5); color: #fed7aa; }
 
     .hidden { display: none; }
     .note { color: var(--muted); margin: 0; }
@@ -435,6 +438,19 @@
     .game-block input { width: 100%; padding: 12px 10px; border-radius: 12px; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.04); color: var(--text); }
 
     .reward { background: linear-gradient(120deg, rgba(34, 197, 94, 0.15), rgba(14, 165, 233, 0.15)); border: 1px solid rgba(34, 197, 94, 0.35); color: #dcfce7; text-align: center; }
+
+    .pigeon-zone { width: 220px; height: 220px; border-radius: 16px; background: radial-gradient(circle at 40% 30%, rgba(34, 211, 238, 0.12), rgba(124, 58, 237, 0.16)); border: 1px solid rgba(124, 58, 237, 0.28); display: grid; place-items: center; position: relative; cursor: pointer; overflow: hidden; }
+    .pigeon-emoji { font-size: 84px; filter: drop-shadow(0 6px 12px rgba(0,0,0,0.35)); transition: transform 0.2s ease; }
+    .pigeon-zone:hover .pigeon-emoji { transform: translateY(-4px) scale(1.02); }
+    .tap-hand { position: absolute; font-size: 30px; opacity: 0; transform: scale(0.8); pointer-events: none; animation: tap 0.45s ease; }
+    @keyframes tap { 0% { opacity: 0; transform: scale(0.7); } 30% { opacity: 1; transform: scale(1); } 100% { opacity: 0; transform: scale(0.7); } }
+
+    .soupe-visual { display: flex; align-items: flex-end; gap: 18px; margin: 12px 0; }
+    .soupe-girl { font-size: 62px; line-height: 1; transform-origin: center bottom; transform: translateY(10px) scale(var(--growth-scale, 1)); transition: transform 0.35s ease; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.25)); }
+    .soupe-bowl { font-size: 48px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px 14px; border-radius: 14px; cursor: pointer; position: relative; }
+    .soupe-bowl::after { content: "Tapote pour boire"; position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); font-size: 12px; color: #cbd5e1; opacity: 0.75; }
+    .soupe-girl.drinking, .soupe-bowl.drinking { animation: sip 0.5s ease; }
+    @keyframes sip { 0% { transform: translateY(10px) scale(var(--growth-scale, 1)) rotate(0deg); } 40% { transform: translateY(2px) scale(calc(var(--growth-scale, 1) * 1.02)) rotate(-4deg); } 100% { transform: translateY(10px) scale(var(--growth-scale, 1)); } }
   </style>
 </head>
 <body>
@@ -455,8 +471,8 @@
     <section class="card hero">
       <div class="pill"><i class="fas fa-sparkles"></i> Page 6 • Hub Yuukajeux</div>
       <h1>Bienvenue dans le Yuukajeux</h1>
-      <p>12 mini-jeux, 3 niveaux de difficulté chacun : avance à ton rythme, valide-les tous et ouvre le portail final.</p>
-      <p>Dans l’esprit du Yuukonline, tout est chaleureux et simple : choisis un défi, joue, et vois ta progression se remplir en direct.</p>
+      <p>12 mini-jeux, 3 niveaux de difficulté chacun : il faut les réussir dans l’ordre (facile → normal → difficile) pour valider un jeu.</p>
+      <p>Dans l’esprit du Yuukonline, tout est chaleureux et simple : choisis un défi, progresse palier après palier et vois ta barre se remplir.</p>
 
       <div class="rule-cloud">
         <div class="rule-bubble">
@@ -482,6 +498,10 @@
           <div class="rule-bubble">
             <i class="fas fa-door-open"></i>
             <div><strong>Portail final</strong><span>Déverrouillé dès que les 12 jeux sont validés.</span></div>
+          </div>
+          <div class="rule-bubble">
+            <i class="fas fa-lock"></i>
+            <div><strong>Progression séquencée</strong><span>Chaque mode difficile se débloque seulement si le niveau précédent est gagné.</span></div>
           </div>
       </div>
 
@@ -725,7 +745,7 @@
         <label><input type="radio" name="reflex-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="reflex-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="reflex-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">Jusqu’à 30 pts • Réussite si réaction &lt; 900 ms</span>
+        <span class="pill-small">Jusqu’à 30 pts • Seuils : 1100 / 800 / 600 ms</span>
       </div>
       <p>Attends le signal bleu et clique immédiatement.</p>
       <div class="actions">
@@ -745,7 +765,7 @@
         <label><input type="radio" name="memory-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="memory-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="memory-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">25 pts • Séquence exacte requise</span>
+        <span class="pill-small">25 pts • Séquences 3 / 5 / 7 couleurs</span>
       </div>
       <p>Observe la séquence, puis reproduis-la.</p>
       <div class="actions">
@@ -797,7 +817,7 @@
         <label><input type="radio" name="anagram-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="anagram-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="anagram-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">25 pts • 1 essai réussi = validé</span>
+        <span class="pill-small">25 pts • 1 / 2 / 3 mots à trouver</span>
       </div>
       <p>Réarrange les lettres pour retrouver le mot Yuuka caché.</p>
       <div class="game-block">
@@ -847,7 +867,7 @@
         <label><input type="radio" name="clicker-difficulty" value="facile" checked /> Facile</label>
         <label><input type="radio" name="clicker-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="clicker-difficulty" value="difficile" /> Difficile</label>
-        <span class="pill-small">Jusqu’à 30 pts • Réussite à 20 clics</span>
+        <span class="pill-small">Jusqu’à 30 pts • Objectifs : 16 / 24 / 32 clics</span>
       </div>
       <p>Tu as 10 secondes pour cliquer un maximum de fois.</p>
       <div class="game-block">
@@ -872,7 +892,7 @@
         <label><input type="radio" name="presidents-difficulty" value="normal" /> Normal</label>
         <label><input type="radio" name="presidents-difficulty" value="difficile" /> Difficile</label>
       </div>
-      <p>Attribue le rang chronologique correct à chaque président de la Vᵉ République.</p>
+      <p>Attribue l’ordre, puis relie qui succède ou précède qui (selon la difficulté).</p>
       <div id="presidentList"></div>
       <div class="actions">
         <button class="btn" id="presidentCheck">Vérifier</button>
@@ -936,6 +956,10 @@
       <p>Donne des cuillères de soupe pour faire grandir le personnage.</p>
       <div class="badge" id="soupeHeight">Taille actuelle : 1.30 m</div>
       <div class="badge" id="soupeInfo">Objectif affiché après avoir choisi la difficulté.</div>
+      <div class="soupe-visual">
+        <span class="soupe-girl" id="soupeGirl" aria-label="Personnage qui grandit">👧</span>
+        <span class="soupe-bowl" id="soupeBowl" role="img" aria-label="Bol de soupe">🥣</span>
+      </div>
       <div class="actions">
         <button class="btn" id="soupeFeed">Donner une cuillère</button>
         <button class="btn" id="soupeReset">Réinitialiser</button>
@@ -956,8 +980,12 @@
       </div>
       <p>Caresse le pigeon le nombre de fois requis.</p>
       <div class="badge" id="pigeonCoo">Le pigeon t’observe.</div>
+      <div class="pigeon-zone" id="pigeonZone" aria-label="Pigeon à tapoter">
+        <span class="pigeon-emoji" role="img" aria-label="Pigeon">🕊️</span>
+      </div>
+      <p class="note">Clique directement sur le pigeon : une main apparaîtra là où tu le tapotes.</p>
       <div class="actions">
-        <button class="btn" id="pigeonPet">Caresser</button>
+        <button class="btn" id="pigeonPet">Compter un tapotement</button>
         <button class="btn" id="pigeonReset">Réinitialiser</button>
       </div>
       <div class="status-chip pending" id="pigeonStatus">En attente</div>
@@ -996,6 +1024,7 @@
       normal: { label: "Normal", bonus: 1.2, tolerance: "moyenne" },
       difficile: { label: "Difficile", bonus: 1.45, tolerance: "serrée" },
     };
+    const difficultyOrder = ["facile", "normal", "difficile"];
 
     const games = {
       reflex: { name: "YuukaFlash", max: 30 },
@@ -1020,9 +1049,18 @@
       return entry;
     };
 
+    const defaultTiers = () => {
+      const entry = {};
+      Object.keys(games).forEach(key => {
+        entry[key] = { facile: false, normal: false, difficile: false };
+      });
+      return entry;
+    };
+
     let state = {
       scores: defaultScores(),
       completed: Object.fromEntries(Object.keys(games).map(k => [k, null])),
+      tiers: defaultTiers(),
     };
 
     const totalGames = Object.keys(games).length;
@@ -1042,6 +1080,12 @@
           state.scores[key] = { facile: 0, normal: 0, difficile: 0, ...state.scores[key] };
         }
         if (!(key in state.completed)) state.completed[key] = null;
+        if (!state.tiers[key]) state.tiers[key] = { ...defaultTiers()[key] };
+        else state.tiers[key] = { ...defaultTiers()[key], ...state.tiers[key] };
+        if (state.completed[key] && difficultyOrder.includes(state.completed[key])) {
+          const idx = difficultyOrder.indexOf(state.completed[key]);
+          for (let i = 0; i <= idx; i++) state.tiers[key][difficultyOrder[i]] = true;
+        }
       }
     }
 
@@ -1055,25 +1099,55 @@
     const finalButton = document.getElementById("finalButton");
     const unlockNote = document.getElementById("unlockNote");
 
+    function isDifficultyUnlocked(gameKey, diffKey) {
+      if (diffKey === "facile") return true;
+      const prevIndex = difficultyOrder.indexOf(diffKey) - 1;
+      const prevKey = difficultyOrder[Math.max(prevIndex, 0)];
+      return Boolean(state.tiers[gameKey]?.[prevKey]);
+    }
+
+    function highestCleared(gameKey) {
+      const tiers = state.tiers[gameKey] || {};
+      for (let i = difficultyOrder.length - 1; i >= 0; i--) {
+        if (tiers[difficultyOrder[i]]) return difficultyOrder[i];
+      }
+      return null;
+    }
+
+    function isGameFullyCompleted(gameKey) {
+      const tiers = state.tiers[gameKey] || {};
+      return difficultyOrder.every(level => tiers[level]);
+    }
+
     function bestScore(key) {
       const entry = state.scores[key] || { facile: 0, normal: 0, difficile: 0 };
       return Math.max(entry.facile || 0, entry.normal || 0, entry.difficile || 0);
     }
 
-    function completedLabel(diffKey) {
-      return diffKey ? `Validé (${difficultySettings[diffKey].label})` : "À valider";
+    function nextDifficultyLabel(gameKey) {
+      const tiers = state.tiers[gameKey] || {};
+      for (const level of difficultyOrder) {
+        if (!tiers[level]) return difficultySettings[level].label;
+      }
+      return difficultySettings.difficile.label;
+    }
+
+    function completedLabel(gameKey) {
+      if (isGameFullyCompleted(gameKey)) return "Validé (Difficile)";
+      const highest = highestCleared(gameKey);
+      return highest ? `Validé (${difficultySettings[highest].label})` : "À valider";
     }
 
     function updateCardState(key) {
       const statusChip = document.getElementById(`status-${key}`);
       const bestChip = document.getElementById(`best-${key}`);
       if (statusChip) {
-        if (state.completed[key]) {
-          statusChip.textContent = completedLabel(state.completed[key]);
+        if (isGameFullyCompleted(key)) {
+          statusChip.textContent = completedLabel(key);
           statusChip.classList.add("success");
           statusChip.classList.remove("pending");
         } else {
-          statusChip.textContent = "À valider";
+          statusChip.textContent = `Prochain : ${nextDifficultyLabel(key)}`;
           statusChip.classList.add("pending");
           statusChip.classList.remove("success");
         }
@@ -1081,9 +1155,33 @@
       if (bestChip) bestChip.textContent = `Meilleur : ${bestScore(key)} pts`;
     }
 
+    function updateDifficultyLocks(gameKey) {
+      const radios = Array.from(document.querySelectorAll(`input[name="${gameKey}-difficulty"]`));
+      radios.forEach(r => {
+        const label = r.closest("label");
+        const unlocked = isDifficultyUnlocked(gameKey, r.value);
+        r.disabled = !unlocked;
+        if (label) label.classList.toggle("locked", !unlocked);
+      });
+      const selected = radios.find(r => r.checked);
+      if (!selected || selected.disabled) {
+        const firstUnlocked = radios.find(r => !r.disabled);
+        if (firstUnlocked) firstUnlocked.checked = true;
+      }
+    }
+
+    function onDifficultyChange(gameKey, callback) {
+      document.querySelectorAll(`input[name="${gameKey}-difficulty"]`).forEach(radio => {
+        radio.addEventListener("change", () => {
+          updateDifficultyLocks(gameKey);
+          if (callback) callback();
+        });
+      });
+    }
+
     function updateScoreboard() {
       const totalPoints = Object.keys(games).reduce((acc, key) => acc + bestScore(key), 0);
-      const completedCount = Object.values(state.completed).filter(Boolean).length;
+      const completedCount = Object.keys(games).filter(isGameFullyCompleted).length;
       const progress = Math.round((completedCount / totalGames) * 100);
 
       document.getElementById("totalPoints").textContent = `${totalPoints} pts`;
@@ -1115,7 +1213,10 @@
         unlockNote.textContent = "Encore quelques victoires avant l’ouverture.";
       }
 
-      Object.keys(games).forEach(updateCardState);
+      Object.keys(games).forEach(key => {
+        updateCardState(key);
+        updateDifficultyLocks(key);
+      });
 
       // scores sur écrans
       document.getElementById("reflexScore").textContent = `Meilleur : ${bestScore("reflex")} pts`;
@@ -1130,7 +1231,6 @@
       document.getElementById("soupeScore").textContent = `Meilleur : ${bestScore("soupe")} pts`;
       document.getElementById("pigeonScore").textContent = `Meilleur : ${bestScore("pigeon")} pts`;
       document.getElementById("tempoScore").textContent = `Meilleur : ${bestScore("tempo")} pts`;
-      Object.keys(games).forEach(updateCardState);
     }
 
     // Navigation jeux
@@ -1170,6 +1270,19 @@
     document.getElementById("backFromPigeon").addEventListener("click", showHub);
     document.getElementById("backFromTempo").addEventListener("click", showHub);
 
+    onDifficultyChange("presidents", renderPresidents);
+    onDifficultyChange("code", resetCode);
+    onDifficultyChange("soupe", resetSoupe);
+    onDifficultyChange("pigeon", resetPigeon);
+    onDifficultyChange("tempo", updateTempoTarget);
+    onDifficultyChange("anagram", () => { configureAnagramGoal(true); loadAnagram(true); });
+    onDifficultyChange("memory", () => { resetMemory(); memoryStatus.textContent = "En attente"; memoryStatus.classList.remove("success"); memoryStatus.classList.add("pending"); });
+    onDifficultyChange("reflex", () => { resetReflex(); reflexStatus.textContent = "En attente"; reflexStatus.classList.remove("success"); reflexStatus.classList.add("pending"); });
+    onDifficultyChange("equitation", () => { equitationStatus.textContent = "En attente"; equitationStatus.classList.remove("success"); });
+    onDifficultyChange("quiz", () => { quizStatus.textContent = "En attente"; quizStatus.classList.remove("success"); quizQuestion.textContent = "Prêt à commencer ?"; quizOptions.innerHTML = ""; quizStartBtn.disabled = false; });
+    onDifficultyChange("clicker", resetClicker);
+    onDifficultyChange("tana", () => { tanaStatus.textContent = "En attente"; tanaStatus.classList.remove("success"); tanaActive = false; });
+
     finalButton.addEventListener("click", () => {
       if (finalButton.disabled) return;
       window.location.href = "finale.html";
@@ -1177,14 +1290,18 @@
 
     function getSelectedDifficulty(gameKey) {
       const input = document.querySelector(`input[name="${gameKey}-difficulty"]:checked`);
-      return input ? input.value : "facile";
+      const chosen = input ? input.value : "facile";
+      return isDifficultyUnlocked(gameKey, chosen) ? chosen : "facile";
     }
 
     function applyScore(gameKey, base, diffKey) {
+      if (!isDifficultyUnlocked(gameKey, diffKey)) return 0;
       const points = Math.round(base * difficultySettings[diffKey].bonus);
       if (!state.scores[gameKey]) state.scores[gameKey] = { facile: 0, normal: 0, difficile: 0 };
       state.scores[gameKey][diffKey] = Math.max(state.scores[gameKey][diffKey], points);
-      state.completed[gameKey] = diffKey;
+      if (!state.tiers[gameKey]) state.tiers[gameKey] = { facile: false, normal: false, difficile: false };
+      state.tiers[gameKey][diffKey] = true;
+      state.completed[gameKey] = highestCleared(gameKey);
       saveState();
       updateScoreboard();
       return points;
@@ -1232,7 +1349,7 @@
       reflexTarget.classList.remove("active");
       reflexReady = false;
       const diffKey = getSelectedDifficulty("reflex");
-      const limit = diffKey === "facile" ? 1200 : diffKey === "normal" ? 900 : 750;
+      const limit = diffKey === "facile" ? 1100 : diffKey === "normal" ? 800 : 600;
 
       const points = Math.max(5, Math.min(games.reflex.max, Math.round(games.reflex.max - reaction / 30)));
       if (reaction <= limit) {
@@ -1288,7 +1405,7 @@
     memoryStartBtn.addEventListener("click", () => {
       resetMemory();
       const diffKey = getSelectedDifficulty("memory");
-      const length = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
+      const length = diffKey === "facile" ? 3 : diffKey === "normal" ? 5 : 7;
       memorySequence = Array.from({ length }, () => memoryColors[Math.floor(Math.random() * memoryColors.length)]);
       playSequence(memorySequence);
       memoryStatus.textContent = "Reproduis la séquence";
@@ -1360,15 +1477,12 @@
       currentQuizIndex++;
       if (currentQuizIndex >= quizTarget) {
         const diffKey = getSelectedDifficulty("quiz");
-        const needed = diffKey === "facile" ? quizTarget : diffKey === "normal" ? quizTarget : quizTarget;
+        const needsPerfect = diffKey !== "facile";
+        const needed = diffKey === "facile" ? quizTarget - 1 : quizTarget;
         const perfect = correctAnswers === quizTarget;
-        const points = correctAnswers * 10;
-        if (correctAnswers >= needed && perfect) {
-          quizStatus.textContent = "Sans faute !";
-          quizStatus.classList.add("success");
-          applyScore("quiz", points, diffKey);
-        } else if (correctAnswers >= needed - 1 && diffKey === "facile") {
-          quizStatus.textContent = `${correctAnswers}/${quizTarget} — validé en facile`; 
+        const points = Math.min(games.quiz.max, correctAnswers * (diffKey === "difficile" ? 12 : 10));
+        if ((needsPerfect && perfect) || (!needsPerfect && correctAnswers >= needed)) {
+          quizStatus.textContent = needsPerfect ? "Sans faute exigée : réussi !" : `${correctAnswers}/${quizTarget} validé en facile`;
           quizStatus.classList.add("success");
           applyScore("quiz", points, diffKey);
         } else {
@@ -1400,24 +1514,32 @@
     });
 
     // Anagramme
-    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "president", "pigeon", "soupe", "tempo", "tana"];
+    const anagramWords = ["yuuka", "yuukaflash", "yuukwizz", "yuukagram", "yuukode", "yuukadash", "yuukonline", "equitation", "president", "pigeon", "soupe", "tempo", "tana", "chronopresident", "tapotepigeon", "soupemagique", "modegalop", "aniviersaireyuuka"];
     const anagramScramble = document.getElementById("anagramScramble");
     const anagramInput = document.getElementById("anagramInput");
     const anagramStatus = document.getElementById("anagramStatus");
     const anagramNextBtn = document.getElementById("anagramNext");
     const anagramCheckBtn = document.getElementById("anagramCheck");
     let currentAnagram = "";
+    let anagramSolved = 0;
+    let anagramGoal = 1;
 
     function shuffleWord(word) {
       return word.split("").sort(() => Math.random() - 0.5).join("").toUpperCase();
     }
 
-    function loadAnagram() {
+    function configureAnagramGoal(resetCounter = true) {
+      const diffKey = getSelectedDifficulty("anagram");
+      anagramGoal = diffKey === "facile" ? 1 : diffKey === "normal" ? 2 : 3;
+      if (resetCounter) anagramSolved = 0;
+    }
+
+    function loadAnagram(resetCounter = false) {
       const diffKey = getSelectedDifficulty("anagram");
       const pool = anagramWords.filter(w => {
-        if (diffKey === "facile") return w.length <= 7;
+        if (diffKey === "facile") return w.length <= 6;
         if (diffKey === "normal") return w.length <= 9;
-        return true;
+        return w.length >= 8;
       });
       currentAnagram = pool[Math.floor(Math.random() * pool.length)];
       anagramScramble.textContent = shuffleWord(currentAnagram);
@@ -1425,23 +1547,31 @@
       anagramStatus.textContent = "En attente";
       anagramStatus.classList.remove("success");
       anagramStatus.classList.add("pending");
+      if (resetCounter) configureAnagramGoal(true);
     }
 
     anagramCheckBtn.addEventListener("click", () => {
       const guess = anagramInput.value.trim().toLowerCase();
       if (!guess) return;
       if (guess === currentAnagram) {
-        anagramStatus.textContent = "Trouvé !";
+        anagramSolved++;
+        anagramStatus.textContent = anagramSolved >= anagramGoal ? "Anagrammes validés !" : `Trouvé ! Plus que ${anagramGoal - anagramSolved} mot(s).`;
         anagramStatus.classList.add("success");
         const diffKey = getSelectedDifficulty("anagram");
-        applyScore("anagram", games.anagram.max, diffKey);
+        if (anagramSolved >= anagramGoal) {
+          applyScore("anagram", games.anagram.max, diffKey);
+          anagramSolved = 0;
+          loadAnagram(true);
+        } else {
+          loadAnagram();
+        }
       } else {
         anagramStatus.textContent = "Raté, réessaie ou passe à un autre mot.";
         anagramStatus.classList.remove("success");
       }
     });
 
-    anagramNextBtn.addEventListener("click", loadAnagram);
+    anagramNextBtn.addEventListener("click", () => loadAnagram());
 
     // Yuukode (guess)
     const codeStatus = document.getElementById("codeStatus");
@@ -1524,7 +1654,7 @@
           clickerActive = false;
           clickerTap.disabled = true;
           const diffKey = getSelectedDifficulty("clicker");
-          const target = diffKey === "facile" ? 15 : diffKey === "normal" ? 20 : 25;
+          const target = diffKey === "facile" ? 16 : diffKey === "normal" ? 24 : 32;
           const pts = Math.min(games.clicker.max, clickerClicks);
           if (clickerClicks >= target) {
             clickerStatus.textContent = `Validé : ${clickerClicks} clics`;
@@ -1559,39 +1689,80 @@
       { name: "Emmanuel Macron", years: "2017-…", note: "Plan France Relance" },
     ];
 
+    function optionList(names) {
+      return names.map(n => `<option value="${n}">${n}</option>`).join("");
+    }
+
     function renderPresidents() {
       presidentList.innerHTML = "";
-      presidentsData.forEach((p, idx) => {
-        const row = document.createElement("div");
-        row.className = "actions";
-        row.innerHTML = `<span class="pill-small">${p.years}</span><div class="badge" style="flex:1">${p.name} • ${p.note}</div>`;
-        const select = document.createElement("select");
-        select.dataset.index = idx;
-        for (let i = 1; i <= presidentsData.length; i++) {
-          const opt = document.createElement("option");
-          opt.value = i;
-          opt.textContent = i;
-          select.appendChild(opt);
-        }
-        row.appendChild(select);
-        presidentList.appendChild(row);
-      });
+      const diffKey = getSelectedDifficulty("presidents");
+      const names = presidentsData.map(p => p.name);
+      if (diffKey === "facile") {
+        presidentsData.forEach((p, idx) => {
+          const row = document.createElement("div");
+          row.className = "actions";
+          row.innerHTML = `<span class="pill-small">${p.years}</span><div class="badge" style="flex:1">${p.name} • ${p.note}</div>`;
+          const select = document.createElement("select");
+          select.dataset.mode = "order";
+          select.dataset.index = idx;
+          for (let i = 1; i <= presidentsData.length; i++) {
+            const opt = document.createElement("option");
+            opt.value = i;
+            opt.textContent = i;
+            select.appendChild(opt);
+          }
+          row.appendChild(select);
+          presidentList.appendChild(row);
+        });
+      } else if (diffKey === "normal") {
+        presidentsData.slice(0, presidentsData.length - 1).forEach((p, idx) => {
+          const row = document.createElement("div");
+          row.className = "actions";
+          const successor = presidentsData[idx + 1].name;
+          row.innerHTML = `<div class="badge" style="flex:1">Qui succède à <strong>${p.name}</strong> ?</div>`;
+          const select = document.createElement("select");
+          select.dataset.mode = "successor";
+          select.dataset.answer = successor;
+          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(names)}`;
+          row.appendChild(select);
+          presidentList.appendChild(row);
+        });
+      } else {
+        presidentsData.slice(1).forEach((p, idx) => {
+          const row = document.createElement("div");
+          row.className = "actions";
+          const predecessor = presidentsData[idx].name;
+          row.innerHTML = `<div class="badge" style="flex:1">Qui était juste avant <strong>${p.name}</strong> ?</div>`;
+          const select = document.createElement("select");
+          select.dataset.mode = "predecessor";
+          select.dataset.answer = predecessor;
+          select.innerHTML = `<option value=\"\">Choisis…</option>${optionList(names)}`;
+          row.appendChild(select);
+          presidentList.appendChild(row);
+        });
+      }
+      presidentStatus.textContent = "En attente";
+      presidentStatus.classList.remove("success");
     }
 
     presidentCheck.addEventListener("click", () => {
       const diffKey = getSelectedDifficulty("presidents");
-      const tolerance = diffKey === "facile" ? 2 : diffKey === "normal" ? 1 : 0;
       let errors = 0;
-      presidentList.querySelectorAll("select").forEach((sel, idx) => {
-        const val = parseInt(sel.value, 10);
-        if (val !== idx + 1) errors++;
+      const selects = Array.from(presidentList.querySelectorAll("select"));
+      selects.forEach((sel, idx) => {
+        const mode = sel.dataset.mode;
+        const value = mode === "order" ? parseInt(sel.value, 10) : sel.value;
+        if (mode === "order" && value !== idx + 1) errors++;
+        if ((mode === "successor" || mode === "predecessor") && value !== sel.dataset.answer) errors++;
       });
-      if (errors <= tolerance) {
-        presidentStatus.textContent = "Ordre validé !";
+
+      const tolerance = diffKey === "facile" ? 1 : 0;
+      if (errors <= tolerance && selects.length) {
+        presidentStatus.textContent = errors === 0 ? "Lien validé !" : "Tu laisses passer une micro-erreur mais ça passe.";
         presidentStatus.classList.add("success");
-        applyScore("presidents", games.presidents.max - errors * 3, diffKey);
+        applyScore("presidents", games.presidents.max - errors * 4, diffKey);
       } else {
-        presidentStatus.textContent = `${errors} erreur(s) : révise l'ordre !`;
+        presidentStatus.textContent = `${errors} réponse(s) fausse(s) : consolide la chronologie.`;
         presidentStatus.classList.remove("success");
       }
     });
@@ -1616,7 +1787,7 @@
 
     function startEquitation() {
       const diffKey = getSelectedDifficulty("equitation");
-      equitationTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
+      equitationTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 5 : 6;
       equitationRound = 0;
       equitationScore = 0;
       equitationActive = true;
@@ -1662,10 +1833,11 @@
     const tanaOptions = document.getElementById("tanaOptions");
     const tanaStatus = document.getElementById("tanaStatus");
     const tanaScenarios = [
-      { q: "Tu arrives en retard à un dîner.", options: ["Tu t'excuses et aides", "Tu te plains du menu", "Tu prends la place de chef"], answer: "Tu t'excuses et aides" },
-      { q: "Quelqu'un te confie un secret.", options: ["Tu le répètes", "Tu le gardes", "Tu fais un TikTok"], answer: "Tu le gardes" },
-      { q: "Un ami oublie de payer sa part.", options: ["Tu insultes", "Tu proposes un rappel gentil", "Tu pars sans payer"], answer: "Tu proposes un rappel gentil" },
-      { q: "Un collègue fait une erreur.", options: ["Tu te moques", "Tu aides à corriger", "Tu l'affiches en story"], answer: "Tu aides à corriger" },
+      { q: "Un type lourd insiste pour t'offrir un verre alors que tu as déjà dit non.", options: ["Tu acceptes pour être polie", "Tu déclines fermement et rejoins tes potes", "Tu l'embrasses pour qu'il parte"], answer: "Tu déclines fermement et rejoins tes potes" },
+      { q: "Un inconnu te colle en boîte et te glisse 'allez, viens danser collé serré'.", options: ["Tu dis non en rigolant et changes de piste", "Tu restes coincée par peur de vexer", "Tu lui racontes toute ta vie"], answer: "Tu dis non en rigolant et changes de piste" },
+      { q: "Un pseudo 'ami' envoie des DM à 2h du mat « t'es réveillée ? »", options: ["Tu réponds direct et tu files ton adresse", "Tu ignores ou tu cadres le truc gentiment", "Tu l'invites à venir voir ta collection de mugs"], answer: "Tu ignores ou tu cadres le truc gentiment" },
+      { q: "Un gars te dit \"t'es mignonne quand tu t'énerves\" après une remarque sexiste.", options: ["Tu banalises et tu souris", "Tu expliques calmement que c'est lourd et tu mets une limite", "Tu l'ajoutes sur ta to-do liste de dates"], answer: "Tu expliques calmement que c'est lourd et tu mets une limite" },
+      { q: "Pendant un date, il insiste pour rentrer chez toi alors que tu dis non.", options: ["Tu changes de trottoir et tu le laisses là", "Tu cèdes pour pas faire de vagues", "Tu proposes un FaceTime collectif avec tes potes"], answer: "Tu changes de trottoir et tu le laisses là" },
     ];
     let tanaIndex = 0;
     let tanaCorrect = 0;
@@ -1697,7 +1869,7 @@
       tanaIndex++;
       if (tanaIndex >= tanaTarget) {
         const diffKey = getSelectedDifficulty("tana");
-        const needed = diffKey === "facile" ? 2 : diffKey === "normal" ? 3 : 3;
+        const needed = diffKey === "facile" ? 2 : diffKey === "normal" ? 3 : 4;
         if (tanaCorrect >= needed) {
           tanaStatus.textContent = `${tanaCorrect}/${tanaTarget} validé !`;
           tanaStatus.classList.add("success");
@@ -1714,7 +1886,7 @@
 
     tanaStart.addEventListener("click", () => {
       const diffKey = getSelectedDifficulty("tana");
-      tanaTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 3 : 4;
+      tanaTarget = diffKey === "facile" ? 3 : diffKey === "normal" ? 4 : 5;
       tanaIndex = 0;
       tanaCorrect = 0;
       tanaActive = true;
@@ -1729,6 +1901,8 @@
     const soupeInfo = document.getElementById("soupeInfo");
     const soupeFeed = document.getElementById("soupeFeed");
     const soupeReset = document.getElementById("soupeReset");
+    const soupeGirl = document.getElementById("soupeGirl");
+    const soupeBowl = document.getElementById("soupeBowl");
     let soupeCurrent = 1.3;
     let soupeTarget = 1.5;
     let soupeRemaining = 7;
@@ -1736,23 +1910,41 @@
     function refreshSoupeTexts() {
       soupeHeight.textContent = `Taille actuelle : ${soupeCurrent.toFixed(2)} m`;
       soupeInfo.textContent = `Objectif : ${soupeTarget.toFixed(2)} m • Cuillères restantes : ${soupeRemaining}`;
+      if (soupeGirl) {
+        const growth = 1 + Math.max(0, (soupeCurrent - 1.3) / 0.45) * 0.6;
+        soupeGirl.style.setProperty("--growth-scale", growth.toFixed(2));
+      }
     }
 
     function resetSoupe() {
       const diffKey = getSelectedDifficulty("soupe");
       soupeCurrent = 1.3;
-      soupeTarget = diffKey === "facile" ? 1.45 : diffKey === "normal" ? 1.55 : 1.65;
+      soupeTarget = diffKey === "facile" ? 1.48 : diffKey === "normal" ? 1.6 : 1.72;
       soupeRemaining = diffKey === "facile" ? 7 : diffKey === "normal" ? 6 : 5;
       soupeStatus.textContent = "En attente";
       soupeStatus.classList.remove("success");
       soupeStatus.classList.add("pending");
+      if (soupeGirl) soupeGirl.classList.remove("drinking");
+      if (soupeBowl) soupeBowl.classList.remove("drinking");
       refreshSoupeTexts();
+    }
+
+    function triggerSoupSip() {
+      if (soupeGirl) {
+        soupeGirl.classList.add("drinking");
+        setTimeout(() => soupeGirl.classList.remove("drinking"), 400);
+      }
+      if (soupeBowl) {
+        soupeBowl.classList.add("drinking");
+        setTimeout(() => soupeBowl.classList.remove("drinking"), 400);
+      }
     }
 
     soupeFeed.addEventListener("click", () => {
       if (soupeRemaining <= 0) return;
       soupeRemaining--;
-      soupeCurrent += 0.04 + Math.random() * 0.07;
+      soupeCurrent += 0.05 + Math.random() * 0.08;
+      triggerSoupSip();
       if (soupeCurrent >= soupeTarget) {
         soupeCurrent = soupeTarget;
         soupeStatus.textContent = "Bravo, elle a grandi !";
@@ -1765,16 +1957,18 @@
       } else {
         soupeStatus.textContent = "Encore quelques cuillères…";
       }
-      refreshSoupeTexts();
+        refreshSoupeTexts();
     });
 
     soupeReset.addEventListener("click", resetSoupe);
+    if (soupeBowl) soupeBowl.addEventListener("click", () => soupeFeed.click());
 
     // Pigeon
     const pigeonCoo = document.getElementById("pigeonCoo");
     const pigeonStatus = document.getElementById("pigeonStatus");
     const pigeonPet = document.getElementById("pigeonPet");
     const pigeonReset = document.getElementById("pigeonReset");
+    const pigeonZone = document.getElementById("pigeonZone");
     let pigeonPets = 0;
     let pigeonTarget = 5;
 
@@ -1788,7 +1982,22 @@
       pigeonStatus.classList.add("pending");
     }
 
-    pigeonPet.addEventListener("click", () => {
+    function showTapHand(evt) {
+      if (!pigeonZone) return;
+      const rect = pigeonZone.getBoundingClientRect();
+      const hand = document.createElement("span");
+      hand.className = "tap-hand";
+      hand.textContent = "🤚";
+      const x = (evt.offsetX ?? (evt.clientX - rect.left));
+      const y = (evt.offsetY ?? (evt.clientY - rect.top));
+      hand.style.left = `${x - 15}px`;
+      hand.style.top = `${y - 15}px`;
+      pigeonZone.appendChild(hand);
+      setTimeout(() => hand.remove(), 450);
+    }
+
+    function tapPigeon(evt) {
+      if (evt) showTapHand(evt);
       pigeonPets++;
       if (pigeonPets >= pigeonTarget) {
         pigeonCoo.textContent = "Roucouuu !";
@@ -1799,8 +2008,10 @@
       } else {
         pigeonCoo.textContent = `Roucoulement ${pigeonPets}/${pigeonTarget}`;
       }
-    });
+    }
 
+    pigeonPet.addEventListener("click", () => tapPigeon());
+    if (pigeonZone) pigeonZone.addEventListener("click", tapPigeon);
     pigeonReset.addEventListener("click", resetPigeon);
 
     // Tempo
@@ -1850,15 +2061,16 @@
     // Init
     loadState();
     renderPresidents();
-    updateScoreboard();
-    showHub();
-    quizQuestion.textContent = "Prêt à commencer ?";
-    loadAnagram();
+    configureAnagramGoal(true);
+    loadAnagram(true);
     resetCode();
     resetClicker();
     resetSoupe();
     resetPigeon();
     updateTempoTarget();
+    updateScoreboard();
+    showHub();
+    quizQuestion.textContent = "Prêt à commencer ?";
   </script>
 </body>
 </html>
