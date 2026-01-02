@@ -488,6 +488,33 @@
       .difficulty { flex-direction: column; align-items: stretch; }
       .pigeon-zone { width: 100%; max-width: 260px; margin: 0 auto; }
     }
+
+    @media (max-width: 768px) {
+      body { padding-top: 0; }
+
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        flex-wrap: nowrap;
+        padding: 14px 16px;
+        overflow-x: auto;
+      }
+
+      .center-menu {
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 10px;
+        padding: 4px 0;
+      }
+
+      .center-menu::-webkit-scrollbar { display: none; }
+      .center-menu { scrollbar-width: none; -ms-overflow-style: none; }
+      nav a { white-space: nowrap; width: auto; }
+      main { padding-top: 100px; }
+    }
   </style>
 </head>
 <body>
