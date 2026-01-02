@@ -7,225 +7,282 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-1: #0b1224;
+      --bg-2: #0f172a;
+      --panel: rgba(18, 26, 44, 0.85);
+      --muted: #cbd5e1;
+      --accent: #60a5fa;
+      --accent-2: #a855f7;
+      --card: rgba(255, 255, 255, 0.02);
+    }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: Arial, sans-serif;
-      background-color: #0f172a;
-      color: white;
       margin: 0;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      flex-direction: column;
-      padding-top: 60px;
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      color: #e2e8f0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.16), transparent 30%),
+        radial-gradient(circle at 80% 0%, rgba(168, 85, 247, 0.16), transparent 32%),
+        linear-gradient(130deg, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-1) 100%);
+      position: relative;
+      overflow-x: hidden;
+      padding: 40px 18px 80px;
+    }
+
+    .glow {
+      position: absolute;
+      filter: blur(80px);
+      opacity: 0.55;
+      z-index: 0;
+    }
+
+    .glow.blue { width: 320px; height: 320px; background: #38bdf8; left: -80px; top: -40px; }
+    .glow.purple { width: 280px; height: 280px; background: #a855f7; right: -60px; top: 120px; }
+    .glow.cyan { width: 360px; height: 360px; background: #22d3ee; left: 40%; bottom: -140px; }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      gap: 26px;
+    }
+
+    header {
+      display: grid;
+      gap: 8px;
+      text-align: center;
     }
 
     .main-title {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 42px;
-      color: #ffffff;
-      text-align: center;
+      font-size: clamp(36px, 5vw, 58px);
       letter-spacing: 2px;
-      animation: fadeInDown 1s ease;
-      margin-bottom: 10px;
+      margin: 0;
       text-transform: uppercase;
     }
 
     .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
       font-size: 16px;
-      color: #cbd5e1;
-      text-align: center;
-      margin-top: 5px;
-      margin-bottom: 20px;
-      line-height: 1.6;
-      animation: fadeInDown 1.5s ease;
+    }
+
+    .shell {
+      background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 22px;
+      padding: 26px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+      align-items: start;
+    }
+
+    .login-box, .menu-box {
+      display: none;
+    }
+
+    .login-box.active, .menu-box.active {
+      display: grid;
+      gap: 18px;
+    }
+
+    .card-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      margin: 0;
+      color: #bfdbfe;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
     }
 
     .hint {
-      font-size: 15px;
+      margin: 0;
       color: #93c5fd;
-      text-align: center;
-      margin-top: 30px;
-      margin-bottom: 50px;
-      line-height: 1.6;
       font-style: italic;
-      animation: fadeInDown 2s ease;
-      transition: color 1s ease, transform 0.4s ease;
+      line-height: 1.6;
+      transition: color 0.6s ease, transform 0.3s ease;
     }
 
     .hint.success {
       color: #4ade80;
       font-style: normal;
-      font-weight: 500;
-      animation: fadeInDown 2s ease;
-    }
-
-    @keyframes fadeInDown {
-      0% { opacity: 0; transform: translateY(-20px); }
-      100% { opacity: 1; transform: translateY(0); }
-    }
-
-    .login-box, .menu-box {
-      background-color: #1e293b;
-      padding: 40px;
-      border-radius: 12px;
-      box-shadow: 0 0 25px rgba(0,0,0,0.4);
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-      display: none;
-    }
-
-    .login-box.active, .menu-box.active {
-      display: block;
+      font-weight: 600;
+      transform: translateY(-2px);
     }
 
     .password-wrapper {
       position: relative;
       display: flex;
       align-items: center;
-      justify-content: center;
     }
 
-    .password-wrapper input[type="password"],
-    .password-wrapper input[type="text"] {
-      padding: 10px 40px 10px 10px;
-      font-size: 16px;
+    .password-wrapper input {
       width: 100%;
-      border-radius: 5px;
-      border: none;
+      padding: 14px 46px 14px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
+      color: #e2e8f0;
+      font-size: 16px;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .password-wrapper input:focus {
+      border-color: rgba(96, 165, 250, 0.7);
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
     }
 
     .password-wrapper i {
       position: absolute;
-      right: 10px;
-      color: #ccc;
+      right: 12px;
+      color: #cbd5e1;
       cursor: pointer;
       font-size: 18px;
     }
 
     button {
-      margin-top: 10px;
-      padding: 10px 20px;
-      font-size: 16px;
-      background-color: #3b82f6;
-      color: white;
+      appearance: none;
       border: none;
-      border-radius: 6px;
+      border-radius: 14px;
+      padding: 12px 18px;
+      font-weight: 700;
       cursor: pointer;
-      transition: background 0.3s ease;
+      background: linear-gradient(120deg, #3b82f6, #8b5cf6);
+      color: white;
+      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
+      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
     }
 
-    button:hover {
-      background-color: #60a5fa;
-    }
+    button:hover { transform: translateY(-2px); filter: brightness(1.05); }
+    button:active { transform: translateY(0); filter: brightness(0.98); }
 
     .error {
-      color: #f87171;
-      margin-top: 10px;
+      color: #fca5a5;
+      margin: 0;
+      font-weight: 600;
     }
 
     .menu-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
-      justify-items: center;
+      gap: 18px;
+      margin-top: 12px;
     }
 
     .menu-item {
-      background-color: #3b82f6;
-      color: white;
-      border-radius: 22px;
-      width: 170px;
-      height: 170px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 18px;
+      display: grid;
+      justify-items: center;
+      gap: 8px;
+      text-align: center;
       cursor: pointer;
-      box-shadow: 0 8px 20px rgba(59,130,246,0.4);
-      transition: transform 0.2s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .menu-item:hover {
-      transform: scale(1.07);
-      background-color: #60a5fa;
-      box-shadow: 0 10px 25px rgba(96,165,250,0.6);
+      transform: translateY(-4px);
+      border-color: rgba(96, 165, 250, 0.6);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.35);
     }
 
-    .menu-item i {
-      font-size: 40px;
-      margin-bottom: 12px;
-    }
+    .menu-item i { font-size: 32px; color: #93c5fd; }
+    .menu-item span { font-weight: 700; letter-spacing: 0.4px; }
 
-    .menu-item span {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-weight: 500;
-      font-size: 16px;
-      letter-spacing: 0.3px;
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #cbd5e1;
+      font-weight: 700;
+      width: fit-content;
+      margin: 0 auto;
     }
-
   </style>
 </head>
 <body>
+  <div class="glow blue"></div>
+  <div class="glow purple"></div>
+  <div class="glow cyan"></div>
 
-  <h1 class="main-title">Bienvenue sur le Yuukonline !</h1>
-  <p class="subtitle">
-    À l’occasion de son <strong>17ᵉ Yuukanniversaire</strong>, ce petit projet est né d’une idée de dernière minute.<br>
-    L’interface et les différentes fonctionnalités évolueront très rapidement,<br>
-    alors n’hésitez pas à revenir vous connecter régulièrement !
-  </p>
+  <div class="wrapper">
+    <header>
+      <div class="badge"><i class="fas fa-sparkles"></i> Edition Yuukanniversaire</div>
+      <h1 class="main-title">Bienvenue sur le Yuukonline</h1>
+      <p class="subtitle">
+        À l’occasion de son <strong>17ᵉ Yuukanniversaire</strong>, une nouvelle passe d’accueil t’attend.<br>
+        Interface rafraîchie, cartes plus lisibles et animations douces pour te guider dès le premier mot de passe.
+      </p>
+      <p class="hint" id="hintText">
+        Mais pour pouvoir accéder au <strong>Yuukonline</strong>, vous vous devez de connaître un minimum Yuuka.<br>
+        Savez-vous quel est son <strong>animal totem</strong> ?
+      </p>
+    </header>
 
-  <p class="hint" id="hintText">
-    Mais pour pouvoir accéder au <strong>Yuukonline</strong>, vous vous devez de connaître un minimum Yuuka.<br>
-    Savez-vous quel est son <strong>animal totem</strong> ?
-  </p>
+    <div class="grid">
+      <!-- Étape 1 : Connexion -->
+      <div class="shell login-box active" id="loginBox">
+        <h2 class="card-title"><i class="fas fa-lock"></i> Connexion</h2>
+        <p class="subtitle">Entre le mot de passe pour accéder au site :</p>
+        <div class="password-wrapper">
+          <input type="password" id="passwordInput" placeholder="Mot de passe" />
+          <i class="fas fa-eye" id="togglePassword" onclick="togglePassword()"></i>
+        </div>
+        <button onclick="checkPassword()">Déverrouiller l’accès</button>
+        <p class="error" id="errorMessage"></p>
+      </div>
 
-  <!-- Étape 1 : Connexion -->
-  <div class="login-box active" id="loginBox">
-    <h2>Connexion</h2>
-    <p>Entrez le mot de passe pour accéder au site :</p>
-    <div class="password-wrapper">
-      <input type="password" id="passwordInput" placeholder="Mot de passe" />
-      <i class="fas fa-eye" id="togglePassword" onclick="togglePassword()"></i>
-    </div>
-    <button onclick="checkPassword()">Valider</button>
-    <p class="error" id="errorMessage"></p>
-  </div>
-
-  <!-- Étape 2 : Menu -->
-  <div class="menu-box" id="menuBox">
-    <h2>Menu principal</h2>
-    <div class="menu-grid">
-      <div class="menu-item" onclick="goToPage('bouton1.html')">
-        <i class="fas fa-image"></i>
-        <span>Yuukalerie</span>
+      <!-- Étape 2 : Menu -->
+      <div class="shell menu-box" id="menuBox">
+        <h2 class="card-title"><i class="fas fa-compass"></i> Menu principal</h2>
+        <p class="subtitle">Choisis une destination, tout est prêt pour explorer.</p>
+        <div class="menu-grid">
+          <div class="menu-item" onclick="goToPage('bouton1.html')">
+            <i class="fas fa-image"></i>
+            <span>Yuukalerie</span>
+          </div>
+          <div class="menu-item" onclick="goToPage('bouton2.html')">
+            <i class="fas fa-music"></i>
+            <span>Yuusiques</span>
+          </div>
+          <div class="menu-item" onclick="goToPage('bouton3.html')">
+            <i class="fas fa-user-friends"></i>
+            <span>Yuugars</span>
+          </div>
+          <div class="menu-item" onclick="goToPage('bouton4.html')">
+            <i class="fas fa-mug-hot"></i>
+            <span>Yuukafe place</span>
+          </div>
+          <div class="menu-item" onclick="goToPage('bouton6.html')">
+            <i class="fas fa-gamepad"></i>
+            <span>Yuugames</span>
+          </div>
+          <div class="menu-item" onclick="goToPage('bouton5.html')">
+            <i class="fas fa-calendar-alt"></i>
+            <span>Yuukalendrier</span>
+          </div>
+        </div>
       </div>
-      <div class="menu-item" onclick="goToPage('bouton2.html')">
-        <i class="fas fa-music"></i>
-        <span>Yuusiques</span>
-      </div>
-      <div class="menu-item" onclick="goToPage('bouton3.html')">
-        <i class="fas fa-user-friends"></i>
-        <span>Yuugars</span>
-      </div>
-      <div class="menu-item" onclick="goToPage('bouton4.html')">
-        <i class="fas fa-mug-hot"></i>
-        <span>Yuukafe place</span>
-      </div>
-      <div class="menu-item" onclick="goToPage('bouton6.html')">
-        <i class="fas fa-gamepad"></i>
-        <span>Yuugames</span>
-      </div>
-      <div class="menu-item" onclick="goToPage('bouton5.html')">
-        <i class="fas fa-calendar-alt"></i>
-        <span>Yuukalendrier</span>
-      </div>
-    </div>
-  </div>
-
-
     </div>
   </div>
 

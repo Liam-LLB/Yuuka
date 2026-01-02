@@ -507,14 +507,10 @@
             <i class="fas fa-gauge-high"></i>
             <div><strong>Barre de progression</strong><span>Remplis-la à 100% pour déverrouiller la récompense finale.</span></div>
           </div>
-          <div class="rule-bubble">
-            <i class="fas fa-lock"></i>
-            <div><strong>Progression séquencée</strong><span>Chaque mode difficile se débloque seulement si le niveau précédent est gagné.</span></div>
-          </div>
-          <div class="rule-bubble">
-            <i class="fas fa-list-ol"></i>
-            <div><strong>Nombre de niveaux terminés</strong><span>Chaque validation compte pour remplir la progression totale.</span></div>
-          </div>
+        <div class="rule-bubble">
+          <i class="fas fa-lock"></i>
+          <div><strong>Progression séquencée</strong><span>Chaque mode difficile se débloque seulement si le niveau précédent est gagné.</span></div>
+        </div>
       </div>
 
       <div class="metrics">
@@ -1101,6 +1097,17 @@
     const unlockNote = document.getElementById("unlockNote");
     const devButton = document.getElementById("devButton");
 
+    function resetAllGames() {
+      state = {
+        completed: Object.fromEntries(Object.keys(games).map(k => [k, null])),
+        tiers: defaultTiers(),
+      };
+      saveState();
+      updateScoreboard();
+      showHub();
+      alert("Progression réinitialisée : tous les niveaux sont à refaire.");
+    }
+
     function unlockAllGames() {
       Object.keys(games).forEach(key => {
         state.tiers[key] = { facile: true, normal: true, difficile: true };
@@ -1318,8 +1325,13 @@
         const answer = prompt("Mot de passe développeur ?");
         if (answer === null) return;
         if (answer === "Yuucheat") {
-          unlockAllGames();
-          alert("Mode développeur activé : tous les mini-jeux sont validés.");
+          const choice = prompt("Mode développeur :\n1 • Valider tous les niveaux\n2 • Réinitialiser toute la progression\n(Annuler pour quitter)");
+          if (choice === "1") {
+            unlockAllGames();
+            alert("Mode développeur : tous les mini-jeux sont maintenant validés.");
+          } else if (choice === "2") {
+            resetAllGames();
+          }
         } else {
           alert("Accès refusé.");
         }
