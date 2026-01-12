@@ -2,339 +2,190 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion sécurisée</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yuuka Online - Accueil</title>
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-1: #0b1224;
-      --bg-2: #0f172a;
-      --panel: rgba(18, 26, 44, 0.85);
-      --muted: #cbd5e1;
-      --accent: #60a5fa;
-      --accent-2: #a855f7;
-      --card: rgba(255, 255, 255, 0.02);
-    }
-
-    * { box-sizing: border-box; }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      color: #e2e8f0;
-      background:
-        radial-gradient(circle at 15% 20%, rgba(96, 165, 250, 0.16), transparent 30%),
-        radial-gradient(circle at 80% 0%, rgba(168, 85, 247, 0.16), transparent 32%),
-        linear-gradient(130deg, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-1) 100%);
-      position: relative;
-      overflow-x: hidden;
-      padding: 40px 18px 80px;
-    }
-
-    .glow {
-      position: absolute;
-      filter: blur(80px);
-      opacity: 0.55;
-      z-index: 0;
-    }
-
-    .glow.blue { width: 320px; height: 320px; background: #38bdf8; left: -80px; top: -40px; }
-    .glow.purple { width: 280px; height: 280px; background: #a855f7; right: -60px; top: 120px; }
-    .glow.cyan { width: 360px; height: 360px; background: #22d3ee; left: 40%; bottom: -140px; }
-
-    .wrapper {
-      position: relative;
-      z-index: 1;
-      max-width: 1100px;
-      margin: 0 auto;
-      display: grid;
-      gap: 26px;
-    }
-
-    header {
-      display: grid;
-      gap: 8px;
-      text-align: center;
-    }
-
-    .main-title {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: clamp(36px, 5vw, 58px);
-      letter-spacing: 2px;
-      margin: 0;
-      text-transform: uppercase;
-    }
-
-    .subtitle {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.7;
-      font-size: 16px;
-    }
-
-    .shell {
-      background: linear-gradient(160deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 22px;
-      padding: 26px;
-      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 18px;
-      align-items: start;
-    }
-
-    .login-box, .menu-box {
-      display: none;
-    }
-
-    .login-box.active, .menu-box.active {
-      display: grid;
-      gap: 18px;
-    }
-
-    .card-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 700;
-      margin: 0;
-      color: #bfdbfe;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-    }
-
-    .hint {
-      margin: 0;
-      color: #93c5fd;
-      font-style: italic;
-      line-height: 1.6;
-      transition: color 0.6s ease, transform 0.3s ease;
-    }
-
-    .hint.success {
-      color: #4ade80;
-      font-style: normal;
-      font-weight: 600;
-      transform: translateY(-2px);
-    }
-
-    .password-wrapper {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
-    .password-wrapper input {
-      width: 100%;
-      padding: 14px 46px 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      background: rgba(255, 255, 255, 0.05);
-      color: #e2e8f0;
-      font-size: 16px;
-      outline: none;
-      transition: border 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .password-wrapper input:focus {
-      border-color: rgba(96, 165, 250, 0.7);
-      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.18);
-    }
-
-    .password-wrapper i {
-      position: absolute;
-      right: 12px;
-      color: #cbd5e1;
-      cursor: pointer;
-      font-size: 18px;
-    }
-
-    button {
-      appearance: none;
-      border: none;
-      border-radius: 14px;
-      padding: 12px 18px;
-      font-weight: 700;
-      cursor: pointer;
-      background: linear-gradient(120deg, #3b82f6, #8b5cf6);
-      color: white;
-      box-shadow: 0 12px 30px rgba(59, 130, 246, 0.35);
-      transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
-    }
-
-    button:hover { transform: translateY(-2px); filter: brightness(1.05); }
-    button:active { transform: translateY(0); filter: brightness(0.98); }
-
-    .error {
-      color: #fca5a5;
-      margin: 0;
-      font-weight: 600;
-    }
-
-    .menu-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 18px;
-      margin-top: 12px;
-    }
-
-    .menu-item {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 16px;
-      padding: 18px;
-      display: grid;
-      justify-items: center;
-      gap: 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .menu-item:hover {
-      transform: translateY(-4px);
-      border-color: rgba(96, 165, 250, 0.6);
-      box-shadow: 0 12px 24px rgba(0,0,0,0.35);
-    }
-
-    .menu-item i { font-size: 32px; color: #93c5fd; }
-    .menu-item span { font-weight: 700; letter-spacing: 0.4px; }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 12px;
-      border-radius: 999px;
-      background: rgba(255, 255, 255, 0.06);
-      color: #cbd5e1;
-      font-weight: 700;
-      width: fit-content;
-      margin: 0 auto;
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-  <div class="glow blue"></div>
-  <div class="glow purple"></div>
-  <div class="glow cyan"></div>
-
-  <div class="wrapper">
-    <header>
-      <div class="badge"><i class="fas fa-sparkles"></i> Edition Yuukanniversaire</div>
-      <h1 class="main-title">Bienvenue sur le Yuukonline</h1>
-      <p class="subtitle">
-        À l’occasion de son <strong>17ᵉ Yuukanniversaire</strong>, une nouvelle passe d’accueil t’attend.<br>
-        Interface rafraîchie, cartes plus lisibles et animations douces pour te guider dès le premier mot de passe.
-      </p>
-      <p class="hint" id="hintText">
-        Mais pour pouvoir accéder au <strong>Yuukonline</strong>, vous vous devez de connaître un minimum Yuuka.<br>
-        Savez-vous quel est son <strong>animal totem</strong> ?
-      </p>
-    </header>
-
-    <div class="grid">
-      <!-- Étape 1 : Connexion -->
-      <div class="shell login-box active" id="loginBox">
-        <h2 class="card-title"><i class="fas fa-lock"></i> Connexion</h2>
-        <p class="subtitle">Entre le mot de passe pour accéder au site :</p>
-        <div class="password-wrapper">
-          <input type="password" id="passwordInput" placeholder="Mot de passe" />
-          <i class="fas fa-eye" id="togglePassword" onclick="togglePassword()"></i>
-        </div>
-        <button onclick="checkPassword()">Déverrouiller l’accès</button>
-        <p class="error" id="errorMessage"></p>
+<body data-page="Accueil">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
+      <div class="nav-links">
+        <a href="bouton1.html"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</a>
+        <a href="bouton2.html"><i class="fa-solid fa-music"></i> Yuusiques</a>
+        <a href="bouton3.html"><i class="fa-solid fa-mars"></i> Yuugars</a>
+        <a href="bouton4.html"><i class="fa-solid fa-heart"></i> Yuukafe place</a>
+        <a href="bouton5.html"><i class="fa-solid fa-calendar"></i> Yuukalendrier</a>
+        <a href="bouton6.html"><i class="fa-solid fa-gamepad"></i> Yuukajeux</a>
+        <a href="finale.html"><i class="fa-solid fa-trophy"></i> Finale</a>
       </div>
-
-      <!-- Étape 2 : Menu -->
-      <div class="shell menu-box" id="menuBox">
-        <h2 class="card-title"><i class="fas fa-compass"></i> Menu principal</h2>
-        <p class="subtitle">Choisis une destination, tout est prêt pour explorer.</p>
-        <div class="menu-grid">
-          <div class="menu-item" onclick="goToPage('bouton1.html')">
-            <i class="fas fa-image"></i>
-            <span>Yuukalerie</span>
-          </div>
-          <div class="menu-item" onclick="goToPage('bouton2.html')">
-            <i class="fas fa-music"></i>
-            <span>Yuusiques</span>
-          </div>
-          <div class="menu-item" onclick="goToPage('bouton3.html')">
-            <i class="fas fa-user-friends"></i>
-            <span>Yuugars</span>
-          </div>
-          <div class="menu-item" onclick="goToPage('bouton4.html')">
-            <i class="fas fa-mug-hot"></i>
-            <span>Yuukafe place</span>
-          </div>
-          <div class="menu-item" onclick="goToPage('bouton6.html')">
-            <i class="fas fa-gamepad"></i>
-            <span>Yuugames</span>
-          </div>
-          <div class="menu-item" onclick="goToPage('bouton5.html')">
-            <i class="fas fa-calendar-alt"></i>
-            <span>Yuukalendrier</span>
-          </div>
-        </div>
+      <div class="nav-actions">
+        <span class="user-chip" data-user-chip>Invité</span>
+        <a class="btn ghost" href="#account"><i class="fa-solid fa-user"></i> Mon compte</a>
       </div>
     </div>
-  </div>
+  </nav>
 
-  <script>
-    const correctPassword = "Pigeon";
+  <main class="container">
+    <section class="card hero">
+      <span class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Nouvelle interface</span>
+      <h1 class="main-title">Bienvenue sur Yuukonline</h1>
+      <p class="subtitle">
+        Une interface modernisée, une navigation claire vers chaque page, et une synchronisation de ta progression
+        grâce à ton compte sécurisé.
+      </p>
+      <div class="tabs">
+        <a class="btn" href="#account"><i class="fa-solid fa-shield-heart"></i> Créer / connecter un compte</a>
+        <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
+      </div>
+    </section>
 
-    function togglePassword() {
-      const input = document.getElementById("passwordInput");
-      const icon = document.getElementById("togglePassword");
-      const isPassword = input.type === "password";
-      input.type = isPassword ? "text" : "password";
-      icon.classList.toggle("fa-eye");
-      icon.classList.toggle("fa-eye-slash");
-    }
+    <section class="grid-2" id="hub">
+      <div class="card">
+        <h2 class="section-title">Accès rapide</h2>
+        <p class="subtitle">Toutes les destinations importantes sont réunies ici.</p>
+        <div class="card-grid">
+          <a class="card-tile" href="bouton1.html">
+            <div class="tile-icon"><i class="fa-solid fa-image"></i></div>
+            <strong>Yuukalerie</strong>
+            <span class="subtitle">Souvenirs et moments visuels.</span>
+          </a>
+          <a class="card-tile" href="bouton2.html">
+            <div class="tile-icon"><i class="fa-solid fa-music"></i></div>
+            <strong>Yuusiques</strong>
+            <span class="subtitle">Playlist, vibes et découvertes.</span>
+          </a>
+          <a class="card-tile" href="bouton3.html">
+            <div class="tile-icon"><i class="fa-solid fa-user-group"></i></div>
+            <strong>Yuugars</strong>
+            <span class="subtitle">Les profils et les liens.</span>
+          </a>
+          <a class="card-tile" href="bouton4.html">
+            <div class="tile-icon"><i class="fa-solid fa-mug-hot"></i></div>
+            <strong>Yuukafe place</strong>
+            <span class="subtitle">Discussions et partages.</span>
+          </a>
+          <a class="card-tile" href="bouton5.html">
+            <div class="tile-icon"><i class="fa-solid fa-calendar"></i></div>
+            <strong>Yuukalendrier</strong>
+            <span class="subtitle">Rendez-vous et anniversaires.</span>
+          </a>
+          <a class="card-tile" href="bouton6.html">
+            <div class="tile-icon"><i class="fa-solid fa-gamepad"></i></div>
+            <strong>Yuukajeux</strong>
+            <span class="subtitle">Mini-jeux et progression.</span>
+          </a>
+        </div>
+      </div>
 
-    function checkPassword() {
-      const input = document.getElementById("passwordInput").value.trim();
-      const error = document.getElementById("errorMessage");
-      const hint = document.getElementById("hintText");
+      <div class="card">
+        <h2 class="section-title">Progression synchronisée</h2>
+        <p class="subtitle">Retrouve ta dernière étape, même en changeant d'appareil.</p>
+        <div class="card-grid">
+          <div class="card-tile">
+            <span class="badge">Dernière page</span>
+            <strong id="progressPage">-</strong>
+            <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
+          </div>
+          <div class="card-tile">
+            <span class="badge">Statut</span>
+            <strong id="progressStatus">Local</strong>
+            <span class="subtitle">Connecte-toi pour synchroniser.</span>
+          </div>
+        </div>
+        <ul class="info-list">
+          <li>Synchronisation dès que tu te connectes.</li>
+          <li>Historique sécurisé côté Firebase.</li>
+          <li>Accès Google en un clic.</li>
+        </ul>
+      </div>
+    </section>
 
-      if (input === correctPassword) {
-        document.getElementById("loginBox").classList.remove("active");
-        document.getElementById("menuBox").classList.add("active");
+    <section class="grid-2" id="account">
+      <div class="card auth-panel">
+        <h2 class="section-title">Compte &amp; sécurité</h2>
+        <p class="subtitle">Crée ton compte pour sauvegarder ta progression et activer la vérification email.</p>
 
-        hint.innerHTML = "Tu as désormais accès au <strong>Yuukonline</strong>, que souhaites-tu découvrir ?";
-        hint.classList.add("success");
+        <div class="tabs">
+          <button class="tab-button active" data-auth-tab="signin">Connexion</button>
+          <button class="tab-button" data-auth-tab="signup">Créer un compte</button>
+          <button class="tab-button" data-auth-tab="reset">Mot de passe oublié</button>
+        </div>
 
-      } else {
-        error.textContent = "Mot de passe incorrect. Réessaie.";
-      }
-    }
+        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi pour synchroniser ta progression.</div>
 
-    function goToPage(file) {
-      window.location.href = file;
-    }
-  </script>
+        <div class="auth-forms">
+          <form id="signInForm" class="auth-form active" data-auth-form="signin">
+            <div class="form-grid">
+              <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="nom@email.com" />
+              </div>
+              <div class="field">
+                <label>Mot de passe</label>
+                <input type="password" name="password" required placeholder="••••••••" />
+              </div>
+              <button type="submit" class="btn"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</button>
+              <button type="button" class="btn ghost" id="googleSignInBtn"><i class="fa-brands fa-google"></i> Connexion Google</button>
+            </div>
+          </form>
 
-  <!-- Firebase App SDK -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
+          <form id="signUpForm" class="auth-form" data-auth-form="signup">
+            <div class="form-grid">
+              <div class="field">
+                <label>Nom d'utilisateur</label>
+                <input type="text" name="username" placeholder="YuukaFan" />
+              </div>
+              <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="nom@email.com" />
+              </div>
+              <div class="field">
+                <label>Mot de passe</label>
+                <input type="password" name="password" required placeholder="Au moins 8 caractères" />
+              </div>
+              <button type="submit" class="btn"><i class="fa-solid fa-user-plus"></i> Créer le compte</button>
+            </div>
+          </form>
 
-    const firebaseConfig = {
-      apiKey: "AIzaSyCg0W5TXkRzg3Rw9g1UeB4GRtCVPxsTOs",
-      authDomain: "yuukalerie.firebaseapp.com",
-      projectId: "yuukalerie",
-      storageBucket: "yuukalerie.appspot.com",
-      messagingSenderId: "323289798571",
-      appId: "1:323289798571:web:3b304ce8f1d312e4f8a386"
-    };
+          <form id="resetForm" class="auth-form" data-auth-form="reset">
+            <div class="form-grid">
+              <div class="field">
+                <label>Email</label>
+                <input type="email" name="email" required placeholder="nom@email.com" />
+              </div>
+              <button type="submit" class="btn"><i class="fa-solid fa-envelope"></i> Envoyer le lien</button>
+            </div>
+          </form>
+        </div>
+      </div>
 
-    const app = initializeApp(firebaseConfig);
-    console.log("Firebase connecté !");
-  </script>
+      <div class="card">
+        <h2 class="section-title">État du compte</h2>
+        <p class="subtitle">Gère la vérification email, le lien Google et la déconnexion.</p>
+        <div class="form-grid">
+          <div class="card-tile">
+            <span class="badge">Compte connecté</span>
+            <strong id="userEmail">Aucun compte connecté</strong>
+            <span class="subtitle">Pense à vérifier ton email pour activer ton compte.</span>
+          </div>
+          <button class="btn ghost" id="verifyEmailBtn"><i class="fa-solid fa-envelope-circle-check"></i> Renvoyer l'email de vérification</button>
+          <button class="btn ghost" id="googleLinkBtn"><i class="fa-brands fa-google"></i> Associer Google</button>
+          <button class="btn ghost" id="signOutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
+        </div>
+        <ul class="info-list">
+          <li>Vérification email recommandée pour sécuriser le compte.</li>
+          <li>Associe Google pour te reconnecter plus vite.</li>
+          <li>Mot de passe réinitialisable à tout moment.</li>
+        </ul>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Yuukonline · Interface modernisée &amp; progression synchronisée.</footer>
+
+  <script type="module" src="app.js"></script>
 </body>
 </html>
