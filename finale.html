@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Récompense finale</title>
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
@@ -256,7 +257,26 @@
     .nav-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
   </style>
 </head>
-<body>
+<body data-page="Finale">
+  <header class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
+      <div class="nav-links">
+        <a href="bouton1.html"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</a>
+        <a href="bouton2.html"><i class="fa-solid fa-music"></i> Yuusiques</a>
+        <a href="bouton3.html"><i class="fa-solid fa-mars"></i> Yuugars</a>
+        <a href="bouton4.html"><i class="fa-solid fa-heart"></i> Yuukafe place</a>
+        <a href="bouton5.html"><i class="fa-solid fa-calendar"></i> Yuukalendrier</a>
+        <a href="bouton6.html"><i class="fa-solid fa-gamepad"></i> Yuukajeux</a>
+        <a href="finale.html"><i class="fa-solid fa-trophy"></i> Finale</a>
+      </div>
+      <div class="nav-actions">
+        <span class="user-chip" data-user-chip>Invité</span>
+        <a class="btn ghost" href="index.html#account"><i class="fa-solid fa-user"></i> Mon compte</a>
+      </div>
+    </div>
+  </header>
+
   <div class="wrapper">
     <header>
       <div class="badge"><i class="fas fa-unlock"></i> Récompense finale</div>
@@ -618,5 +638,6 @@
     refreshFinal();
     updatePhraseProgress();
   </script>
+  <script type="module" src="app.js"></script>
 </body>
 </html>

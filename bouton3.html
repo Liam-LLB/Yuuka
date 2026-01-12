@@ -2,161 +2,71 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Yuugars - En développement</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yuugars</title>
+  <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-
-  <style>
-    :root {
-      --nav: rgba(15, 23, 42, 0.85);
-      --bg: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.18), transparent 25%),
-            radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.14), transparent 20%),
-            #0f172a;
-      --card: rgba(30, 41, 59, 0.82);
-      --border: rgba(148, 163, 184, 0.35);
-      --text: #e2e8f0;
-      --muted: #cbd5e1;
-    }
-
-    body {
-      margin: 0;
-      background: var(--bg);
-      color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-    nav {
-      background: var(--nav);
-      backdrop-filter: blur(10px);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 24px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
-    .center-menu {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      flex: 1;
-      flex-wrap: wrap;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      padding: 10px 16px;
-      font-weight: 600;
-      font-size: 0.98em;
-      transition: all 0.3s ease;
-    }
-    nav a:hover {
-      color: #c7d2fe;
-      background: rgba(59, 130, 246, 0.14);
-      border-radius: 999px;
-    }
-    .content {
-      padding: 90px 20px 60px;
-      flex: 1;
-      display: grid;
-      place-items: center;
-    }
-    .card {
-      max-width: 780px;
-      width: 100%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 40px 28px;
-      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
-      text-align: center;
-      backdrop-filter: blur(6px);
-    }
-    .card h1 {
-      font-size: clamp(26px, 3vw, 32px);
-      margin-bottom: 14px;
-      letter-spacing: 0.5px;
-    }
-    .card p {
-      margin: 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: 1rem;
-    }
-    .icon-container {
-      margin-top: 50px;
-      display: flex;
-      justify-content: center;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(96, 165, 250, 0.16);
-      color: #bfdbfe;
-      border: 1px solid rgba(96, 165, 250, 0.35);
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-
-    @media (max-width: 768px) {
-      body { padding-top: 0; }
-
-      nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        padding: 14px 16px;
-      }
-
-      .center-menu {
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 10px;
-        padding: 4px 0;
-      }
-
-      .center-menu::-webkit-scrollbar { display: none; }
-      .center-menu { scrollbar-width: none; -ms-overflow-style: none; }
-      nav a { white-space: nowrap; }
-      .content { padding: 130px 20px 60px; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-
-  <nav>
-    <a href="index.html"><i class="fas fa-house"></i> Yuukaccueil</a>
-    <div class="center-menu">
-      <a href="bouton1.html"><i class="fas fa-camera-retro"></i> Yuukalerie</a>
-      <a href="bouton2.html"><i class="fas fa-music"></i> Yuusiques</a>
-      <a href="bouton3.html"><i class="fas fa-mars"></i> Yuugars</a>
-      <a href="bouton4.html"><i class="fas fa-heart-circle-bolt"></i> Yuukafe place</a>
-      <a href="bouton5.html"><i class="fas fa-calendar-alt"></i> Yuukalendrier</a>
-      <a href="bouton6.html"><i class="fas fa-gamepad"></i> Yuukajeux</a>
-    </div>
-    <a href="index.html"><i class="fas fa-sign-out-alt"></i> Yuukoff</a>
-  </nav>
-
-  <div class="content">
-    <div class="card">
-      <div class="pill"><i class="fas fa-users-gear"></i> En chantier</div>
-      <h1>Désolé, cette page est actuellement en développement.</h1>
-      <p>Reviens y faire un tour dans quelques temps pour y découvrir de nouveaux Yuugars !</p>
-      <div class="icon-container">
-        <svg xmlns="http://www.w3.org/2000/svg" height="180" viewBox="0 0 24 24" fill="white">
-          <path d="M13 2v8h8c0-4.42-3.58-8-8-8zm-1 8V2c-4.42 0-8 3.58-8 8h8zm8 1h-8v8c4.42 0 8-3.58 8-8zm-10 8v-8H2c0 4.42 3.58 8 8 8z"/>
-        </svg>
+<body data-page="Yuugars">
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
+      <div class="nav-links">
+        <a href="bouton1.html"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</a>
+        <a href="bouton2.html"><i class="fa-solid fa-music"></i> Yuusiques</a>
+        <a href="bouton3.html"><i class="fa-solid fa-mars"></i> Yuugars</a>
+        <a href="bouton4.html"><i class="fa-solid fa-heart"></i> Yuukafe place</a>
+        <a href="bouton5.html"><i class="fa-solid fa-calendar"></i> Yuukalendrier</a>
+        <a href="bouton6.html"><i class="fa-solid fa-gamepad"></i> Yuukajeux</a>
+        <a href="finale.html"><i class="fa-solid fa-trophy"></i> Finale</a>
+      </div>
+      <div class="nav-actions">
+        <span class="user-chip" data-user-chip>Invité</span>
+        <a class="btn ghost" href="index.html#account"><i class="fa-solid fa-user"></i> Mon compte</a>
       </div>
     </div>
-  </div>
+  </nav>
 
+  <main class="container">
+    <section class="card hero">
+      <span class="eyebrow"><i class="fa-solid fa-user-group"></i> Yuugars</span>
+      <h1 class="main-title">Liens et profils</h1>
+      <p class="subtitle">Un espace dédié aux profils, souvenirs partagés et messages clés.</p>
+      <div class="tabs">
+        <span class="badge warning"><i class="fa-solid fa-hammer"></i> En construction</span>
+        <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
+      </div>
+    </section>
+
+    <section class="grid-2">
+      <div class="card">
+        <h2 class="section-title">À venir</h2>
+        <ul class="info-list">
+          <li>Profils enrichis et timeline partagée.</li>
+          <li>Moments favoris à commenter.</li>
+          <li>Badges de progression.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2 class="section-title">Progression</h2>
+        <div class="card-grid">
+          <div class="card-tile">
+            <span class="badge">Dernière page</span>
+            <strong id="progressPage">-</strong>
+            <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
+          </div>
+          <div class="card-tile">
+            <span class="badge">Statut</span>
+            <strong id="progressStatus">Local</strong>
+            <span class="subtitle">Connecte-toi pour synchroniser.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">Yuukonline · Yuugars en préparation.</footer>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
