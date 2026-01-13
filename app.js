@@ -1,20 +1,3 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js";
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  sendEmailVerification,
-  sendPasswordResetEmail,
-  GoogleAuthProvider,
-  signInWithRedirect,
-  linkWithRedirect,
-  getRedirectResult,
-  onAuthStateChanged,
-  signOut,
-  updateProfile,
-} from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
-import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
-
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCGQDW5I7kRgZR3wgQ1UeB4GRtVCPxstOs",
@@ -25,10 +8,11 @@ const firebaseConfig = {
   appId: "1:323287958771:web:3b304cc81fd312e4f8a386"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+let auth = null;
+let db = null;
+let authApi = null;
+let firestoreApi = null;
+let firebaseReady = false;
 
 const progressKey = "yuuka_progress_v1";
 
@@ -50,6 +34,10 @@ const setMessage = (message, tone = "") => {
   if (!authMessage) return;
   authMessage.textContent = message;
   authMessage.className = `alert ${tone}`.trim();
+};
+
+const setProgressStatus = (status) => {
+  if (progressEls.status) progressEls.status.textContent = status;
 };
 
 const updateUserChips = (user) => {
@@ -81,15 +69,15 @@ const updateProgressUI = (data) => {
 };
 
 const syncProgressToCloud = async (user, data) => {
-  if (!user) return true;
+  if (!user || !firebaseReady || !firestoreApi || !db) return true;
   try {
-    await setDoc(
-      doc(db, "progress", user.uid),
+    await firestoreApi.setDoc(
+      firestoreApi.doc(db, "progress", user.uid),
       {
         ...data,
         uid: user.uid,
         updatedAt: data.updatedAt || new Date().toISOString(),
-        syncedAt: serverTimestamp(),
+        syncedAt: firestoreApi.serverTimestamp(),
       },
       { merge: true }
     );
@@ -102,8 +90,9 @@ const syncProgressToCloud = async (user, data) => {
 };
 
 const fetchProgressFromCloud = async (user) => {
+  if (!firebaseReady || !firestoreApi || !db) return null;
   try {
-    const snap = await getDoc(doc(db, "progress", user.uid));
+    const snap = await firestoreApi.getDoc(firestoreApi.doc(db, "progress", user.uid));
     if (!snap.exists()) return null;
     return snap.data();
   } catch (error) {
@@ -118,7 +107,7 @@ const updateProgress = async (page) => {
   const data = { page, updatedAt: new Date().toISOString(), source: "Local" };
   saveProgressLocal(data);
   updateProgressUI(data);
-  if (auth.currentUser) {
+  if (auth?.currentUser) {
     const synced = await syncProgressToCloud(auth.currentUser, data);
     if (synced) {
       data.source = "Synchronisé";
@@ -149,12 +138,21 @@ const signInForm = document.getElementById("signInForm");
 const signUpForm = document.getElementById("signUpForm");
 const resetForm = document.getElementById("resetForm");
 
+const ensureAuthReady = () => {
+  if (!firebaseReady || !authApi || !auth) {
+    setMessage("Connexion indisponible pour le moment. Mode invité activé.", "warning");
+    return false;
+  }
+  return true;
+};
+
 signInForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!ensureAuthReady()) return;
   const email = signInForm.querySelector("input[name='email']").value.trim();
   const password = signInForm.querySelector("input[name='password']").value.trim();
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    await authApi.signInWithEmailAndPassword(auth, email, password);
     setMessage("Connexion réussie. Heureux de te revoir !", "success");
   } catch (error) {
     setMessage(`Connexion impossible : ${error.message}`);
@@ -163,15 +161,16 @@ signInForm?.addEventListener("submit", async (event) => {
 
 signUpForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!ensureAuthReady()) return;
   const email = signUpForm.querySelector("input[name='email']").value.trim();
   const password = signUpForm.querySelector("input[name='password']").value.trim();
   const username = signUpForm.querySelector("input[name='username']").value.trim();
   try {
-    const result = await createUserWithEmailAndPassword(auth, email, password);
+    const result = await authApi.createUserWithEmailAndPassword(auth, email, password);
     if (username) {
-      await updateProfile(result.user, { displayName: username });
+      await authApi.updateProfile(result.user, { displayName: username });
     }
-    await sendEmailVerification(result.user);
+    await authApi.sendEmailVerification(result.user);
     setMessage("Compte créé ! Pense à vérifier tes emails pour activer ton compte.", "success");
   } catch (error) {
     setMessage(`Inscription impossible : ${error.message}`);
@@ -180,9 +179,10 @@ signUpForm?.addEventListener("submit", async (event) => {
 
 resetForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
+  if (!ensureAuthReady()) return;
   const email = resetForm.querySelector("input[name='email']").value.trim();
   try {
-    await sendPasswordResetEmail(auth, email);
+    await authApi.sendPasswordResetEmail(auth, email);
     setMessage("Un lien de réinitialisation a été envoyé.", "success");
   } catch (error) {
     setMessage(`Réinitialisation impossible : ${error.message}`);
@@ -190,34 +190,36 @@ resetForm?.addEventListener("submit", async (event) => {
 });
 
 verifyEmailBtn?.addEventListener("click", async () => {
-  if (!auth.currentUser) return;
-  await sendEmailVerification(auth.currentUser);
+  if (!auth?.currentUser || !ensureAuthReady()) return;
+  await authApi.sendEmailVerification(auth.currentUser);
   setMessage("Email de vérification renvoyé.", "success");
 });
 
 googleSignInBtn?.addEventListener("click", async () => {
-  const provider = new GoogleAuthProvider();
+  if (!ensureAuthReady()) return;
+  const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   try {
-    await signInWithRedirect(auth, provider);
+    await authApi.signInWithRedirect(auth, provider);
   } catch (error) {
     setMessage(`Connexion Google échouée : ${error.message}`);
   }
 });
 
 googleLinkBtn?.addEventListener("click", async () => {
-  if (!auth.currentUser) return;
-  const provider = new GoogleAuthProvider();
+  if (!auth?.currentUser || !ensureAuthReady()) return;
+  const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   try {
-    await linkWithRedirect(auth.currentUser, provider);
+    await authApi.linkWithRedirect(auth.currentUser, provider);
   } catch (error) {
     setMessage(`Association Google impossible : ${error.message}`);
   }
 });
 
 signOutBtn?.addEventListener("click", async () => {
-  await signOut(auth);
+  if (!ensureAuthReady()) return;
+  await authApi.signOut(auth);
   setMessage("Déconnexion réussie.", "success");
 });
 
@@ -258,37 +260,87 @@ const mergeProgress = async (user) => {
   }
 };
 
-onAuthStateChanged(auth, async (user) => {
-  updateUserChips(user);
-  if (userEmail) {
-    userEmail.textContent = user ? user.email : "Aucun compte connecté";
-  }
-  if (verifyEmailBtn) {
-    verifyEmailBtn.disabled = !user || user.emailVerified;
-  }
-  if (googleLinkBtn) {
-    googleLinkBtn.disabled = !user;
-  }
-  if (signOutBtn) {
-    signOutBtn.disabled = !user;
-  }
-  await mergeProgress(user);
-});
+const bindAuthObservers = () => {
+  authApi.onAuthStateChanged(auth, async (user) => {
+    updateUserChips(user);
+    if (userEmail) {
+      userEmail.textContent = user ? user.email : "Aucun compte connecté";
+    }
+    if (verifyEmailBtn) {
+      verifyEmailBtn.disabled = !user || user.emailVerified;
+    }
+    if (googleLinkBtn) {
+      googleLinkBtn.disabled = !user;
+    }
+    if (signOutBtn) {
+      signOutBtn.disabled = !user;
+    }
+    await mergeProgress(user);
+  });
 
-initTabs();
+  authApi.getRedirectResult(auth)
+    .then((result) => {
+      if (!result) return;
+      const action = result.operationType === "link" ? "Compte Google associé à ton profil." : "Connexion Google réussie.";
+      setMessage(action, "success");
+    })
+    .catch((error) => {
+      if (!error) return;
+      setMessage(`Connexion Google échouée : ${error.message}`);
+    });
+};
 
 const storedProgress = readProgressLocal();
 if (storedProgress) {
   updateProgressUI(storedProgress);
 }
 
-getRedirectResult(auth)
-  .then((result) => {
-    if (!result) return;
-    const action = result.operationType === "link" ? "Compte Google associé à ton profil." : "Connexion Google réussie.";
-    setMessage(action, "success");
-  })
-  .catch((error) => {
-    if (!error) return;
-    setMessage(`Connexion Google échouée : ${error.message}`);
+const initFirebase = async () => {
+  const [appModule, authModule, firestoreModule] = await Promise.allSettled([
+    import("https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"),
+    import("https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"),
+    import("https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"),
+  ]);
+
+  if (appModule.status !== "fulfilled" || authModule.status !== "fulfilled" || firestoreModule.status !== "fulfilled") {
+    setProgressStatus("Local (hors ligne)");
+    setMessage("Connexion distante indisponible. Tes données restent en local.", "warning");
+    return false;
+  }
+
+  const { initializeApp } = appModule.value;
+  authApi = authModule.value;
+  firestoreApi = firestoreModule.value;
+
+  const app = initializeApp(firebaseConfig);
+  auth = authApi.getAuth(app);
+  db = firestoreApi.getFirestore(app);
+  firebaseReady = true;
+  return true;
+};
+
+const initConnectModal = () => {
+  const modal = document.querySelector("[data-connect-modal]");
+  if (!modal) return;
+  const closeButtons = modal.querySelectorAll("[data-modal-close]");
+  const storageKey = "yuuka_connect_modal_v1";
+  if (localStorage.getItem(storageKey)) return;
+  modal.classList.add("is-visible");
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      modal.classList.remove("is-visible");
+      localStorage.setItem(storageKey, "dismissed");
+    });
   });
+};
+
+const init = async () => {
+  initTabs();
+  initConnectModal();
+  const ready = await initFirebase();
+  if (ready) {
+    bindAuthObservers();
+  }
+};
+
+init();
