@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yuuka Online - Accueil</title>
+  <title>Yuuka Online - Connexion</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="Accueil">
+<body data-page="Connexion">
   <nav class="site-nav">
     <div class="nav-inner">
       <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
@@ -28,93 +28,13 @@
     </div>
   </nav>
 
-  <div class="modal-overlay" data-connect-modal>
-    <div class="modal-card">
-      <button class="modal-close" type="button" data-modal-close aria-label="Fermer">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <span class="eyebrow"><i class="fa-solid fa-user-shield"></i> Accès rapide</span>
-      <h2 class="section-title">Tu veux te connecter ?</h2>
-      <p class="subtitle">Choisis de te connecter pour synchroniser ta progression, ou continue en invité.</p>
-      <div class="modal-actions">
-        <a class="btn" href="connexion.html">Se connecter</a>
-        <button class="btn ghost" type="button" data-modal-close>Rester en invité</button>
-      </div>
-    </div>
-  </div>
-
   <main class="container">
     <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Nouvelle interface</span>
-      <h1 class="main-title">Bienvenue sur Yuukonline</h1>
-      <p class="subtitle">
-        Une interface modernisée, une navigation claire vers chaque page, et une synchronisation de ta progression
-        grâce à ton compte sécurisé.
-      </p>
+      <span class="eyebrow"><i class="fa-solid fa-shield-heart"></i> Compte Yuukonline</span>
+      <h1 class="main-title">Connexion &amp; sécurité</h1>
+      <p class="subtitle">Connecte-toi pour synchroniser ta progression, gérer tes accès Google et recevoir les emails de vérification.</p>
       <div class="tabs">
-        <a class="btn" href="connexion.html"><i class="fa-solid fa-shield-heart"></i> Créer / connecter un compte</a>
-        <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
-      </div>
-    </section>
-
-    <section class="grid-2" id="hub">
-      <div class="card">
-        <h2 class="section-title">Accès rapide</h2>
-        <p class="subtitle">Toutes les destinations importantes sont réunies ici.</p>
-        <div class="card-grid">
-          <a class="card-tile" href="bouton1.html">
-            <div class="tile-icon"><i class="fa-solid fa-image"></i></div>
-            <strong>Yuukalerie</strong>
-            <span class="subtitle">Souvenirs et moments visuels.</span>
-          </a>
-          <a class="card-tile" href="bouton2.html">
-            <div class="tile-icon"><i class="fa-solid fa-music"></i></div>
-            <strong>Yuusiques</strong>
-            <span class="subtitle">Playlist, vibes et découvertes.</span>
-          </a>
-          <a class="card-tile" href="bouton3.html">
-            <div class="tile-icon"><i class="fa-solid fa-user-group"></i></div>
-            <strong>Yuugars</strong>
-            <span class="subtitle">Les profils et les liens.</span>
-          </a>
-          <a class="card-tile" href="bouton4.html">
-            <div class="tile-icon"><i class="fa-solid fa-mug-hot"></i></div>
-            <strong>Yuukafe place</strong>
-            <span class="subtitle">Discussions et partages.</span>
-          </a>
-          <a class="card-tile" href="bouton5.html">
-            <div class="tile-icon"><i class="fa-solid fa-calendar"></i></div>
-            <strong>Yuukalendrier</strong>
-            <span class="subtitle">Rendez-vous et anniversaires.</span>
-          </a>
-          <a class="card-tile" href="bouton6.html">
-            <div class="tile-icon"><i class="fa-solid fa-gamepad"></i></div>
-            <strong>Yuukajeux</strong>
-            <span class="subtitle">Mini-jeux et progression.</span>
-          </a>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2 class="section-title">Progression synchronisée</h2>
-        <p class="subtitle">Retrouve ta dernière étape, même en changeant d'appareil.</p>
-        <div class="card-grid">
-          <div class="card-tile">
-            <span class="badge">Dernière page</span>
-            <strong id="progressPage">-</strong>
-            <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
-          </div>
-          <div class="card-tile">
-            <span class="badge">Statut</span>
-            <strong id="progressStatus">Local</strong>
-            <span class="subtitle">Connecte-toi pour synchroniser.</span>
-          </div>
-        </div>
-        <ul class="info-list">
-          <li>Synchronisation dès que tu te connectes.</li>
-          <li>Historique sécurisé côté Firebase.</li>
-          <li>Accès Google en un clic.</li>
-        </ul>
+        <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Retour à l'accueil</a>
       </div>
     </section>
 
@@ -199,7 +119,7 @@
     </section>
   </main>
 
-  <footer class="footer">Yuukonline · Interface modernisée &amp; progression synchronisée.</footer>
+  <footer class="footer">Yuukonline · Connexion et synchronisation du compte.</footer>
 
   <script type="module" src="app.js"></script>
 </body>
