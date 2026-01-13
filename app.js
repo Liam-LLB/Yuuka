@@ -15,15 +15,23 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js";
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCg0W5TXkRzg3Rw9g1UeB4GRtCVPxsTOs",
+  apiKey: "AIzaSyCGQDW5I7kRgZR3wgQ1UeB4GRtVCPxstOs",
   authDomain: "yuukalerie.firebaseapp.com",
   projectId: "yuukalerie",
-  storageBucket: "yuukalerie.appspot.com",
-  messagingSenderId: "323289798571",
-  appId: "1:323289798571:web:3b304ce8f1d312e4f8a386",
+  storageBucket: "yuukalerie.firebasestorage.app",
+  messagingSenderId: "323287958771",
+  appId: "1:323287958771:web:3b304cc81fd312e4f8a386"
 };
 
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
