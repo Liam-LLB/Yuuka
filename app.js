@@ -6,8 +6,9 @@ import {
   sendEmailVerification,
   sendPasswordResetEmail,
   GoogleAuthProvider,
-  signInWithPopup,
-  linkWithPopup,
+  signInWithRedirect,
+  linkWithRedirect,
+  getRedirectResult,
   onAuthStateChanged,
   signOut,
   updateProfile,
@@ -194,9 +195,9 @@ verifyEmailBtn?.addEventListener("click", async () => {
 
 googleSignInBtn?.addEventListener("click", async () => {
   const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
   try {
-    await signInWithPopup(auth, provider);
-    setMessage("Connexion Google réussie.", "success");
+    await signInWithRedirect(auth, provider);
   } catch (error) {
     setMessage(`Connexion Google échouée : ${error.message}`);
   }
@@ -205,9 +206,9 @@ googleSignInBtn?.addEventListener("click", async () => {
 googleLinkBtn?.addEventListener("click", async () => {
   if (!auth.currentUser) return;
   const provider = new GoogleAuthProvider();
+  provider.setCustomParameters({ prompt: "select_account" });
   try {
-    await linkWithPopup(auth.currentUser, provider);
-    setMessage("Compte Google associé à ton profil.", "success");
+    await linkWithRedirect(auth.currentUser, provider);
   } catch (error) {
     setMessage(`Association Google impossible : ${error.message}`);
   }
@@ -278,3 +279,14 @@ const storedProgress = readProgressLocal();
 if (storedProgress) {
   updateProgressUI(storedProgress);
 }
+
+getRedirectResult(auth)
+  .then((result) => {
+    if (!result) return;
+    const action = result.operationType === "link" ? "Compte Google associé à ton profil." : "Connexion Google réussie.";
+    setMessage(action, "success");
+  })
+  .catch((error) => {
+    if (!error) return;
+    setMessage(`Connexion Google échouée : ${error.message}`);
+  });
