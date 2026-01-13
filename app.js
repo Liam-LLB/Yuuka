@@ -78,23 +78,36 @@ const updateProgressUI = (data) => {
 };
 
 const syncProgressToCloud = async (user, data) => {
-  if (!user) return;
-  await setDoc(
-    doc(db, "progress", user.uid),
-    {
-      ...data,
-      uid: user.uid,
-      updatedAt: data.updatedAt || new Date().toISOString(),
-      syncedAt: serverTimestamp(),
-    },
-    { merge: true }
-  );
+  if (!user) return true;
+  try {
+    await setDoc(
+      doc(db, "progress", user.uid),
+      {
+        ...data,
+        uid: user.uid,
+        updatedAt: data.updatedAt || new Date().toISOString(),
+        syncedAt: serverTimestamp(),
+      },
+      { merge: true }
+    );
+    return true;
+  } catch (error) {
+    console.error("Synchronisation Firebase impossible", error);
+    setMessage("Synchronisation impossible pour le moment. Mode local activé.", "warning");
+    return false;
+  }
 };
 
 const fetchProgressFromCloud = async (user) => {
-  const snap = await getDoc(doc(db, "progress", user.uid));
-  if (!snap.exists()) return null;
-  return snap.data();
+  try {
+    const snap = await getDoc(doc(db, "progress", user.uid));
+    if (!snap.exists()) return null;
+    return snap.data();
+  } catch (error) {
+    console.error("Lecture Firebase impossible", error);
+    setMessage("Lecture des données impossible. Mode local activé.", "warning");
+    return null;
+  }
 };
 
 const updateProgress = async (page) => {
@@ -103,9 +116,11 @@ const updateProgress = async (page) => {
   saveProgressLocal(data);
   updateProgressUI(data);
   if (auth.currentUser) {
-    data.source = "Synchronisé";
-    updateProgressUI(data);
-    await syncProgressToCloud(auth.currentUser, data);
+    const synced = await syncProgressToCloud(auth.currentUser, data);
+    if (synced) {
+      data.source = "Synchronisé";
+      updateProgressUI(data);
+    }
   }
 };
 
@@ -203,6 +218,43 @@ signOutBtn?.addEventListener("click", async () => {
   setMessage("Déconnexion réussie.", "success");
 });
 
+const toTimestamp = (value) => {
+  if (!value) return 0;
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? 0 : date.getTime();
+};
+
+const mergeProgress = async (user) => {
+  const localProgress = readProgressLocal();
+  if (!user) {
+    if (localProgress) updateProgressUI(localProgress);
+    return;
+  }
+  const cloudProgress = await fetchProgressFromCloud(user);
+  const localTime = toTimestamp(localProgress?.updatedAt);
+  const cloudTime = toTimestamp(cloudProgress?.updatedAt);
+  if (localTime === 0 && cloudTime === 0) return;
+
+  if (localTime >= cloudTime) {
+    const next = {
+      page: localProgress?.page || cloudProgress?.page,
+      updatedAt: localProgress?.updatedAt || cloudProgress?.updatedAt,
+      source: "Synchronisé",
+    };
+    updateProgressUI(next);
+    saveProgressLocal(next);
+    await syncProgressToCloud(user, next);
+  } else {
+    const next = {
+      page: cloudProgress.page,
+      updatedAt: cloudProgress.updatedAt,
+      source: "Synchronisé",
+    };
+    updateProgressUI(next);
+    saveProgressLocal(next);
+  }
+};
+
 onAuthStateChanged(auth, async (user) => {
   updateUserChips(user);
   if (userEmail) {
@@ -217,20 +269,7 @@ onAuthStateChanged(auth, async (user) => {
   if (signOutBtn) {
     signOutBtn.disabled = !user;
   }
-  if (!user) return;
-  const cloudProgress = await fetchProgressFromCloud(user);
-  if (cloudProgress) {
-    updateProgressUI({
-      page: cloudProgress.page,
-      updatedAt: cloudProgress.updatedAt,
-      source: "Synchronisé",
-    });
-    saveProgressLocal({
-      page: cloudProgress.page,
-      updatedAt: cloudProgress.updatedAt,
-      source: "Synchronisé",
-    });
-  }
+  await mergeProgress(user);
 });
 
 initTabs();
