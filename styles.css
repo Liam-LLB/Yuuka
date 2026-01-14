@@ -116,6 +116,14 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
 }
 
+.profile-menu:not(.is-authenticated) .profile-trigger .fa-chevron-down {
+  display: none;
+}
+
+.profile-menu:not(.is-authenticated) .profile-trigger {
+  cursor: pointer;
+}
+
 .profile-dropdown {
   position: absolute;
   right: 0;
@@ -179,6 +187,28 @@ a { color: inherit; text-decoration: none; }
 
 .profile-item:hover {
   background: rgba(96, 165, 250, 0.16);
+}
+
+.login-banner {
+  margin: 18px 0 0;
+  padding: 18px 22px;
+  border-radius: 18px;
+  font-size: clamp(24px, 4vw, 40px);
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 1px;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.login-banner.is-success {
+  border-color: rgba(34, 197, 94, 0.6);
+  background: rgba(34, 197, 94, 0.15);
+}
+
+.login-banner.is-error {
+  border-color: rgba(248, 113, 113, 0.6);
+  background: rgba(248, 113, 113, 0.16);
 }
 
 .main-title {

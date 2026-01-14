@@ -35,6 +35,11 @@ const profileTrigger = document.querySelector("[data-profile-trigger]");
 const profileDropdown = document.querySelector("[data-profile-dropdown]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
+const loginRedirectKey = "yuuka_login_redirect_v1";
+const loginStatusKey = "yuuka_login_status_v1";
+const isAuthPage = window.location.pathname.endsWith("connexion.html");
+const isHomePage = document.body?.dataset?.page === "Accueil";
+const loginBanner = document.querySelector("[data-login-banner]");
 
 const setMessage = (message, tone = "") => {
   if (!authMessage) return;
@@ -46,8 +51,10 @@ const setProgressStatus = (status) => {
   if (progressEls.status) progressEls.status.textContent = status;
 };
 
+const getUserLabel = (user) => (user ? (user.displayName || user.email) : "Se connecter");
+
 const updateUserChips = (user) => {
-  const label = user ? `${user.displayName || user.email}` : "Invité";
+  const label = user ? "Connecté" : "Invité";
   userChips.forEach((chip) => {
     chip.textContent = label;
   });
@@ -56,7 +63,7 @@ const updateUserChips = (user) => {
 const updateProfileMenu = (user) => {
   const signedIn = Boolean(user);
   if (profileTriggerLabel) {
-    profileTriggerLabel.textContent = signedIn ? "Profil" : "Se connecter";
+    profileTriggerLabel.textContent = signedIn ? getUserLabel(user) : "Se connecter";
   }
   if (profileName) {
     profileName.textContent = signedIn ? (user.displayName || user.email) : "Invité";
@@ -73,6 +80,12 @@ const updateProfileMenu = (user) => {
   signOutButtons.forEach((button) => {
     button.hidden = !signedIn;
   });
+  if (profileMenu) {
+    profileMenu.classList.toggle("is-authenticated", signedIn);
+  }
+  if (profileDropdown) {
+    profileDropdown.hidden = !signedIn;
+  }
 };
 
 const saveProgressLocal = (data) => {
@@ -159,6 +172,9 @@ const ensureAuthReady = () => {
 
 const handleGoogleSignIn = async () => {
   if (!ensureAuthReady()) return;
+  if (!isAuthPage) {
+    sessionStorage.setItem(loginRedirectKey, window.location.href);
+  }
   const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   try {
@@ -178,6 +194,13 @@ signOutButtons.forEach((button) => {
     if (!ensureAuthReady()) return;
     await authApi.signOut(auth);
     setMessage("Déconnexion réussie.", "success");
+    localStorage.setItem(
+      loginStatusKey,
+      JSON.stringify({
+        status: "signed-out",
+        updatedAt: new Date().toISOString(),
+      })
+    );
   });
 });
 
@@ -225,6 +248,22 @@ const bindAuthObservers = () => {
     if (userEmail) {
       userEmail.textContent = user ? user.email : "Aucun compte connecté";
     }
+    if (user && isAuthPage) {
+      localStorage.setItem(
+        loginStatusKey,
+        JSON.stringify({
+          status: "success",
+          name: user.displayName || user.email,
+          updatedAt: new Date().toISOString(),
+        })
+      );
+      const redirectTarget = sessionStorage.getItem(loginRedirectKey);
+      if (redirectTarget) {
+        sessionStorage.removeItem(loginRedirectKey);
+        window.location.href = redirectTarget;
+        return;
+      }
+    }
     await mergeProgress(user);
   });
 
@@ -238,6 +277,29 @@ const bindAuthObservers = () => {
       if (!error) return;
       setMessage(`Connexion Google échouée : ${error.message}`);
     });
+};
+
+const hydrateLoginBanner = () => {
+  if (!isHomePage || !loginBanner) return;
+  const raw = localStorage.getItem(loginStatusKey);
+  if (!raw) return;
+  let payload;
+  try {
+    payload = JSON.parse(raw);
+  } catch {
+    localStorage.removeItem(loginStatusKey);
+    return;
+  }
+  if (!payload) return;
+  if (payload.status === "success") {
+    loginBanner.textContent = `✅ Connecté : ${payload.name}`;
+    loginBanner.classList.add("is-success");
+  } else if (payload.status === "signed-out") {
+    loginBanner.textContent = "❌ Tu es déconnecté.";
+    loginBanner.classList.add("is-error");
+  }
+  loginBanner.hidden = false;
+  localStorage.removeItem(loginStatusKey);
 };
 
 const storedProgress = readProgressLocal();
@@ -264,6 +326,12 @@ const initFirebase = async () => {
 
   const app = initializeApp(firebaseConfig);
   auth = authApi.getAuth(app);
+  try {
+    await authApi.setPersistence(auth, authApi.browserLocalPersistence);
+  } catch (error) {
+    console.error("Persistance Firebase impossible", error);
+    setMessage("Connexion persistante indisponible. Mode local activé.", "warning");
+  }
   db = firestoreApi.getFirestore(app);
   firebaseReady = true;
   return true;
@@ -289,6 +357,10 @@ const initProfileMenu = () => {
   const closeMenu = () => profileMenu.classList.remove("is-open");
   profileTrigger.addEventListener("click", (event) => {
     event.stopPropagation();
+    if (!profileMenu.classList.contains("is-authenticated")) {
+      window.location.href = "connexion.html";
+      return;
+    }
     profileMenu.classList.toggle("is-open");
   });
   document.addEventListener("click", (event) => {
@@ -306,6 +378,7 @@ const initProfileMenu = () => {
 const init = async () => {
   initConnectModal();
   initProfileMenu();
+  hydrateLoginBanner();
   const ready = await initFirebase();
   if (ready) {
     bindAuthObservers();
