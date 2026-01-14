@@ -197,7 +197,20 @@ const handleGoogleSignIn = async () => {
   const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   try {
-    await authApi.signInWithRedirect(auth, provider);
+    if (typeof authApi.signInWithPopup === "function") {
+      const result = await authApi.signInWithPopup(auth, provider);
+      storeLoginStatus({
+        status: "success",
+        name: result.user?.displayName || result.user?.email || "Compte Google",
+        updatedAt: new Date().toISOString(),
+      });
+      renderLoginBanner({
+        status: "success",
+        name: result.user?.displayName || result.user?.email || "Compte Google",
+      });
+    } else {
+      await authApi.signInWithRedirect(auth, provider);
+    }
   } catch (error) {
     setMessage(`Connexion Google échouée : ${error.message}`);
   }
@@ -263,6 +276,12 @@ const bindAuthObservers = () => {
     updateProfileMenu(user);
     if (userEmail) {
       userEmail.textContent = user ? user.email : "Aucun compte connecté";
+    }
+    if (user && isHomePage) {
+      renderLoginBanner({
+        status: "success",
+        name: user.displayName || user.email || "Compte Google",
+      });
     }
     if (user && isAuthPage) {
       const redirectTarget = sessionStorage.getItem(loginRedirectKey);
