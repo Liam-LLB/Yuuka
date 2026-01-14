@@ -507,7 +507,29 @@
       </div>
       <div class="nav-actions">
         <span class="user-chip" data-user-chip>Invité</span>
-        <a class="btn ghost" href="connexion.html"><i class="fa-solid fa-user"></i> Se connecter</a>
+        <div class="profile-menu" data-profile-menu>
+          <button class="btn ghost profile-trigger" type="button" data-profile-trigger>
+            <i class="fa-solid fa-user"></i>
+            <span data-profile-trigger-label>Se connecter</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="profile-dropdown" data-profile-dropdown>
+            <div class="profile-card">
+              <span class="profile-label">Compte</span>
+              <strong data-profile-name>Invité</strong>
+              <span class="profile-email" data-profile-email>Connecte-toi avec Google.</span>
+            </div>
+            <button class="profile-item" type="button" data-google-signin>
+              <i class="fa-brands fa-google"></i> Se connecter avec Google
+            </button>
+            <a class="profile-item" href="connexion.html" data-profile-settings>
+              <i class="fa-solid fa-gear"></i> Gérer le compte
+            </a>
+            <button class="profile-item" type="button" data-signout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </header>

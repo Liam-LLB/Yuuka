@@ -23,7 +23,29 @@
       </div>
       <div class="nav-actions">
         <span class="user-chip" data-user-chip>Invité</span>
-        <a class="btn ghost" href="connexion.html"><i class="fa-solid fa-user"></i> Se connecter</a>
+        <div class="profile-menu" data-profile-menu>
+          <button class="btn ghost profile-trigger" type="button" data-profile-trigger>
+            <i class="fa-solid fa-user"></i>
+            <span data-profile-trigger-label>Se connecter</span>
+            <i class="fa-solid fa-chevron-down"></i>
+          </button>
+          <div class="profile-dropdown" data-profile-dropdown>
+            <div class="profile-card">
+              <span class="profile-label">Compte</span>
+              <strong data-profile-name>Invité</strong>
+              <span class="profile-email" data-profile-email>Connecte-toi avec Google.</span>
+            </div>
+            <button class="profile-item" type="button" data-google-signin>
+              <i class="fa-brands fa-google"></i> Se connecter avec Google
+            </button>
+            <a class="profile-item" href="connexion.html" data-profile-settings>
+              <i class="fa-solid fa-gear"></i> Gérer le compte
+            </a>
+            <button class="profile-item" type="button" data-signout>
+              <i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </nav>
@@ -35,9 +57,9 @@
       </button>
       <span class="eyebrow"><i class="fa-solid fa-user-shield"></i> Accès rapide</span>
       <h2 class="section-title">Tu veux te connecter ?</h2>
-      <p class="subtitle">Choisis de te connecter pour synchroniser ta progression, ou continue en invité.</p>
+      <p class="subtitle">Connecte-toi avec Google pour synchroniser ta progression, ou continue en invité.</p>
       <div class="modal-actions">
-        <a class="btn" href="connexion.html">Se connecter</a>
+        <button class="btn" type="button" data-google-signin><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
         <button class="btn ghost" type="button" data-modal-close>Rester en invité</button>
       </div>
     </div>
@@ -52,7 +74,7 @@
         grâce à ton compte sécurisé.
       </p>
       <div class="tabs">
-        <a class="btn" href="connexion.html"><i class="fa-solid fa-shield-heart"></i> Créer / connecter un compte</a>
+        <a class="btn" href="connexion.html"><i class="fa-brands fa-google"></i> Se connecter avec Google</a>
         <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
       </div>
     </section>
@@ -120,80 +142,32 @@
 
     <section class="grid-2" id="account">
       <div class="card auth-panel">
-        <h2 class="section-title">Compte &amp; sécurité</h2>
-        <p class="subtitle">Crée ton compte pour sauvegarder ta progression et activer la vérification email.</p>
+        <h2 class="section-title">Connexion Google uniquement</h2>
+        <p class="subtitle">La connexion se fait exclusivement via Google pour sécuriser ton accès.</p>
 
-        <div class="tabs">
-          <button class="tab-button active" data-auth-tab="signin">Connexion</button>
-          <button class="tab-button" data-auth-tab="signup">Créer un compte</button>
-          <button class="tab-button" data-auth-tab="reset">Mot de passe oublié</button>
-        </div>
+        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi avec Google pour synchroniser ta progression.</div>
 
-        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi pour synchroniser ta progression.</div>
-
-        <div class="auth-forms">
-          <form id="signInForm" class="auth-form active" data-auth-form="signin">
-            <div class="form-grid">
-              <div class="field">
-                <label>Email</label>
-                <input type="email" name="email" required placeholder="nom@email.com" />
-              </div>
-              <div class="field">
-                <label>Mot de passe</label>
-                <input type="password" name="password" required placeholder="••••••••" />
-              </div>
-              <button type="submit" class="btn"><i class="fa-solid fa-right-to-bracket"></i> Se connecter</button>
-              <button type="button" class="btn ghost" id="googleSignInBtn"><i class="fa-brands fa-google"></i> Connexion Google</button>
-            </div>
-          </form>
-
-          <form id="signUpForm" class="auth-form" data-auth-form="signup">
-            <div class="form-grid">
-              <div class="field">
-                <label>Nom d'utilisateur</label>
-                <input type="text" name="username" placeholder="YuukaFan" />
-              </div>
-              <div class="field">
-                <label>Email</label>
-                <input type="email" name="email" required placeholder="nom@email.com" />
-              </div>
-              <div class="field">
-                <label>Mot de passe</label>
-                <input type="password" name="password" required placeholder="Au moins 8 caractères" />
-              </div>
-              <button type="submit" class="btn"><i class="fa-solid fa-user-plus"></i> Créer le compte</button>
-            </div>
-          </form>
-
-          <form id="resetForm" class="auth-form" data-auth-form="reset">
-            <div class="form-grid">
-              <div class="field">
-                <label>Email</label>
-                <input type="email" name="email" required placeholder="nom@email.com" />
-              </div>
-              <button type="submit" class="btn"><i class="fa-solid fa-envelope"></i> Envoyer le lien</button>
-            </div>
-          </form>
+        <div class="form-grid">
+          <button type="button" class="btn" id="googleSignInBtn"><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
+          <p class="subtitle">Aucune création de compte n'est disponible directement sur le site.</p>
         </div>
       </div>
 
       <div class="card">
         <h2 class="section-title">État du compte</h2>
-        <p class="subtitle">Gère la vérification email, le lien Google et la déconnexion.</p>
+        <p class="subtitle">Retrouve ton adresse Google et déconnecte-toi quand tu veux.</p>
         <div class="form-grid">
           <div class="card-tile">
             <span class="badge">Compte connecté</span>
             <strong id="userEmail">Aucun compte connecté</strong>
-            <span class="subtitle">Pense à vérifier ton email pour activer ton compte.</span>
+            <span class="subtitle">Connexion Google requise pour synchroniser.</span>
           </div>
-          <button class="btn ghost" id="verifyEmailBtn"><i class="fa-solid fa-envelope-circle-check"></i> Renvoyer l'email de vérification</button>
-          <button class="btn ghost" id="googleLinkBtn"><i class="fa-brands fa-google"></i> Associer Google</button>
-          <button class="btn ghost" id="signOutBtn"><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
+          <button class="btn ghost" id="signOutBtn" data-signout><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
         </div>
         <ul class="info-list">
-          <li>Vérification email recommandée pour sécuriser le compte.</li>
-          <li>Associe Google pour te reconnecter plus vite.</li>
-          <li>Mot de passe réinitialisable à tout moment.</li>
+          <li>Connexion sécurisée via Google.</li>
+          <li>Synchronisation immédiate après connexion.</li>
+          <li>Déconnexion disponible depuis le menu profil.</li>
         </ul>
       </div>
     </section>
