@@ -35,6 +35,8 @@ const profileTrigger = document.querySelector("[data-profile-trigger]");
 const profileDropdown = document.querySelector("[data-profile-dropdown]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
+const loginRedirectKey = "yuuka_login_redirect_v1";
+const isAuthPage = window.location.pathname.endsWith("connexion.html");
 
 const setMessage = (message, tone = "") => {
   if (!authMessage) return;
@@ -167,6 +169,9 @@ const ensureAuthReady = () => {
 
 const handleGoogleSignIn = async () => {
   if (!ensureAuthReady()) return;
+  if (!isAuthPage) {
+    sessionStorage.setItem(loginRedirectKey, window.location.href);
+  }
   const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
   try {
@@ -232,6 +237,14 @@ const bindAuthObservers = () => {
     updateProfileMenu(user);
     if (userEmail) {
       userEmail.textContent = user ? user.email : "Aucun compte connecté";
+    }
+    if (user && isAuthPage) {
+      const redirectTarget = sessionStorage.getItem(loginRedirectKey);
+      if (redirectTarget) {
+        sessionStorage.removeItem(loginRedirectKey);
+        window.location.href = redirectTarget;
+        return;
+      }
     }
     await mergeProgress(user);
   });
