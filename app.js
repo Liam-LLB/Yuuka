@@ -46,8 +46,10 @@ const setProgressStatus = (status) => {
   if (progressEls.status) progressEls.status.textContent = status;
 };
 
+const getUserLabel = (user) => (user ? (user.displayName || user.email) : "Se connecter");
+
 const updateUserChips = (user) => {
-  const label = user ? `${user.displayName || user.email}` : "Invité";
+  const label = user ? "Connecté" : "Invité";
   userChips.forEach((chip) => {
     chip.textContent = label;
   });
@@ -56,7 +58,7 @@ const updateUserChips = (user) => {
 const updateProfileMenu = (user) => {
   const signedIn = Boolean(user);
   if (profileTriggerLabel) {
-    profileTriggerLabel.textContent = signedIn ? "Profil" : "Se connecter";
+    profileTriggerLabel.textContent = signedIn ? getUserLabel(user) : "Se connecter";
   }
   if (profileName) {
     profileName.textContent = signedIn ? (user.displayName || user.email) : "Invité";
@@ -73,6 +75,12 @@ const updateProfileMenu = (user) => {
   signOutButtons.forEach((button) => {
     button.hidden = !signedIn;
   });
+  if (profileMenu) {
+    profileMenu.classList.toggle("is-authenticated", signedIn);
+  }
+  if (profileDropdown) {
+    profileDropdown.hidden = !signedIn;
+  }
 };
 
 const saveProgressLocal = (data) => {
@@ -264,6 +272,12 @@ const initFirebase = async () => {
 
   const app = initializeApp(firebaseConfig);
   auth = authApi.getAuth(app);
+  try {
+    await authApi.setPersistence(auth, authApi.browserLocalPersistence);
+  } catch (error) {
+    console.error("Persistance Firebase impossible", error);
+    setMessage("Connexion persistante indisponible. Mode local activé.", "warning");
+  }
   db = firestoreApi.getFirestore(app);
   firebaseReady = true;
   return true;
@@ -289,6 +303,10 @@ const initProfileMenu = () => {
   const closeMenu = () => profileMenu.classList.remove("is-open");
   profileTrigger.addEventListener("click", (event) => {
     event.stopPropagation();
+    if (!profileMenu.classList.contains("is-authenticated")) {
+      window.location.href = "connexion.html";
+      return;
+    }
     profileMenu.classList.toggle("is-open");
   });
   document.addEventListener("click", (event) => {
