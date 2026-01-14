@@ -116,6 +116,14 @@ a { color: inherit; text-decoration: none; }
   gap: 10px;
 }
 
+.profile-menu:not(.is-authenticated) .profile-trigger .fa-chevron-down {
+  display: none;
+}
+
+.profile-menu:not(.is-authenticated) .profile-trigger {
+  cursor: pointer;
+}
+
 .profile-dropdown {
   position: absolute;
   right: 0;
