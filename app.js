@@ -24,11 +24,17 @@ const progressEls = {
 
 const authMessage = document.getElementById("authMessage");
 const userEmail = document.getElementById("userEmail");
-const verifyEmailBtn = document.getElementById("verifyEmailBtn");
-const googleLinkBtn = document.getElementById("googleLinkBtn");
-const signOutBtn = document.getElementById("signOutBtn");
 const googleSignInBtn = document.getElementById("googleSignInBtn");
 const userChips = document.querySelectorAll("[data-user-chip]");
+const profileTriggerLabel = document.querySelector("[data-profile-trigger-label]");
+const profileName = document.querySelector("[data-profile-name]");
+const profileEmail = document.querySelector("[data-profile-email]");
+const profileSettings = document.querySelector("[data-profile-settings]");
+const profileMenu = document.querySelector("[data-profile-menu]");
+const profileTrigger = document.querySelector("[data-profile-trigger]");
+const profileDropdown = document.querySelector("[data-profile-dropdown]");
+const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
+const signOutButtons = document.querySelectorAll("[data-signout]");
 
 const setMessage = (message, tone = "") => {
   if (!authMessage) return;
@@ -44,6 +50,28 @@ const updateUserChips = (user) => {
   const label = user ? `${user.displayName || user.email}` : "Invité";
   userChips.forEach((chip) => {
     chip.textContent = label;
+  });
+};
+
+const updateProfileMenu = (user) => {
+  const signedIn = Boolean(user);
+  if (profileTriggerLabel) {
+    profileTriggerLabel.textContent = signedIn ? "Profil" : "Se connecter";
+  }
+  if (profileName) {
+    profileName.textContent = signedIn ? (user.displayName || user.email) : "Invité";
+  }
+  if (profileEmail) {
+    profileEmail.textContent = signedIn ? user.email : "Connecte-toi avec Google pour synchroniser.";
+  }
+  if (profileSettings) {
+    profileSettings.hidden = !signedIn;
+  }
+  googleSignInButtons.forEach((button) => {
+    button.hidden = signedIn;
+  });
+  signOutButtons.forEach((button) => {
+    button.hidden = !signedIn;
   });
 };
 
@@ -121,23 +149,6 @@ if (pageName) {
   updateProgress(pageName);
 }
 
-const initTabs = () => {
-  const buttons = document.querySelectorAll("[data-auth-tab]");
-  const forms = document.querySelectorAll("[data-auth-form]");
-  if (!buttons.length) return;
-  buttons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const target = button.dataset.authTab;
-      buttons.forEach((btn) => btn.classList.toggle("active", btn === button));
-      forms.forEach((form) => form.classList.toggle("active", form.dataset.authForm === target));
-    });
-  });
-};
-
-const signInForm = document.getElementById("signInForm");
-const signUpForm = document.getElementById("signUpForm");
-const resetForm = document.getElementById("resetForm");
-
 const ensureAuthReady = () => {
   if (!firebaseReady || !authApi || !auth) {
     setMessage("Connexion indisponible pour le moment. Mode invité activé.", "warning");
@@ -146,56 +157,7 @@ const ensureAuthReady = () => {
   return true;
 };
 
-signInForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!ensureAuthReady()) return;
-  const email = signInForm.querySelector("input[name='email']").value.trim();
-  const password = signInForm.querySelector("input[name='password']").value.trim();
-  try {
-    await authApi.signInWithEmailAndPassword(auth, email, password);
-    setMessage("Connexion réussie. Heureux de te revoir !", "success");
-  } catch (error) {
-    setMessage(`Connexion impossible : ${error.message}`);
-  }
-});
-
-signUpForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!ensureAuthReady()) return;
-  const email = signUpForm.querySelector("input[name='email']").value.trim();
-  const password = signUpForm.querySelector("input[name='password']").value.trim();
-  const username = signUpForm.querySelector("input[name='username']").value.trim();
-  try {
-    const result = await authApi.createUserWithEmailAndPassword(auth, email, password);
-    if (username) {
-      await authApi.updateProfile(result.user, { displayName: username });
-    }
-    await authApi.sendEmailVerification(result.user);
-    setMessage("Compte créé ! Pense à vérifier tes emails pour activer ton compte.", "success");
-  } catch (error) {
-    setMessage(`Inscription impossible : ${error.message}`);
-  }
-});
-
-resetForm?.addEventListener("submit", async (event) => {
-  event.preventDefault();
-  if (!ensureAuthReady()) return;
-  const email = resetForm.querySelector("input[name='email']").value.trim();
-  try {
-    await authApi.sendPasswordResetEmail(auth, email);
-    setMessage("Un lien de réinitialisation a été envoyé.", "success");
-  } catch (error) {
-    setMessage(`Réinitialisation impossible : ${error.message}`);
-  }
-});
-
-verifyEmailBtn?.addEventListener("click", async () => {
-  if (!auth?.currentUser || !ensureAuthReady()) return;
-  await authApi.sendEmailVerification(auth.currentUser);
-  setMessage("Email de vérification renvoyé.", "success");
-});
-
-googleSignInBtn?.addEventListener("click", async () => {
+const handleGoogleSignIn = async () => {
   if (!ensureAuthReady()) return;
   const provider = new authApi.GoogleAuthProvider();
   provider.setCustomParameters({ prompt: "select_account" });
@@ -204,23 +166,19 @@ googleSignInBtn?.addEventListener("click", async () => {
   } catch (error) {
     setMessage(`Connexion Google échouée : ${error.message}`);
   }
+};
+
+googleSignInBtn?.addEventListener("click", handleGoogleSignIn);
+googleSignInButtons.forEach((button) => {
+  button.addEventListener("click", handleGoogleSignIn);
 });
 
-googleLinkBtn?.addEventListener("click", async () => {
-  if (!auth?.currentUser || !ensureAuthReady()) return;
-  const provider = new authApi.GoogleAuthProvider();
-  provider.setCustomParameters({ prompt: "select_account" });
-  try {
-    await authApi.linkWithRedirect(auth.currentUser, provider);
-  } catch (error) {
-    setMessage(`Association Google impossible : ${error.message}`);
-  }
-});
-
-signOutBtn?.addEventListener("click", async () => {
-  if (!ensureAuthReady()) return;
-  await authApi.signOut(auth);
-  setMessage("Déconnexion réussie.", "success");
+signOutButtons.forEach((button) => {
+  button.addEventListener("click", async () => {
+    if (!ensureAuthReady()) return;
+    await authApi.signOut(auth);
+    setMessage("Déconnexion réussie.", "success");
+  });
 });
 
 const toTimestamp = (value) => {
@@ -263,17 +221,9 @@ const mergeProgress = async (user) => {
 const bindAuthObservers = () => {
   authApi.onAuthStateChanged(auth, async (user) => {
     updateUserChips(user);
+    updateProfileMenu(user);
     if (userEmail) {
       userEmail.textContent = user ? user.email : "Aucun compte connecté";
-    }
-    if (verifyEmailBtn) {
-      verifyEmailBtn.disabled = !user || user.emailVerified;
-    }
-    if (googleLinkBtn) {
-      googleLinkBtn.disabled = !user;
-    }
-    if (signOutBtn) {
-      signOutBtn.disabled = !user;
     }
     await mergeProgress(user);
   });
@@ -334,9 +284,28 @@ const initConnectModal = () => {
   });
 };
 
+const initProfileMenu = () => {
+  if (!profileMenu || !profileTrigger || !profileDropdown) return;
+  const closeMenu = () => profileMenu.classList.remove("is-open");
+  profileTrigger.addEventListener("click", (event) => {
+    event.stopPropagation();
+    profileMenu.classList.toggle("is-open");
+  });
+  document.addEventListener("click", (event) => {
+    if (!profileMenu.contains(event.target)) {
+      closeMenu();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeMenu();
+    }
+  });
+};
+
 const init = async () => {
-  initTabs();
   initConnectModal();
+  initProfileMenu();
   const ready = await initFirebase();
   if (ready) {
     bindAuthObservers();
