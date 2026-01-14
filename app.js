@@ -36,10 +36,7 @@ const profileDropdown = document.querySelector("[data-profile-dropdown]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
 const loginRedirectKey = "yuuka_login_redirect_v1";
-const loginStatusKey = "yuuka_login_status_v1";
 const isAuthPage = window.location.pathname.endsWith("connexion.html");
-const isHomePage = document.body?.dataset?.page === "Accueil";
-const loginBanner = document.querySelector("[data-login-banner]");
 
 const setMessage = (message, tone = "") => {
   if (!authMessage) return;
@@ -249,14 +246,6 @@ const bindAuthObservers = () => {
       userEmail.textContent = user ? user.email : "Aucun compte connecté";
     }
     if (user && isAuthPage) {
-      localStorage.setItem(
-        loginStatusKey,
-        JSON.stringify({
-          status: "success",
-          name: user.displayName || user.email,
-          updatedAt: new Date().toISOString(),
-        })
-      );
       const redirectTarget = sessionStorage.getItem(loginRedirectKey);
       if (redirectTarget) {
         sessionStorage.removeItem(loginRedirectKey);
