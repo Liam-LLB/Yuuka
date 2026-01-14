@@ -191,6 +191,13 @@ signOutButtons.forEach((button) => {
     if (!ensureAuthReady()) return;
     await authApi.signOut(auth);
     setMessage("Déconnexion réussie.", "success");
+    localStorage.setItem(
+      loginStatusKey,
+      JSON.stringify({
+        status: "signed-out",
+        updatedAt: new Date().toISOString(),
+      })
+    );
   });
 });
 
@@ -259,6 +266,29 @@ const bindAuthObservers = () => {
       if (!error) return;
       setMessage(`Connexion Google échouée : ${error.message}`);
     });
+};
+
+const hydrateLoginBanner = () => {
+  if (!isHomePage || !loginBanner) return;
+  const raw = localStorage.getItem(loginStatusKey);
+  if (!raw) return;
+  let payload;
+  try {
+    payload = JSON.parse(raw);
+  } catch {
+    localStorage.removeItem(loginStatusKey);
+    return;
+  }
+  if (!payload) return;
+  if (payload.status === "success") {
+    loginBanner.textContent = `✅ Connecté : ${payload.name}`;
+    loginBanner.classList.add("is-success");
+  } else if (payload.status === "signed-out") {
+    loginBanner.textContent = "❌ Tu es déconnecté.";
+    loginBanner.classList.add("is-error");
+  }
+  loginBanner.hidden = false;
+  localStorage.removeItem(loginStatusKey);
 };
 
 const storedProgress = readProgressLocal();
@@ -337,6 +367,7 @@ const initProfileMenu = () => {
 const init = async () => {
   initConnectModal();
   initProfileMenu();
+  hydrateLoginBanner();
   const ready = await initFirebase();
   if (ready) {
     bindAuthObservers();
