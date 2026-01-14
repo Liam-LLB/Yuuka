@@ -36,7 +36,11 @@ const profileDropdown = document.querySelector("[data-profile-dropdown]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
 const loginRedirectKey = "yuuka_login_redirect_v1";
+const loginStatusKey = "yuuka_login_status_v1";
+const currentPath = window.location.pathname;
+const isHomePage = currentPath.endsWith("/") || currentPath.endsWith("index.html");
 const isAuthPage = window.location.pathname.endsWith("connexion.html");
+const loginBanner = document.querySelector("[data-login-banner]");
 
 const setMessage = (message, tone = "") => {
   if (!authMessage) return;
@@ -46,6 +50,24 @@ const setMessage = (message, tone = "") => {
 
 const setProgressStatus = (status) => {
   if (progressEls.status) progressEls.status.textContent = status;
+};
+
+const storeLoginStatus = (payload) => {
+  if (!payload) return;
+  localStorage.setItem(loginStatusKey, JSON.stringify(payload));
+};
+
+const renderLoginBanner = (payload) => {
+  if (!isHomePage || !loginBanner || !payload) return;
+  loginBanner.classList.remove("is-success", "is-error");
+  if (payload.status === "success") {
+    loginBanner.textContent = `✅ Connecté : ${payload.name}`;
+    loginBanner.classList.add("is-success");
+  } else if (payload.status === "signed-out") {
+    loginBanner.textContent = "❌ Tu es déconnecté.";
+    loginBanner.classList.add("is-error");
+  }
+  loginBanner.hidden = false;
 };
 
 const getUserLabel = (user) => (user ? (user.displayName || user.email) : "Se connecter");
@@ -191,13 +213,10 @@ signOutButtons.forEach((button) => {
     if (!ensureAuthReady()) return;
     await authApi.signOut(auth);
     setMessage("Déconnexion réussie.", "success");
-    localStorage.setItem(
-      loginStatusKey,
-      JSON.stringify({
-        status: "signed-out",
-        updatedAt: new Date().toISOString(),
-      })
-    );
+    storeLoginStatus({
+      status: "signed-out",
+      updatedAt: new Date().toISOString(),
+    });
   });
 });
 
@@ -248,6 +267,11 @@ const bindAuthObservers = () => {
     if (user && isAuthPage) {
       const redirectTarget = sessionStorage.getItem(loginRedirectKey);
       if (redirectTarget) {
+        storeLoginStatus({
+          status: "success",
+          name: user.displayName || user.email || "Compte Google",
+          updatedAt: new Date().toISOString(),
+        });
         sessionStorage.removeItem(loginRedirectKey);
         window.location.href = redirectTarget;
         return;
@@ -261,6 +285,15 @@ const bindAuthObservers = () => {
       if (!result) return;
       const action = result.operationType === "link" ? "Compte Google associé à ton profil." : "Connexion Google réussie.";
       setMessage(action, "success");
+      storeLoginStatus({
+        status: "success",
+        name: result.user?.displayName || result.user?.email || "Compte Google",
+        updatedAt: new Date().toISOString(),
+      });
+      renderLoginBanner({
+        status: "success",
+        name: result.user?.displayName || result.user?.email || "Compte Google",
+      });
     })
     .catch((error) => {
       if (!error) return;
@@ -280,14 +313,7 @@ const hydrateLoginBanner = () => {
     return;
   }
   if (!payload) return;
-  if (payload.status === "success") {
-    loginBanner.textContent = `✅ Connecté : ${payload.name}`;
-    loginBanner.classList.add("is-success");
-  } else if (payload.status === "signed-out") {
-    loginBanner.textContent = "❌ Tu es déconnecté.";
-    loginBanner.classList.add("is-error");
-  }
-  loginBanner.hidden = false;
+  renderLoginBanner(payload);
   localStorage.removeItem(loginStatusKey);
 };
 
