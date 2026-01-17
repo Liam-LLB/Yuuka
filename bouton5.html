@@ -9,20 +9,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.18), transparent 25%),
-            radial-gradient(circle at 80% 0%, rgba(244, 114, 182, 0.14), transparent 20%),
-            #0f172a;
-      --panel: rgba(30, 41, 59, 0.9);
-      --card: rgba(51, 65, 85, 0.92);
-      --border: rgba(148, 163, 184, 0.35);
+      --bg: #0b1120;
+      --bg-soft: #0f172a;
+      --panel: rgba(15, 23, 42, 0.88);
+      --card: rgba(30, 41, 59, 0.82);
+      --border: rgba(148, 163, 184, 0.2);
       --text: #e2e8f0;
-      --muted: #cbd5e1;
+      --muted: #94a3b8;
     }
 
     body {
       margin: 0;
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-      background: var(--bg);
+      background: linear-gradient(135deg, var(--bg), var(--bg-soft) 60%, var(--bg));
       color: var(--text);
     }
 
@@ -57,9 +56,9 @@
     }
 
     .calendar-header button {
-      background: rgba(59, 130, 246, 0.16);
-      border: 1px solid rgba(59, 130, 246, 0.35);
-      color: #dbeafe;
+      background: rgba(96, 165, 250, 0.16);
+      border: 1px solid rgba(96, 165, 250, 0.35);
+      color: #e2e8f0;
       font-size: 1.2em;
       cursor: pointer;
       padding: 10px 14px;
@@ -68,7 +67,7 @@
     }
 
     .calendar-header button:hover {
-      background: rgba(59, 130, 246, 0.24);
+      background: rgba(96, 165, 250, 0.24);
     }
 
     .calendar-days {
@@ -95,8 +94,8 @@
     }
 
     .calendar-day.today {
-      background-color: #2563eb;
-      border-color: rgba(37, 99, 235, 0.8);
+      background-color: #3b82f6;
+      border-color: rgba(59, 130, 246, 0.8);
     }
 
     .calendar-day.special {
@@ -110,13 +109,13 @@
     }
 
     .calendar-day.inactive {
-      background-color: #2a3648;
-      color: #888;
+      background-color: #1f2937;
+      color: #94a3b8;
     }
 
     .calendar-day:hover {
       transform: translateY(-2px);
-      border-color: rgba(244, 114, 182, 0.35);
+      border-color: rgba(96, 165, 250, 0.35);
     }
 
     .popup {
@@ -124,7 +123,7 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #1e293b;
+      background-color: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--border);
       padding: 22px;
       border-radius: 12px;

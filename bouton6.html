@@ -9,18 +9,19 @@
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0b1224;
-      --panel: rgba(30, 41, 59, 0.9);
-      --card: rgba(23, 31, 50, 0.9);
-      --muted: #cbd5e1;
+      --bg: #0b1120;
+      --bg-soft: #0f172a;
+      --panel: rgba(15, 23, 42, 0.88);
+      --card: rgba(30, 41, 59, 0.82);
+      --muted: #94a3b8;
       --text: #e2e8f0;
-      --accent: #7c3aed;
-      --accent-2: #22d3ee;
-      --accent-3: #f59e0b;
-      --border: rgba(148, 163, 184, 0.25);
+      --accent: #60a5fa;
+      --accent-2: #a855f7;
+      --accent-3: #22c55e;
+      --border: rgba(148, 163, 184, 0.2);
       --success: #22c55e;
       --warning: #f97316;
-      --danger: #ef4444;
+      --danger: #f43f5e;
     }
 
     * { box-sizing: border-box; }
@@ -28,9 +29,9 @@
     body {
       margin: 0;
       background:
-        radial-gradient(circle at 15% 25%, rgba(124, 58, 237, 0.16), transparent 28%),
-        radial-gradient(circle at 80% 10%, rgba(34, 211, 238, 0.18), transparent 25%),
-        linear-gradient(135deg, #0b1224 0%, #0f172a 55%, #0b1224 100%);
+        radial-gradient(circle at 15% 25%, rgba(96, 165, 250, 0.16), transparent 28%),
+        radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.18), transparent 25%),
+        linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 55%, var(--bg) 100%);
       color: var(--text);
       font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
       min-height: 100vh;
