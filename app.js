@@ -399,6 +399,14 @@ const themePresets = {
       "--border": "rgba(148, 163, 184, 0.2)",
       "--text": "#e2e8f0",
       "--muted": "#94a3b8",
+      "--btn-from": "#2563eb",
+      "--btn-to": "#7c3aed",
+      "--btn-shadow": "rgba(37, 99, 235, 0.35)",
+      "--btn-text": "#ffffff",
+      "--btn-ghost-bg": "rgba(255, 255, 255, 0.06)",
+      "--btn-ghost-border": "rgba(255, 255, 255, 0.12)",
+      "--btn-ghost-hover": "rgba(96, 165, 250, 0.12)",
+      "--btn-ghost-text": "#e2e8f0",
       "--ambient-1": "96 165 250",
       "--ambient-2": "168 85 247",
       "--ambient-3": "34 197 94",
@@ -415,6 +423,14 @@ const themePresets = {
       "--border": "rgba(183, 165, 207, 0.2)",
       "--text": "#ebe6f6",
       "--muted": "#b6a6d6",
+      "--btn-from": "#7c3aed",
+      "--btn-to": "#c084fc",
+      "--btn-shadow": "rgba(124, 58, 237, 0.35)",
+      "--btn-text": "#ffffff",
+      "--btn-ghost-bg": "rgba(255, 255, 255, 0.08)",
+      "--btn-ghost-border": "rgba(255, 255, 255, 0.18)",
+      "--btn-ghost-hover": "rgba(192, 132, 252, 0.18)",
+      "--btn-ghost-text": "#f5f3ff",
       "--ambient-1": "156 121 201",
       "--ambient-2": "203 153 229",
       "--ambient-3": "126 164 209",
@@ -431,6 +447,14 @@ const themePresets = {
       "--border": "rgba(140, 196, 192, 0.2)",
       "--text": "#d8f1ef",
       "--muted": "#9bbfbb",
+      "--btn-from": "#0f766e",
+      "--btn-to": "#14b8a6",
+      "--btn-shadow": "rgba(20, 184, 166, 0.3)",
+      "--btn-text": "#ffffff",
+      "--btn-ghost-bg": "rgba(210, 250, 244, 0.08)",
+      "--btn-ghost-border": "rgba(210, 250, 244, 0.2)",
+      "--btn-ghost-hover": "rgba(45, 212, 191, 0.18)",
+      "--btn-ghost-text": "#e0f2f1",
       "--ambient-1": "95 177 173",
       "--ambient-2": "126 204 198",
       "--ambient-3": "82 143 136",
@@ -447,9 +471,41 @@ const themePresets = {
       "--border": "rgba(204, 177, 146, 0.2)",
       "--text": "#f2e8dc",
       "--muted": "#c6b3a2",
+      "--btn-from": "#b45309",
+      "--btn-to": "#a16207",
+      "--btn-shadow": "rgba(180, 83, 9, 0.32)",
+      "--btn-text": "#ffffff",
+      "--btn-ghost-bg": "rgba(255, 255, 255, 0.08)",
+      "--btn-ghost-border": "rgba(255, 255, 255, 0.18)",
+      "--btn-ghost-hover": "rgba(251, 191, 36, 0.18)",
+      "--btn-ghost-text": "#fef3c7",
       "--ambient-1": "201 166 130",
       "--ambient-2": "168 137 112",
       "--ambient-3": "122 97 78",
+    },
+  },
+  clair: {
+    label: "Éclat clair",
+    vars: {
+      "--bg": "#f8fafc",
+      "--bg-soft": "#eef2f7",
+      "--panel": "rgba(255, 255, 255, 0.9)",
+      "--panel-strong": "rgba(255, 255, 255, 0.98)",
+      "--card": "rgba(241, 245, 249, 0.9)",
+      "--border": "rgba(148, 163, 184, 0.4)",
+      "--text": "#0f172a",
+      "--muted": "#475569",
+      "--btn-from": "#2563eb",
+      "--btn-to": "#60a5fa",
+      "--btn-shadow": "rgba(37, 99, 235, 0.25)",
+      "--btn-text": "#ffffff",
+      "--btn-ghost-bg": "rgba(15, 23, 42, 0.08)",
+      "--btn-ghost-border": "rgba(15, 23, 42, 0.18)",
+      "--btn-ghost-hover": "rgba(37, 99, 235, 0.16)",
+      "--btn-ghost-text": "#0f172a",
+      "--ambient-1": "59 130 246",
+      "--ambient-2": "249 115 22",
+      "--ambient-3": "34 197 94",
     },
   },
 };
@@ -460,6 +516,7 @@ const applyTheme = (key, persist = true) => {
   Object.entries(theme.vars).forEach(([name, value]) => {
     document.documentElement.style.setProperty(name, value);
   });
+  document.documentElement.dataset.theme = key;
   themeOptions.forEach((option) => {
     option.classList.toggle("is-active", option.dataset.themeOption === key);
   });
@@ -530,7 +587,7 @@ const initHistoryModal = () => {
       closeModal();
     }
   });
-  const currentVersion = "v3.2";
+  const currentVersion = "v3.1";
   const currentLabel = historyModal.querySelector("[data-current-version]");
   if (currentLabel) currentLabel.textContent = currentVersion;
   historyModal.querySelectorAll("[data-version]").forEach((item) => {
