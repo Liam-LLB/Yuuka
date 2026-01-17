@@ -23,29 +23,10 @@
       </div>
       <div class="nav-actions">
         <span class="user-chip" data-user-chip>Invité</span>
-        <div class="profile-menu" data-profile-menu>
-          <button class="btn ghost profile-trigger" type="button" data-profile-trigger>
-            <i class="fa-solid fa-user"></i>
-            <span data-profile-trigger-label>Se connecter</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="profile-dropdown" data-profile-dropdown>
-            <div class="profile-card">
-              <span class="profile-label">Compte</span>
-              <strong data-profile-name>Invité</strong>
-              <span class="profile-email" data-profile-email>Connecte-toi avec Google.</span>
-            </div>
-            <button class="profile-item" type="button" data-google-signin>
-              <i class="fa-brands fa-google"></i> Se connecter avec Google
-            </button>
-            <a class="profile-item" href="connexion.html" data-profile-settings>
-              <i class="fa-solid fa-gear"></i> Gérer le compte
-            </a>
-            <button class="profile-item" type="button" data-signout>
-              <i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter
-            </button>
-          </div>
-        </div>
+        <button class="btn ghost profile-trigger" type="button" data-account-trigger>
+          <i class="fa-solid fa-user"></i>
+          <span data-profile-trigger-label>Se connecter</span>
+        </button>
       </div>
     </div>
   </nav>
@@ -71,24 +52,65 @@
         </ul>
       </div>
       <div class="card">
-        <h2 class="section-title">Progression</h2>
-        <div class="card-grid">
-          <div class="card-tile">
-            <span class="badge">Dernière page</span>
-            <strong id="progressPage">-</strong>
-            <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
-          </div>
-          <div class="card-tile">
-            <span class="badge">Statut</span>
-            <strong id="progressStatus">Local</strong>
-            <span class="subtitle">Connecte-toi pour synchroniser.</span>
-          </div>
-        </div>
+        <h2 class="section-title">Ambiance sonore</h2>
+        <p class="subtitle">Des playlists qui se dévoilent comme un set live.</p>
+        <ul class="info-list">
+          <li>Mix d'humeurs pour chaque moment.</li>
+          <li>Visuels synchronisés aux sons.</li>
+          <li>Accès rapide aux favoris.</li>
+        </ul>
       </div>
     </section>
   </main>
 
   <footer class="footer">Yuukonline · Yuusiques en préparation.</footer>
+
+  <div class="account-overlay" data-account-modal>
+    <div class="account-panel">
+      <button class="modal-close" type="button" data-account-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="account-header">
+        <span class="eyebrow"><i class="fa-solid fa-user-astronaut"></i> Centre de connexion</span>
+        <h2 class="section-title">Espace compte</h2>
+        <p class="subtitle">Connexion Google, statut en ligne et historique de navigation réunis ici.</p>
+      </div>
+      <div class="account-grid">
+        <div class="card-tile depth-card">
+          <span class="badge">Profil</span>
+          <strong data-profile-name>Invité</strong>
+          <span class="subtitle" data-profile-email>Connecte-toi avec Google.</span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">État</span>
+          <strong data-account-state>Invité</strong>
+          <span class="subtitle">Synchronisation disponible après connexion.</span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Dernière actualisation</span>
+          <strong id="progressPage">-</strong>
+          <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Statut de sync</span>
+          <strong id="progressStatus">Local</strong>
+          <span class="subtitle">Passe en ligne dès la connexion.</span>
+        </div>
+      </div>
+      <div class="account-actions">
+        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi avec Google pour synchroniser ta progression.</div>
+        <div class="form-grid">
+          <button type="button" class="btn" data-google-signin><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
+          <button class="btn ghost" type="button" data-signout><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Compte connecté</span>
+          <strong id="userEmail">Aucun compte connecté</strong>
+          <span class="subtitle">Connexion Google requise pour la sauvegarde.</span>
+        </div>
+      </div>
+    </div>
+  </div>
   <script type="module" src="app.js"></script>
 </body>
 </html>
