@@ -429,7 +429,8 @@ const initParallax = () => {
     items.forEach((item) => {
       const depth = Number(item.dataset.depth || 0.1);
       const offset = scrollY * depth;
-      item.style.transform = `translate3d(0, ${offset}px, ${depth * 120}px) rotateX(${depth * 10}deg) rotateY(${depth * -8}deg)`;
+      item.style.setProperty("--parallax-y", `${offset}px`);
+      item.style.setProperty("--parallax-z", `${depth * 120}px`);
     });
   };
   update();
