@@ -154,6 +154,15 @@ a { color: inherit; text-decoration: none; }
   padding: 36px;
 }
 
+.hero-center {
+  text-align: center;
+}
+
+.hero-center .hero-copy {
+  align-items: center;
+  text-align: center;
+}
+
 .hero-copy {
   display: grid;
   gap: 16px;
@@ -173,6 +182,57 @@ a { color: inherit; text-decoration: none; }
   place-items: center;
   perspective: 900px;
   transform-style: preserve-3d;
+}
+
+.hero-icon-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  width: min(880px, 100%);
+  margin: 6px auto 0;
+}
+
+.hero-icon-card {
+  display: grid;
+  gap: 6px;
+  padding: 16px 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  background: linear-gradient(160deg, rgba(15, 23, 42, 0.85), rgba(30, 41, 59, 0.75));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.04), 0 18px 30px rgba(0, 0, 0, 0.28);
+  transition: transform 0.25s ease, border 0.25s ease, box-shadow 0.25s ease;
+}
+
+.hero-icon-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(96, 165, 250, 0.6);
+  box-shadow: 0 20px 45px rgba(96, 165, 250, 0.18);
+}
+
+.hero-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  margin: 0 auto;
+  background: radial-gradient(circle at 30% 30%, rgba(96, 165, 250, 0.7), rgba(15, 23, 42, 0.2));
+  border: 1px solid rgba(96, 165, 250, 0.4);
+  color: #e0f2fe;
+  font-size: 18px;
+  box-shadow: 0 10px 24px rgba(96, 165, 250, 0.25);
+}
+
+.hero-icon-label {
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  font-size: 0.95rem;
+}
+
+.hero-icon-desc {
+  color: var(--muted);
+  font-size: 0.85rem;
 }
 
 .orb {
@@ -203,9 +263,48 @@ a { color: inherit; text-decoration: none; }
 .orb-three {
   width: 120px;
   height: 120px;
-  background: radial-gradient(circle at 30% 30%, rgba(14, 165, 233, 0.75), rgba(30, 41, 59, 0.1));
+  background: radial-gradient(circle at 30% 30%, rgba(34, 197, 94, 0.7), rgba(30, 41, 59, 0.1));
   top: 50%;
-  right: 40%;
+  right: 30%;
+}
+
+.floating-object {
+  position: absolute;
+  border-radius: 18px;
+  transform-style: preserve-3d;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+}
+
+.floating-object.cube {
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(135deg, rgba(96, 165, 250, 0.8), rgba(15, 23, 42, 0.4));
+  top: 18%;
+  right: 22%;
+  transform: rotateX(18deg) rotateY(22deg);
+  border: 1px solid rgba(148, 163, 184, 0.35);
+}
+
+.floating-object.prism {
+  width: 140px;
+  height: 70px;
+  background: linear-gradient(120deg, rgba(168, 85, 247, 0.8), rgba(15, 23, 42, 0.4));
+  bottom: 20%;
+  left: 16%;
+  transform: rotateX(20deg) rotateZ(-12deg);
+  border-radius: 24px;
+  border: 1px solid rgba(168, 85, 247, 0.4);
+}
+
+.floating-object.ring {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  border: 12px solid rgba(96, 165, 250, 0.4);
+  box-shadow: inset 0 0 22px rgba(96, 165, 250, 0.35);
+  top: 62%;
+  right: 18%;
+  transform: rotateX(50deg);
 }
 
 .floating-card {
