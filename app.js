@@ -488,23 +488,23 @@ const themePresets = {
     label: "Éclat clair",
     vars: {
       "--bg": "#f8fafc",
-      "--bg-soft": "#eef2f7",
-      "--panel": "rgba(255, 255, 255, 0.9)",
+      "--bg-soft": "#e2e8f0",
+      "--panel": "rgba(255, 255, 255, 0.96)",
       "--panel-strong": "rgba(255, 255, 255, 0.98)",
-      "--card": "rgba(241, 245, 249, 0.9)",
-      "--border": "rgba(148, 163, 184, 0.4)",
-      "--text": "#0f172a",
-      "--muted": "#475569",
-      "--btn-from": "#2563eb",
-      "--btn-to": "#60a5fa",
+      "--card": "rgba(248, 250, 252, 0.96)",
+      "--border": "rgba(100, 116, 139, 0.4)",
+      "--text": "#0b1220",
+      "--muted": "#334155",
+      "--btn-from": "#1d4ed8",
+      "--btn-to": "#3b82f6",
       "--btn-shadow": "rgba(37, 99, 235, 0.25)",
       "--btn-text": "#ffffff",
-      "--btn-ghost-bg": "rgba(15, 23, 42, 0.08)",
-      "--btn-ghost-border": "rgba(15, 23, 42, 0.18)",
-      "--btn-ghost-hover": "rgba(37, 99, 235, 0.16)",
-      "--btn-ghost-text": "#0f172a",
+      "--btn-ghost-bg": "rgba(15, 23, 42, 0.06)",
+      "--btn-ghost-border": "rgba(15, 23, 42, 0.16)",
+      "--btn-ghost-hover": "rgba(37, 99, 235, 0.12)",
+      "--btn-ghost-text": "#0b1220",
       "--ambient-1": "59 130 246",
-      "--ambient-2": "249 115 22",
+      "--ambient-2": "139 92 246",
       "--ambient-3": "34 197 94",
     },
   },
@@ -587,7 +587,7 @@ const initHistoryModal = () => {
       closeModal();
     }
   });
-  const currentVersion = "v3.1";
+  const currentVersion = "v3.2";
   const currentLabel = historyModal.querySelector("[data-current-version]");
   if (currentLabel) currentLabel.textContent = currentVersion;
   historyModal.querySelectorAll("[data-version]").forEach((item) => {

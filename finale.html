@@ -9,14 +9,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Bebas+Neue&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-1: #0b1224;
+      --bg-1: #0b1120;
       --bg-2: #0f172a;
-      --panel: rgba(23, 31, 50, 0.92);
-      --muted: #cbd5e1;
-      --accent: #8b5cf6;
-      --accent-2: #22d3ee;
+      --panel: rgba(15, 23, 42, 0.88);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #60a5fa;
+      --accent-2: #a855f7;
       --success: #22c55e;
-      --danger: #ef4444;
+      --danger: #f43f5e;
     }
 
     * { box-sizing: border-box; }
@@ -25,10 +26,10 @@
       margin: 0;
       min-height: 100vh;
       background:
-        radial-gradient(circle at 20% 15%, rgba(34, 211, 238, 0.16), transparent 32%),
-        radial-gradient(circle at 75% 10%, rgba(139, 92, 246, 0.2), transparent 30%),
+        radial-gradient(circle at 20% 15%, rgba(96, 165, 250, 0.16), transparent 32%),
+        radial-gradient(circle at 75% 10%, rgba(168, 85, 247, 0.2), transparent 30%),
         linear-gradient(140deg, var(--bg-1) 0%, var(--bg-2) 60%, var(--bg-1) 100%);
-      color: #e2e8f0;
+      color: var(--text);
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       padding: 28px 16px 60px;
     }
@@ -85,7 +86,7 @@
       padding: 6px 10px;
       border-radius: 999px;
       background: rgba(255, 255, 255, 0.08);
-      color: #cbd5e1;
+      color: var(--muted);
       font-weight: 700;
       font-size: 13px;
     }
