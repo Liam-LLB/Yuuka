@@ -429,8 +429,27 @@ const initParallax = () => {
     items.forEach((item) => {
       const depth = Number(item.dataset.depth || 0.1);
       const offset = scrollY * depth;
-      item.style.transform = `translate3d(0, ${offset}px, ${depth * 120}px) rotateX(${depth * 12}deg) rotateY(${depth * -10}deg)`;
+      item.style.transform = `translate3d(0, ${offset}px, ${depth * 120}px) rotateX(${depth * 10}deg) rotateY(${depth * -8}deg)`;
     });
+  };
+  update();
+  window.addEventListener("scroll", () => {
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+  window.addEventListener("resize", update);
+};
+
+const initScrollColors = () => {
+  const root = document.documentElement;
+  const update = () => {
+    const maxScroll = document.body.scrollHeight - window.innerHeight;
+    const progress = maxScroll > 0 ? Math.min(window.scrollY / maxScroll, 1) : 0;
+    const hue = 218 + progress * 90;
+    const hue2 = (hue + 70) % 360;
+    const shift = Math.round(progress * 120);
+    root.style.setProperty("--scroll-hue", hue.toFixed(1));
+    root.style.setProperty("--scroll-hue-2", hue2.toFixed(1));
+    root.style.setProperty("--scroll-shift", `${shift}px`);
   };
   update();
   window.addEventListener("scroll", () => {
@@ -443,6 +462,7 @@ const init = async () => {
   initAccessGate();
   initAccountModal();
   initParallax();
+  initScrollColors();
   hydrateLoginBanner();
   const ready = await initFirebase();
   if (ready) {
