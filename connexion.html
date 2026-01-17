@@ -32,13 +32,40 @@
   </nav>
 
   <main class="container">
-    <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-shield-heart"></i> Espace compte</span>
-      <h1 class="main-title">Connexion rapide</h1>
-      <p class="subtitle">Tout est centralisé dans l'espace compte pour garder la page claire et accessible.</p>
-      <div class="tabs">
-        <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Retour à l'accueil</a>
-        <button class="btn ghost" type="button" data-account-trigger><i class="fa-solid fa-user-astronaut"></i> Ouvrir l'espace compte</button>
+    <section class="login-immersive">
+      <div class="login-stage" aria-hidden="true">
+        <div class="login-orb orb-one" data-parallax data-depth="0.08"></div>
+        <div class="login-orb orb-two" data-parallax data-depth="0.14"></div>
+        <div class="login-orb orb-three" data-parallax data-depth="0.2"></div>
+        <div class="login-slab" data-parallax data-depth="0.24"></div>
+        <div class="login-card-3d">
+          <img src="https://cdn.pixabay.com/photo/2017/05/23/21/01/pigeon-2337332_1280.jpg" alt="Pigeon en perspective" loading="lazy" />
+          <span>Compagnon en 3D</span>
+        </div>
+        <div class="login-card-3d alt">
+          <img src="https://cdn.pixabay.com/photo/2014/05/21/15/18/pigeon-349720_1280.jpg" alt="Pigeon urbain" loading="lazy" />
+          <span>Signal urbain</span>
+        </div>
+      </div>
+      <div class="login-card card hero">
+        <span class="eyebrow"><i class="fa-solid fa-shield-heart"></i> Espace compte</span>
+        <h1 class="main-title">Connexion rapide</h1>
+        <p class="subtitle">Une interface immersive en 3D entoure ton accès sécurisé.</p>
+        <div class="tabs">
+          <a class="btn" href="index.html"><i class="fa-solid fa-house"></i> Retour à l'accueil</a>
+          <button class="btn ghost" type="button" data-account-trigger><i class="fa-solid fa-user-astronaut"></i> Ouvrir l'espace compte</button>
+        </div>
+      </div>
+      <div class="login-gallery">
+        <iframe
+          title="Pigeon 3D"
+          src="https://sketchfab.com/models/52cba6f8b94d4d52b5b81f78f8e5f12d/embed"
+          allow="autoplay; fullscreen; xr-spatial-tracking"
+        ></iframe>
+        <div class="gallery-caption">
+          <span class="eyebrow"><i class="fa-solid fa-cube"></i> Pigeons et volumes</span>
+          <p class="subtitle">Un aperçu 3D importé pour renforcer la profondeur de la page.</p>
+        </div>
       </div>
     </section>
     <section class="grid-2">
