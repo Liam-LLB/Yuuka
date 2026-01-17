@@ -433,7 +433,9 @@ a { color: inherit; text-decoration: none; }
 }
 
 .hero-icon-card:hover .hero-icon-arrow {
+  display: grid;
   opacity: 1;
+  visibility: visible;
   transform: translateZ(28px) rotateZ(12deg) scale(1);
   animation: var(--shard-anim) 1.8s ease-in-out infinite;
 }
