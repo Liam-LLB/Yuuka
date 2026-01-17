@@ -33,11 +33,20 @@ const profileSettings = document.querySelector("[data-profile-settings]");
 const accountTriggers = document.querySelectorAll("[data-account-trigger]");
 const accountModal = document.querySelector("[data-account-modal]");
 const accountCloseButtons = document.querySelectorAll("[data-account-close]");
+const themeTriggers = document.querySelectorAll("[data-theme-trigger]");
+const themeModal = document.querySelector("[data-theme-modal]");
+const themeCloseButtons = document.querySelectorAll("[data-theme-close]");
+const themeOptions = document.querySelectorAll("[data-theme-option]");
+const themeLabel = document.querySelector("[data-theme-label]");
+const historyTriggers = document.querySelectorAll("[data-history-trigger]");
+const historyModal = document.querySelector("[data-history-modal]");
+const historyCloseButtons = document.querySelectorAll("[data-history-close]");
 const accountState = document.querySelector("[data-account-state]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
 const loginRedirectKey = "yuuka_login_redirect_v1";
 const loginStatusKey = "yuuka_login_status_v1";
+const themeStorageKey = "yuuka_theme_choice_v1";
 const currentPath = window.location.pathname;
 const isHomePage = currentPath.endsWith("/") || currentPath.endsWith("index.html");
 const isAuthPage = window.location.pathname.endsWith("connexion.html");
@@ -378,6 +387,157 @@ const initAccountModal = () => {
   });
 };
 
+const themePresets = {
+  aurore: {
+    label: "Aurore brumeuse",
+    vars: {
+      "--bg": "#0b1120",
+      "--bg-soft": "#0f172a",
+      "--panel": "rgba(15, 23, 42, 0.88)",
+      "--panel-strong": "rgba(15, 23, 42, 0.96)",
+      "--card": "rgba(30, 41, 59, 0.82)",
+      "--border": "rgba(148, 163, 184, 0.2)",
+      "--text": "#e2e8f0",
+      "--muted": "#94a3b8",
+      "--ambient-1": "96 165 250",
+      "--ambient-2": "168 85 247",
+      "--ambient-3": "34 197 94",
+    },
+  },
+  perle: {
+    label: "Perle lilas",
+    vars: {
+      "--bg": "#120b1d",
+      "--bg-soft": "#1a1327",
+      "--panel": "rgba(20, 14, 32, 0.88)",
+      "--panel-strong": "rgba(24, 16, 36, 0.96)",
+      "--card": "rgba(33, 25, 49, 0.82)",
+      "--border": "rgba(183, 165, 207, 0.2)",
+      "--text": "#ebe6f6",
+      "--muted": "#b6a6d6",
+      "--ambient-1": "156 121 201",
+      "--ambient-2": "203 153 229",
+      "--ambient-3": "126 164 209",
+    },
+  },
+  lagon: {
+    label: "Lagon doux",
+    vars: {
+      "--bg": "#091818",
+      "--bg-soft": "#0f2424",
+      "--panel": "rgba(10, 26, 26, 0.88)",
+      "--panel-strong": "rgba(12, 30, 30, 0.96)",
+      "--card": "rgba(18, 38, 38, 0.82)",
+      "--border": "rgba(140, 196, 192, 0.2)",
+      "--text": "#d8f1ef",
+      "--muted": "#9bbfbb",
+      "--ambient-1": "95 177 173",
+      "--ambient-2": "126 204 198",
+      "--ambient-3": "82 143 136",
+    },
+  },
+  sable: {
+    label: "Sable nocturne",
+    vars: {
+      "--bg": "#15100d",
+      "--bg-soft": "#221814",
+      "--panel": "rgba(23, 18, 15, 0.88)",
+      "--panel-strong": "rgba(28, 21, 18, 0.96)",
+      "--card": "rgba(36, 27, 22, 0.82)",
+      "--border": "rgba(204, 177, 146, 0.2)",
+      "--text": "#f2e8dc",
+      "--muted": "#c6b3a2",
+      "--ambient-1": "201 166 130",
+      "--ambient-2": "168 137 112",
+      "--ambient-3": "122 97 78",
+    },
+  },
+};
+
+const applyTheme = (key, persist = true) => {
+  const theme = themePresets[key];
+  if (!theme) return;
+  Object.entries(theme.vars).forEach(([name, value]) => {
+    document.documentElement.style.setProperty(name, value);
+  });
+  themeOptions.forEach((option) => {
+    option.classList.toggle("is-active", option.dataset.themeOption === key);
+  });
+  if (themeLabel) {
+    themeLabel.textContent = theme.label;
+  }
+  if (persist) {
+    localStorage.setItem(themeStorageKey, key);
+  }
+};
+
+const initThemeModal = () => {
+  if (!themeModal) return;
+  const openModal = () => {
+    themeModal.classList.add("is-visible");
+    document.body.classList.add("is-locked");
+  };
+  const closeModal = () => {
+    themeModal.classList.remove("is-visible");
+    document.body.classList.remove("is-locked");
+  };
+  themeTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", openModal);
+  });
+  themeCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeModal);
+  });
+  themeModal.addEventListener("click", (event) => {
+    if (event.target === themeModal) {
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  });
+  themeOptions.forEach((option) => {
+    option.addEventListener("click", () => {
+      applyTheme(option.dataset.themeOption);
+    });
+  });
+};
+
+const initHistoryModal = () => {
+  if (!historyModal) return;
+  const openModal = () => {
+    historyModal.classList.add("is-visible");
+    document.body.classList.add("is-locked");
+  };
+  const closeModal = () => {
+    historyModal.classList.remove("is-visible");
+    document.body.classList.remove("is-locked");
+  };
+  historyTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", openModal);
+  });
+  historyCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeModal);
+  });
+  historyModal.addEventListener("click", (event) => {
+    if (event.target === historyModal) {
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  });
+  const currentVersion = "v3.2";
+  const currentLabel = historyModal.querySelector("[data-current-version]");
+  if (currentLabel) currentLabel.textContent = currentVersion;
+  historyModal.querySelectorAll("[data-version]").forEach((item) => {
+    item.classList.toggle("is-current", item.dataset.version === currentVersion);
+  });
+};
+
 const initAccessGate = () => {
   const accessKey = "yuuka_access_granted_v1";
   if (localStorage.getItem(accessKey)) return;
@@ -462,9 +622,17 @@ const initScrollColors = () => {
 const init = async () => {
   initAccessGate();
   initAccountModal();
+  initThemeModal();
+  initHistoryModal();
   initParallax();
   initScrollColors();
   hydrateLoginBanner();
+  const storedTheme = localStorage.getItem(themeStorageKey);
+  if (storedTheme && themePresets[storedTheme]) {
+    applyTheme(storedTheme, false);
+  } else {
+    applyTheme("aurore", false);
+  }
   const ready = await initFirebase();
   if (ready) {
     bindAuthObservers();

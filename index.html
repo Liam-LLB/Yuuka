@@ -27,31 +27,37 @@
             <span class="hero-icon"><i class="fa-solid fa-image"></i></span>
             <span class="hero-icon-label">Yuukalerie</span>
             <span class="hero-icon-desc">Collections visuelles</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
           <a class="hero-icon-card" href="bouton2.html">
             <span class="hero-icon"><i class="fa-solid fa-music"></i></span>
             <span class="hero-icon-label">Yuusiques</span>
             <span class="hero-icon-desc">Playlist &amp; vibes</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
           <a class="hero-icon-card" href="bouton3.html">
             <span class="hero-icon"><i class="fa-solid fa-user-group"></i></span>
             <span class="hero-icon-label">Yuugars</span>
             <span class="hero-icon-desc">Profils connectés</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
           <a class="hero-icon-card" href="bouton4.html">
             <span class="hero-icon"><i class="fa-solid fa-mug-hot"></i></span>
             <span class="hero-icon-label">Yuukafe</span>
             <span class="hero-icon-desc">Chats &amp; échanges</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
           <a class="hero-icon-card" href="bouton5.html">
             <span class="hero-icon"><i class="fa-solid fa-calendar"></i></span>
             <span class="hero-icon-label">Yuukalendrier</span>
             <span class="hero-icon-desc">Dates clés</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
           <a class="hero-icon-card" href="bouton6.html">
             <span class="hero-icon"><i class="fa-solid fa-gamepad"></i></span>
             <span class="hero-icon-label">Yuukajeux</span>
             <span class="hero-icon-desc">Mini-défis</span>
+            <span class="hero-icon-arrow" aria-hidden="true"><i class="fa-solid fa-arrow-up-right"></i></span>
           </a>
         </div>
         <div class="tabs">
@@ -151,7 +157,7 @@
         <p class="subtitle">Des focus créatifs en grand format pour maintenir la vibe.</p>
       </div>
       <div class="showcase-grid showcase-grid--secondary">
-        <div class="showcase-card is-static">
+        <button class="showcase-card is-static" type="button" data-theme-trigger>
           <span class="showcase-top">
             <span class="showcase-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></span>
             <span class="showcase-label">Focus</span>
@@ -159,8 +165,8 @@
           <span class="showcase-title">Éditions spéciales</span>
           <span class="showcase-desc">Thèmes éphémères, palettes et mises en scène.</span>
           <span class="showcase-cta">Voir les thèmes</span>
-        </div>
-        <div class="showcase-card is-static">
+        </button>
+        <button class="showcase-card is-static" type="button" data-history-trigger>
           <span class="showcase-top">
             <span class="showcase-icon"><i class="fa-solid fa-rocket"></i></span>
             <span class="showcase-label">Capsule</span>
@@ -168,7 +174,7 @@
           <span class="showcase-title">Moments clés</span>
           <span class="showcase-desc">Retrouve les instantanés qui font vibrer la page.</span>
           <span class="showcase-cta">Voir la capsule</span>
-        </div>
+        </button>
       </div>
     </section>
   </main>
@@ -217,6 +223,94 @@
           <span class="badge">Compte connecté</span>
           <strong id="userEmail">Aucun compte connecté</strong>
           <span class="subtitle">Connexion Google requise pour la sauvegarde.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" data-theme-modal>
+    <div class="modal-card theme-panel">
+      <button class="modal-close" type="button" data-theme-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <span class="eyebrow"><i class="fa-solid fa-palette"></i> Ambiance générale</span>
+      <h2 class="section-title">Focus couleurs</h2>
+      <p class="subtitle">Choisis une atmosphère douce pour le fond et les éléments décoratifs.</p>
+      <div class="theme-grid" role="list">
+        <button class="theme-option" type="button" data-theme-option="aurore">
+          <span class="theme-swatch" aria-hidden="true"></span>
+          <span>
+            <strong>Aurore brumeuse</strong>
+            <span class="theme-note">Bleu-gris nacré</span>
+          </span>
+        </button>
+        <button class="theme-option" type="button" data-theme-option="perle">
+          <span class="theme-swatch" aria-hidden="true"></span>
+          <span>
+            <strong>Perle lilas</strong>
+            <span class="theme-note">Violet poudré</span>
+          </span>
+        </button>
+        <button class="theme-option" type="button" data-theme-option="lagon">
+          <span class="theme-swatch" aria-hidden="true"></span>
+          <span>
+            <strong>Lagon doux</strong>
+            <span class="theme-note">Vert aquatique</span>
+          </span>
+        </button>
+        <button class="theme-option" type="button" data-theme-option="sable">
+          <span class="theme-swatch" aria-hidden="true"></span>
+          <span>
+            <strong>Sable nocturne</strong>
+            <span class="theme-note">Beige fumé</span>
+          </span>
+        </button>
+      </div>
+      <p class="theme-current">Ambiance actuelle : <span data-theme-label>Aurore brumeuse</span></p>
+    </div>
+  </div>
+
+  <div class="modal-overlay" data-history-modal>
+    <div class="modal-card history-panel">
+      <button class="modal-close" type="button" data-history-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <span class="eyebrow"><i class="fa-solid fa-clock-rotate-left"></i> Capsule</span>
+      <h2 class="section-title">Historique des versions</h2>
+      <p class="subtitle">Quelques jalons clés, avec un focus sur les évolutions majeures.</p>
+      <div class="version-highlight">
+        <span class="badge">Version actuelle</span>
+        <strong data-current-version>v3.2</strong>
+        <span class="subtitle">Ambiance immersive et cartes interactives.</span>
+      </div>
+      <div class="version-list" role="list">
+        <div class="version-item is-major" data-version="v1.8">
+          <span class="version-tag">v1.8</span>
+          <div>
+            <strong>Naissance des univers</strong>
+            <p class="subtitle">Création des 6 pôles, navigation rapide et identité graphique posée.</p>
+          </div>
+        </div>
+        <div class="version-item" data-version="v2.4">
+          <span class="version-tag">v2.4</span>
+          <div>
+            <strong>Refonte en profondeur</strong>
+            <p class="subtitle">Ajout des cartes 3D, dynamique de scroll et interface compte.</p>
+          </div>
+        </div>
+        <div class="version-item is-major" data-version="v3.0">
+          <span class="version-tag">v3.0</span>
+          <div>
+            <strong>Immersion complète</strong>
+            <p class="subtitle">Déco flottante, parallax et expériences immersives renforcées.</p>
+          </div>
+        </div>
+        <div class="version-item is-major" data-version="v3.2">
+          <span class="version-tag">v3.2</span>
+          <div>
+            <strong>Palette intelligente</strong>
+            <p class="subtitle">Systèmes de thèmes doux et capsule historique interactive.</p>
+          </div>
         </div>
       </div>
     </div>
