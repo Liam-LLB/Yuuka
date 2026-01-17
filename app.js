@@ -30,9 +30,10 @@ const profileTriggerLabel = document.querySelector("[data-profile-trigger-label]
 const profileName = document.querySelector("[data-profile-name]");
 const profileEmail = document.querySelector("[data-profile-email]");
 const profileSettings = document.querySelector("[data-profile-settings]");
-const profileMenu = document.querySelector("[data-profile-menu]");
-const profileTrigger = document.querySelector("[data-profile-trigger]");
-const profileDropdown = document.querySelector("[data-profile-dropdown]");
+const accountTriggers = document.querySelectorAll("[data-account-trigger]");
+const accountModal = document.querySelector("[data-account-modal]");
+const accountCloseButtons = document.querySelectorAll("[data-account-close]");
+const accountState = document.querySelector("[data-account-state]");
 const googleSignInButtons = document.querySelectorAll("[data-google-signin]");
 const signOutButtons = document.querySelectorAll("[data-signout]");
 const loginRedirectKey = "yuuka_login_redirect_v1";
@@ -99,11 +100,8 @@ const updateProfileMenu = (user) => {
   signOutButtons.forEach((button) => {
     button.hidden = !signedIn;
   });
-  if (profileMenu) {
-    profileMenu.classList.toggle("is-authenticated", signedIn);
-  }
-  if (profileDropdown) {
-    profileDropdown.hidden = !signedIn;
+  if (accountState) {
+    accountState.textContent = signedIn ? "En ligne" : "Invité";
   }
 };
 
@@ -352,47 +350,99 @@ const initFirebase = async () => {
   return true;
 };
 
-const initConnectModal = () => {
-  const modal = document.querySelector("[data-connect-modal]");
-  if (!modal) return;
-  const closeButtons = modal.querySelectorAll("[data-modal-close]");
-  const storageKey = "yuuka_connect_modal_v1";
-  if (localStorage.getItem(storageKey)) return;
-  modal.classList.add("is-visible");
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      modal.classList.remove("is-visible");
-      localStorage.setItem(storageKey, "dismissed");
-    });
+const initAccountModal = () => {
+  if (!accountModal) return;
+  const openModal = () => {
+    accountModal.classList.add("is-visible");
+    document.body.classList.add("is-locked");
+  };
+  const closeModal = () => {
+    accountModal.classList.remove("is-visible");
+    document.body.classList.remove("is-locked");
+  };
+  accountTriggers.forEach((trigger) => {
+    trigger.addEventListener("click", openModal);
   });
-};
-
-const initProfileMenu = () => {
-  if (!profileMenu || !profileTrigger || !profileDropdown) return;
-  const closeMenu = () => profileMenu.classList.remove("is-open");
-  profileTrigger.addEventListener("click", (event) => {
-    event.stopPropagation();
-    if (!profileMenu.classList.contains("is-authenticated")) {
-      window.location.href = "connexion.html";
-      return;
-    }
-    profileMenu.classList.toggle("is-open");
+  accountCloseButtons.forEach((button) => {
+    button.addEventListener("click", closeModal);
   });
-  document.addEventListener("click", (event) => {
-    if (!profileMenu.contains(event.target)) {
-      closeMenu();
+  accountModal.addEventListener("click", (event) => {
+    if (event.target === accountModal) {
+      closeModal();
     }
   });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
-      closeMenu();
+      closeModal();
     }
   });
 };
 
+const initAccessGate = () => {
+  const accessKey = "yuuka_access_granted_v1";
+  if (localStorage.getItem(accessKey)) return;
+  const gate = document.createElement("div");
+  gate.className = "access-gate is-visible";
+  gate.dataset.accessGate = "true";
+  gate.innerHTML = `
+    <div class="access-card">
+      <span class="eyebrow"><i class="fa-solid fa-lock"></i> Accès sécurisé</span>
+      <h1 class="main-title">Bienvenue sur Yuukonline</h1>
+      <p class="subtitle">Entre le mot de passe pour passer à l'accueil.</p>
+      <form class="access-form" data-access-form>
+        <div class="field">
+          <label for="accessPassword">Mot de passe</label>
+          <input type="password" id="accessPassword" name="accessPassword" placeholder="Mot de passe" required />
+        </div>
+        <button class="btn" type="submit"><i class="fa-solid fa-arrow-right-to-bracket"></i> Entrer</button>
+        <p class="access-error" data-access-error hidden>Mot de passe incorrect. Réessaie.</p>
+      </form>
+    </div>
+  `;
+  document.body.appendChild(gate);
+  document.body.classList.add("is-locked");
+  const form = gate.querySelector("[data-access-form]");
+  const error = gate.querySelector("[data-access-error]");
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const input = gate.querySelector("#accessPassword");
+    if (input?.value === "Pigeon") {
+      localStorage.setItem(accessKey, "granted");
+      gate.classList.remove("is-visible");
+      document.body.classList.remove("is-locked");
+      gate.remove();
+      return;
+    }
+    if (error) error.hidden = false;
+    if (input) {
+      input.value = "";
+      input.focus();
+    }
+  });
+};
+
+const initParallax = () => {
+  const items = Array.from(document.querySelectorAll("[data-parallax]"));
+  if (!items.length) return;
+  const update = () => {
+    const scrollY = window.scrollY;
+    items.forEach((item) => {
+      const depth = Number(item.dataset.depth || 0.1);
+      const offset = scrollY * depth;
+      item.style.transform = `translate3d(0, ${offset}px, ${depth * 120}px) rotateX(${depth * 12}deg) rotateY(${depth * -10}deg)`;
+    });
+  };
+  update();
+  window.addEventListener("scroll", () => {
+    window.requestAnimationFrame(update);
+  }, { passive: true });
+  window.addEventListener("resize", update);
+};
+
 const init = async () => {
-  initConnectModal();
-  initProfileMenu();
+  initAccessGate();
+  initAccountModal();
+  initParallax();
   hydrateLoginBanner();
   const ready = await initFirebase();
   if (ready) {

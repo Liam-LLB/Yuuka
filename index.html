@@ -23,60 +23,80 @@
       </div>
       <div class="nav-actions">
         <span class="user-chip" data-user-chip>Invité</span>
-        <div class="profile-menu" data-profile-menu>
-          <button class="btn ghost profile-trigger" type="button" data-profile-trigger>
-            <i class="fa-solid fa-user"></i>
-            <span data-profile-trigger-label>Se connecter</span>
-            <i class="fa-solid fa-chevron-down"></i>
-          </button>
-          <div class="profile-dropdown" data-profile-dropdown>
-            <div class="profile-card">
-              <span class="profile-label">Compte</span>
-              <strong data-profile-name>Invité</strong>
-              <span class="profile-email" data-profile-email>Connecte-toi avec Google.</span>
-            </div>
-            <button class="profile-item" type="button" data-google-signin>
-              <i class="fa-brands fa-google"></i> Se connecter avec Google
-            </button>
-            <a class="profile-item" href="connexion.html" data-profile-settings>
-              <i class="fa-solid fa-gear"></i> Gérer le compte
-            </a>
-            <button class="profile-item" type="button" data-signout>
-              <i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter
-            </button>
-          </div>
-        </div>
+        <button class="btn ghost profile-trigger" type="button" data-account-trigger>
+          <i class="fa-solid fa-user"></i>
+          <span data-profile-trigger-label>Se connecter</span>
+        </button>
       </div>
     </div>
   </nav>
 
-  <div class="modal-overlay" data-connect-modal>
-    <div class="modal-card">
-      <button class="modal-close" type="button" data-modal-close aria-label="Fermer">
-        <i class="fa-solid fa-xmark"></i>
-      </button>
-      <span class="eyebrow"><i class="fa-solid fa-user-shield"></i> Accès rapide</span>
-      <h2 class="section-title">Tu veux te connecter ?</h2>
-      <p class="subtitle">Connecte-toi avec Google pour synchroniser ta progression, ou continue en invité.</p>
-      <div class="modal-actions">
-        <button class="btn" type="button" data-google-signin><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
-        <button class="btn ghost" type="button" data-modal-close>Rester en invité</button>
-      </div>
-    </div>
-  </div>
-
   <main class="container">
-    <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-wand-magic-sparkles"></i> Nouvelle interface</span>
-      <h1 class="main-title">Bienvenue sur Yuukonline</h1>
-      <p class="subtitle">
-        Une interface modernisée, une navigation claire vers chaque page, et une synchronisation de ta progression
-        grâce à ton compte sécurisé.
-      </p>
-      <div class="login-banner" data-login-banner hidden></div>
-      <div class="tabs">
-        <a class="btn" href="connexion.html"><i class="fa-brands fa-google"></i> Se connecter avec Google</a>
-        <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
+    <section class="hero hero-3d">
+      <div class="hero-copy">
+        <span class="eyebrow"><i class="fa-solid fa-bolt"></i> Expérience immersive</span>
+        <h1 class="main-title">Yuukonline prend de la profondeur</h1>
+        <p class="subtitle">
+          Un accueil dynamique, des cartes en volume et des détails qui bougent au rythme du scroll.
+          Explore chaque univers comme une vitrine futuriste.
+        </p>
+        <div class="tabs">
+          <button class="btn" type="button" data-account-trigger><i class="fa-solid fa-right-to-bracket"></i> Ouvrir l'espace compte</button>
+          <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
+        </div>
+      </div>
+      <div class="hero-stage" aria-hidden="true">
+        <div class="orb orb-one" data-parallax data-depth="0.08"></div>
+        <div class="orb orb-two" data-parallax data-depth="0.12"></div>
+        <div class="orb orb-three" data-parallax data-depth="0.18"></div>
+        <div class="floating-card glass" data-parallax data-depth="0.2">
+          <span class="badge">Live</span>
+          <strong>Flux interactif</strong>
+          <span class="subtitle">Un décor qui réagit à tes mouvements.</span>
+        </div>
+        <div class="floating-card neon" data-parallax data-depth="0.26">
+          <span class="badge warning">Focus</span>
+          <strong>Raccourcis rapides</strong>
+          <span class="subtitle">Accède à chaque espace en une pression.</span>
+        </div>
+        <div class="floating-card core" data-parallax data-depth="0.32">
+          <span class="badge success">Sync</span>
+          <strong>Progression en ligne</strong>
+          <span class="subtitle">Garde le rythme, même sur un autre appareil.</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="experience-grid">
+      <div class="card glass-panel">
+        <h2 class="section-title">Ambiance studio</h2>
+        <p class="subtitle">Des contrastes profonds, des reflets doux et une navigation épurée.</p>
+        <ul class="info-list">
+          <li>Cartes tactiles en relief.</li>
+          <li>Reflets adaptatifs et halos lumineux.</li>
+          <li>Informations clés regroupées dans l'espace compte.</li>
+        </ul>
+      </div>
+      <div class="card glass-panel">
+        <h2 class="section-title">Univers connectés</h2>
+        <p class="subtitle">Chaque section raconte une histoire : photos, musique, jeux, discussions.</p>
+        <div class="card-grid">
+          <div class="card-tile depth-card">
+            <span class="badge">Yuukalerie</span>
+            <strong>Souvenirs visuels</strong>
+            <span class="subtitle">Plonge dans les collections.</span>
+          </div>
+          <div class="card-tile depth-card">
+            <span class="badge">Yuusiques</span>
+            <strong>Playlists vibrantes</strong>
+            <span class="subtitle">Ambiances et découvertes.</span>
+          </div>
+          <div class="card-tile depth-card">
+            <span class="badge">Yuukajeux</span>
+            <strong>Défis rapides</strong>
+            <span class="subtitle">Score, progression, fun.</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -119,62 +139,72 @@
       </div>
 
       <div class="card">
-        <h2 class="section-title">Progression synchronisée</h2>
-        <p class="subtitle">Retrouve ta dernière étape, même en changeant d'appareil.</p>
+        <h2 class="section-title">Flux de découverte</h2>
+        <p class="subtitle">Un carrousel de nouveautés et de focus créatifs à venir.</p>
         <div class="card-grid">
-          <div class="card-tile">
-            <span class="badge">Dernière page</span>
-            <strong id="progressPage">-</strong>
-            <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
+          <div class="card-tile depth-card">
+            <span class="badge success">Focus</span>
+            <strong>Éditions spéciales</strong>
+            <span class="subtitle">Des thèmes éphémères pour animer la page.</span>
           </div>
-          <div class="card-tile">
-            <span class="badge">Statut</span>
-            <strong id="progressStatus">Local</strong>
-            <span class="subtitle">Connecte-toi pour synchroniser.</span>
+          <div class="card-tile depth-card">
+            <span class="badge">Capsule</span>
+            <strong>Moments clés</strong>
+            <span class="subtitle">Retrouve les instantanés marquants.</span>
           </div>
         </div>
-        <ul class="info-list">
-          <li>Synchronisation dès que tu te connectes.</li>
-          <li>Historique sécurisé côté Firebase.</li>
-          <li>Accès Google en un clic.</li>
-        </ul>
-      </div>
-    </section>
-
-    <section class="grid-2" id="account">
-      <div class="card auth-panel">
-        <h2 class="section-title">Connexion Google uniquement</h2>
-        <p class="subtitle">La connexion se fait exclusivement via Google pour sécuriser ton accès.</p>
-
-        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi avec Google pour synchroniser ta progression.</div>
-
-        <div class="form-grid">
-          <button type="button" class="btn" id="googleSignInBtn"><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
-          <p class="subtitle">Aucune création de compte n'est disponible directement sur le site.</p>
-        </div>
-      </div>
-
-      <div class="card">
-        <h2 class="section-title">État du compte</h2>
-        <p class="subtitle">Retrouve ton adresse Google et déconnecte-toi quand tu veux.</p>
-        <div class="form-grid">
-          <div class="card-tile">
-            <span class="badge">Compte connecté</span>
-            <strong id="userEmail">Aucun compte connecté</strong>
-            <span class="subtitle">Connexion Google requise pour synchroniser.</span>
-          </div>
-          <button class="btn ghost" id="signOutBtn" data-signout><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
-        </div>
-        <ul class="info-list">
-          <li>Connexion sécurisée via Google.</li>
-          <li>Synchronisation immédiate après connexion.</li>
-          <li>Déconnexion disponible depuis le menu profil.</li>
-        </ul>
       </div>
     </section>
   </main>
 
-  <footer class="footer">Yuukonline · Interface modernisée &amp; progression synchronisée.</footer>
+  <footer class="footer">Yuukonline · Immersion et énergie créative.</footer>
+
+  <div class="account-overlay" data-account-modal>
+    <div class="account-panel">
+      <button class="modal-close" type="button" data-account-close aria-label="Fermer">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+      <div class="account-header">
+        <span class="eyebrow"><i class="fa-solid fa-user-astronaut"></i> Centre de connexion</span>
+        <h2 class="section-title">Espace compte</h2>
+        <p class="subtitle">Connexion Google, statut en ligne et historique de navigation réunis ici.</p>
+      </div>
+      <div class="account-grid">
+        <div class="card-tile depth-card">
+          <span class="badge">Profil</span>
+          <strong data-profile-name>Invité</strong>
+          <span class="subtitle" data-profile-email>Connecte-toi avec Google.</span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">État</span>
+          <strong data-account-state>Invité</strong>
+          <span class="subtitle">Synchronisation disponible après connexion.</span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Dernière actualisation</span>
+          <strong id="progressPage">-</strong>
+          <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Statut de sync</span>
+          <strong id="progressStatus">Local</strong>
+          <span class="subtitle">Passe en ligne dès la connexion.</span>
+        </div>
+      </div>
+      <div class="account-actions">
+        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi avec Google pour synchroniser ta progression.</div>
+        <div class="form-grid">
+          <button type="button" class="btn" data-google-signin><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
+          <button class="btn ghost" type="button" data-signout><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
+        </div>
+        <div class="card-tile depth-card">
+          <span class="badge">Compte connecté</span>
+          <strong id="userEmail">Aucun compte connecté</strong>
+          <span class="subtitle">Connexion Google requise pour la sauvegarde.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <script type="module" src="app.js"></script>
 </body>
