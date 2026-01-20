@@ -1439,6 +1439,10 @@ button.showcase-card {
   transform-style: preserve-3d;
 }
 
+.decor-behind {
+  z-index: 1;
+}
+
 .scroll-decor {
   position: absolute;
   border-radius: 50%;
