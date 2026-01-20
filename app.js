@@ -1181,6 +1181,320 @@ const initScrollColors = () => {
   window.addEventListener("resize", update);
 };
 
+const initThreeExperience = async () => {
+  const sceneRoot = document.querySelector("[data-3d-scene]");
+  if (!sceneRoot) return;
+  if (sceneRoot.dataset.threeReady === "true") return;
+  const loader = sceneRoot.querySelector("[data-3d-loader]");
+  const errorPanel = sceneRoot.querySelector("[data-3d-error]");
+  const retryButton = sceneRoot.querySelector("[data-3d-retry]");
+  const labelEl = document.querySelector("[data-3d-label]");
+  const descEl = document.querySelector("[data-3d-desc]");
+  const hintEl = document.querySelector("[data-3d-hint]");
+  const resetButton = document.querySelector("[data-3d-reset]");
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const showError = () => {
+    if (loader) loader.classList.add("is-hidden");
+    if (errorPanel) errorPanel.hidden = false;
+  };
+
+  retryButton?.addEventListener("click", () => {
+    window.location.reload();
+  });
+
+  if (!window.WebGLRenderingContext) {
+    showError();
+    return;
+  }
+
+  const loadThree = () => Promise.race([
+    Promise.all([
+      import("https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js"),
+      import("https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js"),
+    ]),
+    new Promise((resolve) => {
+      window.setTimeout(() => resolve(null), 8000);
+    }),
+  ]).catch(() => null);
+
+  const loaded = await loadThree();
+  if (!loaded) {
+    showError();
+    return;
+  }
+
+  let THREE;
+  let OrbitControls;
+  let renderer;
+  let scene;
+  let camera;
+  try {
+    [THREE] = loaded;
+    ({ OrbitControls } = loaded[1]);
+    const canvas = document.createElement("canvas");
+    sceneRoot.insertBefore(canvas, sceneRoot.firstChild);
+    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    scene = new THREE.Scene();
+    scene.fog = new THREE.Fog(0x05080f, 6, 20);
+    camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.set(0, 4.5, 10);
+  } catch (error) {
+    console.error("Initialisation 3D impossible", error);
+    showError();
+    return;
+  }
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.minDistance = 6;
+  controls.maxDistance = 14;
+  controls.maxPolarAngle = Math.PI / 2.05;
+  controls.target.set(0, 1.2, 0);
+
+  const ambient = new THREE.AmbientLight(0xffffff, 0.7);
+  scene.add(ambient);
+
+  const keyLight = new THREE.DirectionalLight(0x9ec5ff, 1.1);
+  keyLight.position.set(6, 8, 6);
+  scene.add(keyLight);
+
+  const fillLight = new THREE.PointLight(0xa855f7, 1, 18);
+  fillLight.position.set(-6, 4, -4);
+  scene.add(fillLight);
+
+  const floorMaterial = new THREE.MeshStandardMaterial({
+    color: 0x0b1120,
+    roughness: 0.65,
+    metalness: 0.2,
+  });
+  const floor = new THREE.Mesh(new THREE.CircleGeometry(8.5, 64), floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = -1;
+  scene.add(floor);
+
+  const wallMaterial = new THREE.MeshStandardMaterial({
+    color: 0x0b1220,
+    roughness: 0.8,
+    metalness: 0.05,
+  });
+  const backWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 8), wallMaterial);
+  backWall.position.set(0, 3, -8);
+  scene.add(backWall);
+
+  const sideWall = new THREE.Mesh(new THREE.PlaneGeometry(20, 8), wallMaterial);
+  sideWall.rotation.y = Math.PI / 2;
+  sideWall.position.set(-8, 3, 0);
+  scene.add(sideWall);
+
+  const modules = [
+    {
+      label: "Yuukalerie",
+      desc: "Collections visuelles immersives.",
+      href: "bouton1.html",
+      color: "#60a5fa",
+      geometry: () => new THREE.SphereGeometry(0.9, 32, 32),
+      position: new THREE.Vector3(-3.4, 1.1, 1.2),
+    },
+    {
+      label: "Yuusiques",
+      desc: "Playlist et ambiances sonores.",
+      href: "bouton2.html",
+      color: "#a855f7",
+      geometry: () => new THREE.TorusKnotGeometry(0.6, 0.22, 140, 12),
+      position: new THREE.Vector3(-1, 1.3, -1.8),
+    },
+    {
+      label: "Yuugars",
+      desc: "Profils en orbite collaborative.",
+      href: "bouton3.html",
+      color: "#22c55e",
+      geometry: () => new THREE.BoxGeometry(1.4, 1.4, 1.4),
+      position: new THREE.Vector3(1.2, 1.2, 1.6),
+    },
+    {
+      label: "Yuukafe",
+      desc: "Espace de discussion cosy.",
+      href: "bouton4.html",
+      color: "#f59e0b",
+      geometry: () => new THREE.ConeGeometry(0.8, 1.6, 28),
+      position: new THREE.Vector3(3.4, 1.1, -0.6),
+    },
+    {
+      label: "Yuukalendrier",
+      desc: "Timeline et événements clés.",
+      href: "bouton5.html",
+      color: "#38bdf8",
+      geometry: () => new THREE.CylinderGeometry(0.7, 0.9, 1.3, 28),
+      position: new THREE.Vector3(0, 1.05, 3.2),
+    },
+    {
+      label: "Yuukajeux",
+      desc: "Défis et mini jeux immersifs.",
+      href: "bouton6.html",
+      color: "#f472b6",
+      geometry: () => new THREE.DodecahedronGeometry(0.95, 0),
+      position: new THREE.Vector3(-2.4, 1.1, -3.2),
+    },
+    {
+      label: "Console Yuuka",
+      desc: "Tout piloter depuis le cockpit.",
+      href: "bouton7.html",
+      color: "#cbd5f5",
+      geometry: () => new THREE.OctahedronGeometry(0.9, 0),
+      position: new THREE.Vector3(2.4, 1.25, -3.2),
+    },
+  ];
+
+  const clickable = [];
+  const moduleMeshes = [];
+
+  modules.forEach((module, index) => {
+    const group = new THREE.Group();
+    const accent = new THREE.Color(module.color);
+    const pedestal = new THREE.Mesh(
+      new THREE.CylinderGeometry(0.9, 1.1, 0.35, 32),
+      new THREE.MeshStandardMaterial({
+        color: 0x111827,
+        roughness: 0.8,
+        metalness: 0.2,
+      })
+    );
+    pedestal.position.y = -0.35;
+    group.add(pedestal);
+
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(1.25, 0.06, 16, 120),
+      new THREE.MeshStandardMaterial({
+        color: accent,
+        emissive: accent,
+        emissiveIntensity: 0.6,
+        metalness: 0.6,
+        roughness: 0.2,
+      })
+    );
+    ring.rotation.x = Math.PI / 2;
+    ring.position.y = -0.05;
+    group.add(ring);
+
+    const moduleMesh = new THREE.Mesh(
+      module.geometry(),
+      new THREE.MeshStandardMaterial({
+        color: accent,
+        emissive: accent,
+        emissiveIntensity: 0.45,
+        roughness: 0.35,
+        metalness: 0.45,
+      })
+    );
+    moduleMesh.position.y = 0.6;
+    moduleMesh.userData = {
+      label: module.label,
+      desc: module.desc,
+      href: module.href,
+      baseEmissive: 0.45,
+      ring,
+    };
+    group.add(moduleMesh);
+
+    group.position.copy(module.position);
+    scene.add(group);
+    clickable.push(moduleMesh);
+    moduleMeshes.push({ group, moduleMesh, ring, baseY: group.position.y, index });
+  });
+
+  const raycaster = new THREE.Raycaster();
+  const pointer = new THREE.Vector2(-1, -1);
+  let hovered = null;
+
+  const updateOverlay = (item) => {
+    if (!item) return;
+    if (labelEl) labelEl.textContent = item.userData.label;
+    if (descEl) descEl.textContent = item.userData.desc;
+    if (hintEl) hintEl.textContent = `Clique pour ouvrir ${item.userData.label}`;
+  };
+
+  updateOverlay(clickable[0]);
+
+  const handlePointerMove = (event) => {
+    const rect = sceneRoot.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+  };
+
+  const handlePointerLeave = () => {
+    pointer.set(-1, -1);
+  };
+
+  const handlePointerClick = () => {
+    if (hovered?.userData?.href) {
+      window.location.href = hovered.userData.href;
+    }
+  };
+
+  renderer.domElement.addEventListener("pointermove", handlePointerMove);
+  renderer.domElement.addEventListener("pointerleave", handlePointerLeave);
+  renderer.domElement.addEventListener("click", handlePointerClick);
+
+  resetButton?.addEventListener("click", () => {
+    camera.position.set(0, 4.5, 10);
+    controls.target.set(0, 1.2, 0);
+    controls.update();
+  });
+
+  const resize = () => {
+    const { clientWidth, clientHeight } = sceneRoot;
+    camera.aspect = clientWidth / clientHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(clientWidth, clientHeight);
+  };
+
+  resize();
+  window.addEventListener("resize", resize);
+
+  loader?.classList.add("is-hidden");
+  if (errorPanel) errorPanel.hidden = true;
+  sceneRoot.dataset.threeReady = "true";
+
+  const clock = new THREE.Clock();
+  const animate = () => {
+    const elapsed = clock.getElapsedTime();
+
+    raycaster.setFromCamera(pointer, camera);
+    const intersections = raycaster.intersectObjects(clickable);
+    const firstHit = intersections[0]?.object ?? null;
+
+    if (hovered !== firstHit) {
+      if (hovered) {
+        hovered.material.emissiveIntensity = hovered.userData.baseEmissive;
+        hovered.userData.ring.material.emissiveIntensity = 0.6;
+      }
+      if (firstHit) {
+        firstHit.material.emissiveIntensity = 0.9;
+        firstHit.userData.ring.material.emissiveIntensity = 1;
+        updateOverlay(firstHit);
+      }
+      hovered = firstHit;
+      document.body.style.cursor = hovered ? "pointer" : "default";
+    }
+
+    moduleMeshes.forEach(({ group, ring, index, baseY }) => {
+      if (!prefersReducedMotion) {
+        group.position.y = baseY + Math.sin(elapsed + index) * 0.12;
+        ring.rotation.z = elapsed * 0.4;
+      }
+    });
+
+    controls.update();
+    renderer.render(scene, camera);
+    window.requestAnimationFrame(animate);
+  };
+
+  animate();
+};
+
 const init = async () => {
   initAccessGate();
   initAccountModal();
@@ -1188,6 +1502,7 @@ const init = async () => {
   initHistoryModal();
   initParallax();
   initScrollColors();
+  await initThreeExperience();
   hydrateLoginBanner();
   const storedTheme = localStorage.getItem(themeStorageKey);
   if (storedTheme && themePresets[storedTheme]) {
