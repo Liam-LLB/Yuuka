@@ -645,9 +645,10 @@ const initParallax = () => {
     const scrollY = window.scrollY;
     items.forEach((item) => {
       const depth = Number(item.dataset.depth || 0.1);
+      const zDirection = item.classList.contains("decor-behind") ? -1 : 1;
       const offset = scrollY * depth;
       item.style.setProperty("--parallax-y", `${offset}px`);
-      item.style.setProperty("--parallax-z", `${depth * 120}px`);
+      item.style.setProperty("--parallax-z", `${depth * 120 * zDirection}px`);
     });
   };
   update();
