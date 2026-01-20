@@ -2063,6 +2063,7 @@ button.showcase-card {
   display: grid;
   gap: 8px;
   transition: transform 0.2s ease, border 0.2s ease;
+  position: relative;
 }
 
 .yuukalerie-card:hover {
@@ -2095,18 +2096,60 @@ button.showcase-card {
   font-size: 0.85rem;
 }
 
-.yuukalerie-card-actions {
-  display: flex;
-  gap: 8px;
+.yuukalerie-menu {
+  position: relative;
 }
 
-.yuukalerie-card-actions button {
+.yuukalerie-menu--card {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.yuukalerie-menu-trigger {
   border: none;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text);
+  background: rgba(15, 23, 42, 0.7);
+  color: #f8fafc;
   border-radius: 10px;
-  padding: 6px 8px;
+  padding: 6px 10px;
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.yuukalerie-menu-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 160px;
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  box-shadow: 0 18px 30px rgba(15, 23, 42, 0.18);
+  padding: 8px;
+  display: none;
+  z-index: 5;
+}
+
+.yuukalerie-menu-list.is-open {
+  display: grid;
+  gap: 6px;
+}
+
+.yuukalerie-menu-list button {
+  border: none;
+  background: transparent;
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #0f172a;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.yuukalerie-menu-list button:hover {
+  background: rgba(148, 163, 184, 0.2);
 }
 
 .yuukalerie-empty {

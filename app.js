@@ -313,6 +313,21 @@ const yuukalerieState = {
   selectedId: null,
 };
 
+const closeYuukalerieMenus = () => {
+  document.querySelectorAll(".yuukalerie-menu-list.is-open").forEach((menu) => {
+    menu.classList.remove("is-open");
+  });
+};
+
+const toggleYuukalerieMenu = (menu) => {
+  if (!menu) return;
+  const isOpen = menu.classList.contains("is-open");
+  closeYuukalerieMenus();
+  if (!isOpen) {
+    menu.classList.add("is-open");
+  }
+};
+
 const formatBytes = (bytes = 0) => {
   if (!bytes) return "0 Ko";
   const units = ["o", "Ko", "Mo", "Go"];
@@ -502,25 +517,50 @@ const renderGallery = () => {
           <span>${getAlbumLabel(photo.albumId)}</span>
           <span>${formatDate(photo.createdAt || photo.createdAtIso)}</span>
         </div>
-        <div class="yuukalerie-card-actions">
-          <button type="button" data-action="select"><i class="fa-solid fa-eye"></i></button>
-          <button type="button" data-action="favorite"><i class="fa-solid fa-star"></i></button>
-          <button type="button" data-action="delete" class="danger"><i class="fa-solid fa-trash"></i></button>
-        </div>
       </div>
     `;
-    card.addEventListener("click", (event) => {
-      const action = event.target.closest("button")?.dataset?.action;
-      if (action) {
-        if (action === "favorite") {
-          toggleFavorite(photo.id);
-        } else if (action === "delete") {
-          markDeleted(photo.id);
-        } else if (action === "select") {
-          selectPhoto(photo.id);
-        }
-        return;
-      }
+    const menu = document.createElement("div");
+    menu.className = "yuukalerie-menu yuukalerie-menu--card";
+    const menuTrigger = document.createElement("button");
+    menuTrigger.type = "button";
+    menuTrigger.className = "yuukalerie-menu-trigger";
+    menuTrigger.setAttribute("aria-label", "Options de la photo");
+    menuTrigger.innerHTML = '<i class="fa-solid fa-ellipsis"></i>';
+    const menuList = document.createElement("div");
+    menuList.className = "yuukalerie-menu-list";
+    const previewButton = document.createElement("button");
+    previewButton.type = "button";
+    previewButton.textContent = "Aperçu";
+    previewButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      selectPhoto(photo.id);
+    });
+    const favoriteButton = document.createElement("button");
+    favoriteButton.type = "button";
+    favoriteButton.textContent = "Favori";
+    favoriteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      toggleFavorite(photo.id);
+    });
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "danger";
+    deleteButton.textContent = "Supprimer";
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      removePhoto(photo.id);
+    });
+    menuList.append(previewButton, favoriteButton, deleteButton);
+    menuTrigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleYuukalerieMenu(menuList);
+    });
+    menu.append(menuTrigger, menuList);
+    card.append(menu);
+    card.addEventListener("click", () => {
       selectPhoto(photo.id);
     });
     yuukalerieEls.grid.append(card);
@@ -806,6 +846,11 @@ const loadGalleryFromCloud = async () => {
 const initYuukalerie = async () => {
   if (!isYuukaleriePage) return;
   if (!yuukalerieBooted) {
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".yuukalerie-menu")) {
+        closeYuukalerieMenus();
+      }
+    });
     yuukalerieEls.uploadTriggers.forEach((button) => {
       button.addEventListener("click", () => yuukalerieEls.uploadInput?.click());
     });
@@ -850,7 +895,7 @@ const initYuukalerie = async () => {
     });
     yuukalerieEls.deletePhoto?.addEventListener("click", () => {
       if (!yuukalerieState.selectedId) return;
-      markDeleted(yuukalerieState.selectedId);
+      removePhoto(yuukalerieState.selectedId);
     });
     yuukalerieBooted = true;
   }
