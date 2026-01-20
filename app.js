@@ -10,8 +10,10 @@ const firebaseConfig = {
 
 let auth = null;
 let db = null;
+let storage = null;
 let authApi = null;
 let firestoreApi = null;
+let storageApi = null;
 let firebaseReady = false;
 
 const progressKey = "yuuka_progress_v1";
@@ -50,6 +52,7 @@ const themeStorageKey = "yuuka_theme_choice_v1";
 const currentPath = window.location.pathname;
 const isHomePage = currentPath.endsWith("/") || currentPath.endsWith("index.html");
 const isAuthPage = window.location.pathname.endsWith("connexion.html");
+const isYuukaleriePage = document.body?.dataset?.page === "Yuukalerie";
 const loginBanner = document.querySelector("[data-login-banner]");
 
 const setMessage = (message, tone = "") => {
@@ -264,6 +267,501 @@ const mergeProgress = async (user) => {
   }
 };
 
+const galleryStorageKey = "yuuka_gallery_v1";
+let yuukalerieBooted = false;
+let yuukalerieUserId = null;
+let yuukalerieCurrentUser = null;
+
+const yuukalerieEls = {
+  uploadInput: document.querySelector("[data-yuuka-upload]"),
+  uploadTriggers: document.querySelectorAll("[data-yuuka-upload-trigger]"),
+  createAlbumButtons: document.querySelectorAll("[data-yuuka-create-album]"),
+  albumList: document.querySelector("[data-yuuka-album-list]"),
+  grid: document.querySelector("[data-yuuka-grid]"),
+  empty: document.querySelector("[data-yuuka-empty]"),
+  search: document.querySelector("[data-yuuka-search]"),
+  filterButtons: document.querySelectorAll("[data-yuuka-filter]"),
+  dropzone: document.querySelector("[data-yuuka-dropzone]"),
+  photoCount: document.querySelector("[data-yuuka-photo-count]"),
+  detailStatus: document.querySelector("[data-yuuka-detail-status]"),
+  preview: document.querySelector("[data-yuuka-preview]"),
+  detailName: document.querySelector("[data-yuuka-detail-name]"),
+  detailDate: document.querySelector("[data-yuuka-detail-date]"),
+  detailSize: document.querySelector("[data-yuuka-detail-size]"),
+  detailAlbum: document.querySelector("[data-yuuka-detail-album]"),
+  detailMeta: document.querySelector("[data-yuuka-detail-meta]"),
+  toggleFavorite: document.querySelector("[data-yuuka-toggle-favorite]"),
+  deletePhoto: document.querySelector("[data-yuuka-delete-photo]"),
+  deletedSection: document.querySelector("[data-yuuka-deleted]"),
+  deletedList: document.querySelector("[data-yuuka-deleted-list]"),
+  syncStatus: document.querySelector("[data-yuuka-sync-status]"),
+  storageStatus: document.querySelector("[data-yuuka-storage-status]"),
+};
+
+const yuukalerieState = {
+  albums: [],
+  photos: [],
+  activeAlbumId: "all",
+  filter: "all",
+  search: "",
+  selectedId: null,
+};
+
+const formatBytes = (bytes = 0) => {
+  if (!bytes) return "0 Ko";
+  const units = ["o", "Ko", "Mo", "Go"];
+  let value = bytes;
+  let unitIndex = 0;
+  while (value >= 1024 && unitIndex < units.length - 1) {
+    value /= 1024;
+    unitIndex += 1;
+  }
+  return `${value.toFixed(value >= 10 ? 0 : 1)} ${units[unitIndex]}`;
+};
+
+const formatDate = (value) => {
+  if (!value) return "—";
+  const date = value instanceof Date ? value : new Date(value);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleString("fr-FR");
+};
+
+const readGalleryLocal = () => {
+  const raw = localStorage.getItem(galleryStorageKey);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
+    return null;
+  }
+};
+
+const saveGalleryLocal = () => {
+  localStorage.setItem(galleryStorageKey, JSON.stringify({
+    albums: yuukalerieState.albums,
+    photos: yuukalerieState.photos,
+  }));
+};
+
+const setYuukalerieStatus = (user) => {
+  if (yuukalerieEls.syncStatus) {
+    const synced = user && firebaseReady;
+    yuukalerieEls.syncStatus.innerHTML = synced
+      ? '<i class="fa-solid fa-wifi"></i> Sync Firebase active'
+      : '<i class="fa-solid fa-plug-circle-xmark"></i> Mode invité';
+    yuukalerieEls.syncStatus.classList.toggle("success", synced);
+    yuukalerieEls.syncStatus.classList.toggle("warning", !synced);
+  }
+  if (yuukalerieEls.storageStatus) {
+    yuukalerieEls.storageStatus.innerHTML = user && firebaseReady
+      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase'
+      : '<i class="fa-solid fa-cloud-slash"></i> Stockage local temporaire';
+  }
+};
+
+const getAlbumLabel = (albumId) => {
+  const album = yuukalerieState.albums.find((item) => item.id === albumId);
+  return album?.name || "Sans album";
+};
+
+const buildAlbumOptions = () => {
+  if (!yuukalerieEls.detailAlbum) return;
+  yuukalerieEls.detailAlbum.innerHTML = "";
+  const optionAll = document.createElement("option");
+  optionAll.value = "";
+  optionAll.textContent = "Sans album";
+  yuukalerieEls.detailAlbum.append(optionAll);
+  yuukalerieState.albums.forEach((album) => {
+    const option = document.createElement("option");
+    option.value = album.id;
+    option.textContent = album.name;
+    yuukalerieEls.detailAlbum.append(option);
+  });
+};
+
+const setActiveFilterButton = (filter) => {
+  yuukalerieEls.filterButtons.forEach((button) => {
+    button.classList.toggle("is-active", button.dataset.yuukaFilter === filter);
+  });
+};
+
+const getFilteredPhotos = () => {
+  const query = yuukalerieState.search.trim().toLowerCase();
+  return yuukalerieState.photos.filter((photo) => {
+    if (yuukalerieState.filter === "deleted" && !photo.isDeleted) return false;
+    if (yuukalerieState.filter !== "deleted" && photo.isDeleted) return false;
+    if (yuukalerieState.filter === "favorites" && !photo.isFavorite) return false;
+    if (yuukalerieState.filter === "recent") {
+      const dateValue = new Date(photo.createdAt || photo.createdAtIso || 0);
+      const diff = Date.now() - dateValue.getTime();
+      if (Number.isNaN(diff) || diff > 1000 * 60 * 60 * 24 * 14) return false;
+    }
+    if (yuukalerieState.filter !== "deleted") {
+      if (yuukalerieState.activeAlbumId !== "all" && yuukalerieState.activeAlbumId !== "favorites") {
+        if (photo.albumId !== yuukalerieState.activeAlbumId) return false;
+      }
+    }
+    if (query) {
+      const target = `${photo.name || ""} ${photo.albumName || getAlbumLabel(photo.albumId)}`.toLowerCase();
+      if (!target.includes(query)) return false;
+    }
+    return true;
+  });
+};
+
+const renderAlbums = () => {
+  if (!yuukalerieEls.albumList) return;
+  yuukalerieEls.albumList.innerHTML = "";
+  const baseAlbums = [
+    { id: "all", name: "Toutes les photos", subtitle: "Synchronisées" },
+    { id: "favorites", name: "Favoris", subtitle: "Repères rapides" },
+    { id: "deleted", name: "Supprimés récemment", subtitle: "Récupérables" },
+  ];
+  const renderAlbum = (album) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "yuukalerie-album";
+    button.dataset.albumId = album.id;
+    button.innerHTML = `<strong>${album.name}</strong><span>${album.subtitle || "Album personnalisé"}</span>`;
+    if (yuukalerieState.activeAlbumId === album.id) {
+      button.classList.add("is-active");
+    }
+    button.addEventListener("click", () => {
+      yuukalerieState.activeAlbumId = album.id;
+      yuukalerieState.filter = album.id === "deleted" ? "deleted" : album.id === "favorites" ? "favorites" : "all";
+      setActiveFilterButton(yuukalerieState.filter);
+      renderAlbums();
+      renderGallery();
+    });
+    yuukalerieEls.albumList.append(button);
+  };
+  baseAlbums.forEach(renderAlbum);
+  yuukalerieState.albums.forEach((album) => renderAlbum(album));
+};
+
+const renderGallery = () => {
+  if (!yuukalerieEls.grid) return;
+  const photos = getFilteredPhotos();
+  yuukalerieEls.grid.innerHTML = "";
+  photos.forEach((photo) => {
+    const card = document.createElement("article");
+    card.className = "yuukalerie-card";
+    card.dataset.photoId = photo.id;
+    const imageUrl = photo.url || photo.localUrl || "";
+    card.innerHTML = `
+      <img src="${imageUrl}" alt="${photo.name || "Photo Yuukalerie"}" loading="lazy" />
+      <div class="yuukalerie-card-body">
+        <h4>${photo.name || "Sans titre"}</h4>
+        <div class="yuukalerie-card-meta">
+          <span>${getAlbumLabel(photo.albumId)}</span>
+          <span>${formatDate(photo.createdAt || photo.createdAtIso)}</span>
+        </div>
+        <div class="yuukalerie-card-actions">
+          <button type="button" data-action="select"><i class="fa-solid fa-eye"></i></button>
+          <button type="button" data-action="favorite"><i class="fa-solid fa-star"></i></button>
+          <button type="button" data-action="delete" class="danger"><i class="fa-solid fa-trash"></i></button>
+        </div>
+      </div>
+    `;
+    card.addEventListener("click", (event) => {
+      const action = event.target.closest("button")?.dataset?.action;
+      if (action) {
+        if (action === "favorite") {
+          toggleFavorite(photo.id);
+        } else if (action === "delete") {
+          markDeleted(photo.id);
+        } else if (action === "select") {
+          selectPhoto(photo.id);
+        }
+        return;
+      }
+      selectPhoto(photo.id);
+    });
+    yuukalerieEls.grid.append(card);
+  });
+  yuukalerieEls.empty?.toggleAttribute("hidden", photos.length > 0);
+  if (yuukalerieEls.photoCount) {
+    yuukalerieEls.photoCount.textContent = `${photos.length} photo${photos.length > 1 ? "s" : ""}`;
+  }
+  renderDeletedList();
+};
+
+const renderDeletedList = () => {
+  if (!yuukalerieEls.deletedList || !yuukalerieEls.deletedSection) return;
+  const deleted = yuukalerieState.photos.filter((photo) => photo.isDeleted);
+  yuukalerieEls.deletedList.innerHTML = "";
+  deleted.forEach((photo) => {
+    const item = document.createElement("div");
+    item.className = "yuukalerie-deleted-item";
+    item.innerHTML = `
+      <strong>${photo.name || "Photo supprimée"}</strong>
+      <span class="subtitle">${formatDate(photo.deletedAt)}</span>
+      <div class="yuukalerie-deleted-actions">
+        <button class="btn ghost" type="button" data-action="restore">Restaurer</button>
+        <button class="btn ghost danger" type="button" data-action="remove">Supprimer définitivement</button>
+      </div>
+    `;
+    item.addEventListener("click", (event) => {
+      const action = event.target.closest("button")?.dataset?.action;
+      if (action === "restore") {
+        restorePhoto(photo.id);
+      } else if (action === "remove") {
+        removePhoto(photo.id);
+      }
+    });
+    yuukalerieEls.deletedList.append(item);
+  });
+  yuukalerieEls.deletedSection.hidden = deleted.length === 0;
+};
+
+const renderDetails = (photo) => {
+  if (!photo) {
+    if (yuukalerieEls.preview) yuukalerieEls.preview.innerHTML = "<span>Choisis une photo</span>";
+    if (yuukalerieEls.detailName) yuukalerieEls.detailName.textContent = "—";
+    if (yuukalerieEls.detailDate) yuukalerieEls.detailDate.textContent = "—";
+    if (yuukalerieEls.detailSize) yuukalerieEls.detailSize.textContent = "—";
+    if (yuukalerieEls.detailMeta) yuukalerieEls.detailMeta.textContent = "—";
+    if (yuukalerieEls.detailStatus) yuukalerieEls.detailStatus.textContent = "—";
+    return;
+  }
+  if (yuukalerieEls.preview) {
+    yuukalerieEls.preview.innerHTML = `<img src="${photo.url || photo.localUrl || ""}" alt="${photo.name || "Photo"}" />`;
+  }
+  if (yuukalerieEls.detailName) yuukalerieEls.detailName.textContent = photo.name || "Sans titre";
+  if (yuukalerieEls.detailDate) yuukalerieEls.detailDate.textContent = formatDate(photo.createdAt || photo.createdAtIso);
+  if (yuukalerieEls.detailSize) yuukalerieEls.detailSize.textContent = formatBytes(photo.size);
+  if (yuukalerieEls.detailMeta) {
+    yuukalerieEls.detailMeta.textContent = photo.isDeleted ? "Supprimée" : photo.isFavorite ? "Favori" : "Active";
+  }
+  if (yuukalerieEls.detailStatus) {
+    yuukalerieEls.detailStatus.textContent = photo.isDeleted ? "Supprimée" : photo.url ? "Synchronisée" : "Local";
+  }
+  if (yuukalerieEls.detailAlbum) {
+    yuukalerieEls.detailAlbum.value = photo.albumId || "";
+  }
+};
+
+const selectPhoto = (photoId) => {
+  yuukalerieState.selectedId = photoId;
+  const photo = yuukalerieState.photos.find((item) => item.id === photoId);
+  renderDetails(photo);
+};
+
+const updatePhoto = async (photoId, updates) => {
+  const photoIndex = yuukalerieState.photos.findIndex((item) => item.id === photoId);
+  if (photoIndex === -1) return;
+  yuukalerieState.photos[photoIndex] = { ...yuukalerieState.photos[photoIndex], ...updates };
+  saveGalleryLocal();
+  renderGallery();
+  if (yuukalerieState.selectedId === photoId) {
+    renderDetails(yuukalerieState.photos[photoIndex]);
+  }
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photoId);
+      await firestoreApi.setDoc(docRef, updates, { merge: true });
+    } catch (error) {
+      console.error("Mise à jour Yuukalerie impossible", error);
+      setMessage("Mise à jour distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const toggleFavorite = (photoId) => {
+  const photo = yuukalerieState.photos.find((item) => item.id === photoId);
+  if (!photo) return;
+  updatePhoto(photoId, { isFavorite: !photo.isFavorite });
+};
+
+const markDeleted = (photoId) => updatePhoto(photoId, { isDeleted: true, deletedAt: new Date().toISOString() });
+
+const restorePhoto = (photoId) => updatePhoto(photoId, { isDeleted: false, deletedAt: null });
+
+const removePhoto = async (photoId) => {
+  const photoIndex = yuukalerieState.photos.findIndex((item) => item.id === photoId);
+  if (photoIndex === -1) return;
+  const photo = yuukalerieState.photos[photoIndex];
+  yuukalerieState.photos.splice(photoIndex, 1);
+  saveGalleryLocal();
+  renderGallery();
+  renderDetails(null);
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photoId);
+      await firestoreApi.deleteDoc(docRef);
+    } catch (error) {
+      console.error("Suppression Yuukalerie impossible", error);
+      setMessage("Suppression distante indisponible. Mode local activé.", "warning");
+    }
+  }
+  if (firebaseReady && storageApi && storage && photo.storagePath) {
+    try {
+      const storageRef = storageApi.ref(storage, photo.storagePath);
+      await storageApi.deleteObject(storageRef);
+    } catch (error) {
+      console.error("Suppression stockage impossible", error);
+    }
+  }
+};
+
+const createAlbum = async () => {
+  const name = window.prompt("Nom du nouvel album :");
+  if (!name) return;
+  const album = {
+    id: crypto.randomUUID(),
+    name,
+    createdAt: new Date().toISOString(),
+  };
+  yuukalerieState.albums.push(album);
+  saveGalleryLocal();
+  renderAlbums();
+  buildAlbumOptions();
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_albums", album.id);
+      await firestoreApi.setDoc(docRef, album);
+    } catch (error) {
+      console.error("Création d'album impossible", error);
+      setMessage("Création d'album distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const persistPhoto = async (photo) => {
+  yuukalerieState.photos.unshift(photo);
+  saveGalleryLocal();
+  renderGallery();
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photo.id);
+      await firestoreApi.setDoc(docRef, photo);
+    } catch (error) {
+      console.error("Sauvegarde Yuukalerie impossible", error);
+      setMessage("Sauvegarde distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const handleUploadFiles = async (files, user) => {
+  if (!files?.length) return;
+  const fileList = Array.from(files);
+  for (const file of fileList) {
+    const basePhoto = {
+      id: crypto.randomUUID(),
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      createdAt: new Date().toISOString(),
+      albumId: "",
+      isFavorite: false,
+      isDeleted: false,
+    };
+    if (firebaseReady && storageApi && storage && user) {
+      try {
+        const path = `users/${user.uid}/yuukalerie/${basePhoto.id}_${file.name}`;
+        const storageRef = storageApi.ref(storage, path);
+        await storageApi.uploadBytes(storageRef, file);
+        const url = await storageApi.getDownloadURL(storageRef);
+        await persistPhoto({ ...basePhoto, url, storagePath: path });
+      } catch (error) {
+        console.error("Upload Firebase impossible", error);
+        setMessage("Upload Firebase indisponible. Mode local activé.", "warning");
+        const localUrl = URL.createObjectURL(file);
+        await persistPhoto({ ...basePhoto, localUrl });
+      }
+    } else {
+      const localUrl = URL.createObjectURL(file);
+      await persistPhoto({ ...basePhoto, localUrl });
+    }
+  }
+};
+
+const loadGalleryFromCloud = async (user) => {
+  if (!firebaseReady || !firestoreApi || !db || !user) return false;
+  try {
+    const albumsSnap = await firestoreApi.getDocs(firestoreApi.collection(db, "users", user.uid, "yuukalerie_albums"));
+    const photosSnap = await firestoreApi.getDocs(firestoreApi.collection(db, "users", user.uid, "yuukalerie_photos"));
+    yuukalerieState.albums = albumsSnap.docs.map((doc) => doc.data());
+    yuukalerieState.photos = photosSnap.docs.map((doc) => doc.data());
+    saveGalleryLocal();
+    return true;
+  } catch (error) {
+    console.error("Chargement Yuukalerie impossible", error);
+    setMessage("Chargement Yuukalerie indisponible. Mode local activé.", "warning");
+    return false;
+  }
+};
+
+const initYuukalerie = async (user) => {
+  if (!isYuukaleriePage) return;
+  if (!yuukalerieBooted) {
+    yuukalerieEls.uploadTriggers.forEach((button) => {
+      button.addEventListener("click", () => yuukalerieEls.uploadInput?.click());
+    });
+    yuukalerieEls.uploadInput?.addEventListener("change", (event) => {
+      handleUploadFiles(event.target.files, yuukalerieCurrentUser);
+    });
+    yuukalerieEls.createAlbumButtons.forEach((button) => {
+      button.addEventListener("click", createAlbum);
+    });
+    yuukalerieEls.search?.addEventListener("input", (event) => {
+      yuukalerieState.search = event.target.value || "";
+      renderGallery();
+    });
+    yuukalerieEls.filterButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        yuukalerieState.filter = button.dataset.yuukaFilter;
+        yuukalerieState.activeAlbumId = "all";
+        setActiveFilterButton(yuukalerieState.filter);
+        renderAlbums();
+        renderGallery();
+      });
+    });
+    yuukalerieEls.dropzone?.addEventListener("dragover", (event) => {
+      event.preventDefault();
+      yuukalerieEls.dropzone.classList.add("is-dragging");
+    });
+    yuukalerieEls.dropzone?.addEventListener("dragleave", () => {
+      yuukalerieEls.dropzone.classList.remove("is-dragging");
+    });
+    yuukalerieEls.dropzone?.addEventListener("drop", (event) => {
+      event.preventDefault();
+      yuukalerieEls.dropzone.classList.remove("is-dragging");
+      handleUploadFiles(event.dataTransfer.files, yuukalerieCurrentUser);
+    });
+    yuukalerieEls.detailAlbum?.addEventListener("change", (event) => {
+      if (!yuukalerieState.selectedId) return;
+      updatePhoto(yuukalerieState.selectedId, { albumId: event.target.value || "" });
+    });
+    yuukalerieEls.toggleFavorite?.addEventListener("click", () => {
+      if (!yuukalerieState.selectedId) return;
+      toggleFavorite(yuukalerieState.selectedId);
+    });
+    yuukalerieEls.deletePhoto?.addEventListener("click", () => {
+      if (!yuukalerieState.selectedId) return;
+      markDeleted(yuukalerieState.selectedId);
+    });
+    yuukalerieBooted = true;
+  }
+  yuukalerieCurrentUser = user || null;
+  setYuukalerieStatus(user);
+  const localData = readGalleryLocal();
+  if (localData && (!yuukalerieUserId || yuukalerieUserId === user?.uid)) {
+    yuukalerieState.albums = localData.albums || [];
+    yuukalerieState.photos = localData.photos || [];
+  }
+  if (!user) {
+    yuukalerieUserId = null;
+  } else if (user.uid !== yuukalerieUserId) {
+    yuukalerieUserId = user.uid;
+    await loadGalleryFromCloud(user);
+  }
+  buildAlbumOptions();
+  setActiveFilterButton(yuukalerieState.filter);
+  renderAlbums();
+  renderGallery();
+};
+
 const bindAuthObservers = () => {
   authApi.onAuthStateChanged(auth, async (user) => {
     updateUserChips(user);
@@ -285,6 +783,9 @@ const bindAuthObservers = () => {
       }
     }
     await mergeProgress(user);
+    if (isYuukaleriePage) {
+      await initYuukalerie(user);
+    }
   });
 
   authApi.getRedirectResult(auth)
@@ -330,13 +831,14 @@ if (storedProgress) {
 }
 
 const initFirebase = async () => {
-  const [appModule, authModule, firestoreModule] = await Promise.allSettled([
+  const [appModule, authModule, firestoreModule, storageModule] = await Promise.allSettled([
     import("https://www.gstatic.com/firebasejs/10.3.1/firebase-app.js"),
     import("https://www.gstatic.com/firebasejs/10.3.1/firebase-auth.js"),
     import("https://www.gstatic.com/firebasejs/10.3.1/firebase-firestore.js"),
+    import("https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js"),
   ]);
 
-  if (appModule.status !== "fulfilled" || authModule.status !== "fulfilled" || firestoreModule.status !== "fulfilled") {
+  if (appModule.status !== "fulfilled" || authModule.status !== "fulfilled" || firestoreModule.status !== "fulfilled" || storageModule.status !== "fulfilled") {
     setProgressStatus("Local (hors ligne)");
     setMessage("Connexion distante indisponible. Tes données restent en local.", "warning");
     return false;
@@ -345,6 +847,7 @@ const initFirebase = async () => {
   const { initializeApp } = appModule.value;
   authApi = authModule.value;
   firestoreApi = firestoreModule.value;
+  storageApi = storageModule.value;
 
   const app = initializeApp(firebaseConfig);
   auth = authApi.getAuth(app);
@@ -355,6 +858,7 @@ const initFirebase = async () => {
     setMessage("Connexion persistante indisponible. Mode local activé.", "warning");
   }
   db = firestoreApi.getFirestore(app);
+  storage = storageApi.getStorage(app);
   firebaseReady = true;
   return true;
 };
@@ -694,6 +1198,8 @@ const init = async () => {
   const ready = await initFirebase();
   if (ready) {
     bindAuthObservers();
+  } else if (isYuukaleriePage) {
+    await initYuukalerie(null);
   }
 };
 
