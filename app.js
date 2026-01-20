@@ -313,6 +313,21 @@ const yuukalerieState = {
   selectedId: null,
 };
 
+const closeYuukalerieMenus = () => {
+  document.querySelectorAll(".yuukalerie-menu-list.is-open").forEach((menu) => {
+    menu.classList.remove("is-open");
+  });
+};
+
+const toggleYuukalerieMenu = (menu) => {
+  if (!menu) return;
+  const isOpen = menu.classList.contains("is-open");
+  closeYuukalerieMenus();
+  if (!isOpen) {
+    menu.classList.add("is-open");
+  }
+};
+
 const formatBytes = (bytes = 0) => {
   if (!bytes) return "0 Ko";
   const units = ["o", "Ko", "Mo", "Go"];
@@ -378,6 +393,10 @@ const getAlbumLabel = (albumId) => {
   return album?.name || "Sans album";
 };
 
+const getAlbumPhotoCount = (albumId) => (
+  yuukalerieState.photos.filter((photo) => !photo.isDeleted && photo.albumId === albumId).length
+);
+
 const buildAlbumOptions = () => {
   if (!yuukalerieEls.detailAlbum) return;
   yuukalerieEls.detailAlbum.innerHTML = "";
@@ -432,22 +451,62 @@ const renderAlbums = () => {
     { id: "deleted", name: "Supprimés récemment", subtitle: "Récupérables" },
   ];
   const renderAlbum = (album) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "yuukalerie-album";
-    button.dataset.albumId = album.id;
-    button.innerHTML = `<strong>${album.name}</strong><span>${album.subtitle || "Album personnalisé"}</span>`;
+    const wrapper = document.createElement("div");
+    wrapper.className = "yuukalerie-album";
+    wrapper.dataset.albumId = album.id;
     if (yuukalerieState.activeAlbumId === album.id) {
-      button.classList.add("is-active");
+      wrapper.classList.add("is-active");
     }
-    button.addEventListener("click", () => {
+    const mainButton = document.createElement("button");
+    mainButton.type = "button";
+    mainButton.className = "yuukalerie-album-main";
+    const photoCount = getAlbumPhotoCount(album.id);
+    const subtitle = album.subtitle || `${photoCount} photo${photoCount > 1 ? "s" : ""}`;
+    mainButton.innerHTML = `<strong>${album.name}</strong><span>${subtitle}</span>`;
+    mainButton.addEventListener("click", () => {
       yuukalerieState.activeAlbumId = album.id;
       yuukalerieState.filter = album.id === "deleted" ? "deleted" : album.id === "favorites" ? "favorites" : "all";
       setActiveFilterButton(yuukalerieState.filter);
       renderAlbums();
       renderGallery();
     });
-    yuukalerieEls.albumList.append(button);
+    wrapper.append(mainButton);
+    if (!baseAlbums.find((item) => item.id === album.id)) {
+      const menu = document.createElement("div");
+      menu.className = "yuukalerie-menu";
+      const trigger = document.createElement("button");
+      trigger.type = "button";
+      trigger.className = "yuukalerie-menu-trigger";
+      trigger.setAttribute("aria-label", "Options de l'album");
+      trigger.innerHTML = '<i class="fa-solid fa-ellipsis"></i>';
+      const menuList = document.createElement("div");
+      menuList.className = "yuukalerie-menu-list";
+      const renameButton = document.createElement("button");
+      renameButton.type = "button";
+      renameButton.textContent = "Renommer";
+      renameButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        closeYuukalerieMenus();
+        renameAlbum(album.id);
+      });
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "danger";
+      deleteButton.textContent = "Supprimer";
+      deleteButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        closeYuukalerieMenus();
+        deleteAlbum(album.id);
+      });
+      menuList.append(renameButton, deleteButton);
+      trigger.addEventListener("click", (event) => {
+        event.stopPropagation();
+        toggleYuukalerieMenu(menuList);
+      });
+      menu.append(trigger, menuList);
+      wrapper.append(menu);
+    }
+    yuukalerieEls.albumList.append(wrapper);
   };
   baseAlbums.forEach(renderAlbum);
   yuukalerieState.albums.forEach((album) => renderAlbum(album));
@@ -470,25 +529,50 @@ const renderGallery = () => {
           <span>${getAlbumLabel(photo.albumId)}</span>
           <span>${formatDate(photo.createdAt || photo.createdAtIso)}</span>
         </div>
-        <div class="yuukalerie-card-actions">
-          <button type="button" data-action="select"><i class="fa-solid fa-eye"></i></button>
-          <button type="button" data-action="favorite"><i class="fa-solid fa-star"></i></button>
-          <button type="button" data-action="delete" class="danger"><i class="fa-solid fa-trash"></i></button>
-        </div>
       </div>
     `;
-    card.addEventListener("click", (event) => {
-      const action = event.target.closest("button")?.dataset?.action;
-      if (action) {
-        if (action === "favorite") {
-          toggleFavorite(photo.id);
-        } else if (action === "delete") {
-          markDeleted(photo.id);
-        } else if (action === "select") {
-          selectPhoto(photo.id);
-        }
-        return;
-      }
+    const menu = document.createElement("div");
+    menu.className = "yuukalerie-menu yuukalerie-menu--card";
+    const menuTrigger = document.createElement("button");
+    menuTrigger.type = "button";
+    menuTrigger.className = "yuukalerie-menu-trigger";
+    menuTrigger.setAttribute("aria-label", "Options de la photo");
+    menuTrigger.innerHTML = '<i class="fa-solid fa-ellipsis"></i>';
+    const menuList = document.createElement("div");
+    menuList.className = "yuukalerie-menu-list";
+    const previewButton = document.createElement("button");
+    previewButton.type = "button";
+    previewButton.textContent = "Aperçu";
+    previewButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      selectPhoto(photo.id);
+    });
+    const favoriteButton = document.createElement("button");
+    favoriteButton.type = "button";
+    favoriteButton.textContent = "Favori";
+    favoriteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      toggleFavorite(photo.id);
+    });
+    const deleteButton = document.createElement("button");
+    deleteButton.type = "button";
+    deleteButton.className = "danger";
+    deleteButton.textContent = "Supprimer";
+    deleteButton.addEventListener("click", (event) => {
+      event.stopPropagation();
+      closeYuukalerieMenus();
+      removePhoto(photo.id);
+    });
+    menuList.append(previewButton, favoriteButton, deleteButton);
+    menuTrigger.addEventListener("click", (event) => {
+      event.stopPropagation();
+      toggleYuukalerieMenu(menuList);
+    });
+    menu.append(menuTrigger, menuList);
+    card.append(menu);
+    card.addEventListener("click", () => {
       selectPhoto(photo.id);
     });
     yuukalerieEls.grid.append(card);
@@ -620,10 +704,10 @@ const removePhoto = async (photoId) => {
 
 const createAlbum = async () => {
   const name = window.prompt("Nom du nouvel album :");
-  if (!name) return;
+  if (!name?.trim()) return;
   const album = {
     id: crypto.randomUUID(),
-    name,
+    name: name.trim(),
     createdAt: new Date().toISOString(),
   };
   yuukalerieState.albums.push(album);
@@ -637,6 +721,71 @@ const createAlbum = async () => {
     } catch (error) {
       console.error("Création d'album impossible", error);
       setMessage("Création d'album distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const updateAlbum = async (albumId, updates) => {
+  const albumIndex = yuukalerieState.albums.findIndex((item) => item.id === albumId);
+  if (albumIndex === -1) return;
+  yuukalerieState.albums[albumIndex] = { ...yuukalerieState.albums[albumIndex], ...updates };
+  saveGalleryLocal();
+  renderAlbums();
+  buildAlbumOptions();
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = getGalleryDoc("yuukalerie_albums", albumId);
+      await firestoreApi.setDoc(docRef, updates, { merge: true });
+    } catch (error) {
+      console.error("Mise à jour d'album impossible", error);
+      setMessage("Mise à jour d'album distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const renameAlbum = async (albumId) => {
+  const album = yuukalerieState.albums.find((item) => item.id === albumId);
+  if (!album) return;
+  const name = window.prompt("Nouveau nom de l'album :", album.name);
+  if (!name?.trim() || name.trim() === album.name) return;
+  await updateAlbum(albumId, { name: name.trim() });
+};
+
+const deleteAlbum = async (albumId) => {
+  const album = yuukalerieState.albums.find((item) => item.id === albumId);
+  if (!album) return;
+  const confirmed = window.confirm(`Supprimer l'album "${album.name}" ? Les photos resteront disponibles.`);
+  if (!confirmed) return;
+  const affectedPhotos = yuukalerieState.photos.filter((photo) => photo.albumId === albumId);
+  const updatedPhotos = yuukalerieState.photos.map((photo) => (
+    photo.albumId === albumId ? { ...photo, albumId: "" } : photo
+  ));
+  yuukalerieState.photos = updatedPhotos;
+  yuukalerieState.albums = yuukalerieState.albums.filter((item) => item.id !== albumId);
+  if (yuukalerieState.activeAlbumId === albumId) {
+    yuukalerieState.activeAlbumId = "all";
+    yuukalerieState.filter = "all";
+    setActiveFilterButton("all");
+  }
+  saveGalleryLocal();
+  renderAlbums();
+  buildAlbumOptions();
+  renderGallery();
+  if (yuukalerieState.selectedId) {
+    const selectedPhoto = yuukalerieState.photos.find((item) => item.id === yuukalerieState.selectedId);
+    renderDetails(selectedPhoto);
+  }
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = getGalleryDoc("yuukalerie_albums", albumId);
+      await firestoreApi.deleteDoc(docRef);
+      const updatePromises = affectedPhotos.map((photo) => (
+        firestoreApi.setDoc(getGalleryDoc("yuukalerie_photos", photo.id), { albumId: "" }, { merge: true })
+      ));
+      await Promise.all(updatePromises);
+    } catch (error) {
+      console.error("Suppression d'album impossible", error);
+      setMessage("Suppression d'album distante indisponible. Mode local activé.", "warning");
     }
   }
 };
@@ -709,6 +858,11 @@ const loadGalleryFromCloud = async () => {
 const initYuukalerie = async () => {
   if (!isYuukaleriePage) return;
   if (!yuukalerieBooted) {
+    document.addEventListener("click", (event) => {
+      if (!event.target.closest(".yuukalerie-menu")) {
+        closeYuukalerieMenus();
+      }
+    });
     yuukalerieEls.uploadTriggers.forEach((button) => {
       button.addEventListener("click", () => yuukalerieEls.uploadInput?.click());
     });
@@ -753,7 +907,7 @@ const initYuukalerie = async () => {
     });
     yuukalerieEls.deletePhoto?.addEventListener("click", () => {
       if (!yuukalerieState.selectedId) return;
-      markDeleted(yuukalerieState.selectedId);
+      removePhoto(yuukalerieState.selectedId);
     });
     yuukalerieBooted = true;
   }
