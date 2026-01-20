@@ -15,6 +15,7 @@ let authApi = null;
 let firestoreApi = null;
 let storageApi = null;
 let firebaseReady = false;
+const authEnabled = false;
 
 const progressKey = "yuuka_progress_v1";
 
@@ -83,37 +84,37 @@ const renderLoginBanner = (payload) => {
   loginBanner.hidden = false;
 };
 
-const getUserLabel = (user) => (user ? (user.displayName || user.email) : "Se connecter");
+const getUserLabel = (user) => (user ? (user.displayName || user.email) : "Mode public");
 
 const updateUserChips = (user) => {
-  const label = user ? "Connecté" : "Invité";
+  const label = user ? "Connecté" : "Public";
   userChips.forEach((chip) => {
     chip.textContent = label;
   });
 };
 
 const updateProfileMenu = (user) => {
-  const signedIn = Boolean(user);
+  const signedIn = authEnabled && Boolean(user);
   if (profileTriggerLabel) {
-    profileTriggerLabel.textContent = signedIn ? getUserLabel(user) : "Se connecter";
+    profileTriggerLabel.textContent = signedIn ? getUserLabel(user) : "Mode public";
   }
   if (profileName) {
-    profileName.textContent = signedIn ? (user.displayName || user.email) : "Invité";
+    profileName.textContent = signedIn ? (user.displayName || user.email) : "Galerie partagée";
   }
   if (profileEmail) {
-    profileEmail.textContent = signedIn ? user.email : "Connecte-toi avec Google pour synchroniser.";
+    profileEmail.textContent = signedIn ? user.email : "Synchronisation publique activée pour tous les appareils.";
   }
   if (profileSettings) {
     profileSettings.hidden = !signedIn;
   }
   googleSignInButtons.forEach((button) => {
-    button.hidden = signedIn;
+    button.hidden = true;
   });
   signOutButtons.forEach((button) => {
-    button.hidden = !signedIn;
+    button.hidden = true;
   });
   if (accountState) {
-    accountState.textContent = signedIn ? "En ligne" : "Invité";
+    accountState.textContent = signedIn ? "En ligne" : "Public";
   }
 };
 
@@ -192,6 +193,10 @@ if (pageName) {
 }
 
 const ensureAuthReady = () => {
+  if (!authEnabled) {
+    setMessage("Connexion désactivée. Mode public activé.", "warning");
+    return false;
+  }
   if (!firebaseReady || !authApi || !auth) {
     setMessage("Connexion indisponible pour le moment. Mode invité activé.", "warning");
     return false;
@@ -271,6 +276,7 @@ const galleryStorageKey = "yuuka_gallery_v1";
 let yuukalerieBooted = false;
 let yuukalerieUserId = null;
 let yuukalerieCurrentUser = null;
+const yuukalerieGalleryId = "public";
 
 const yuukalerieEls = {
   uploadInput: document.querySelector("[data-yuuka-upload]"),
@@ -343,21 +349,29 @@ const saveGalleryLocal = () => {
   }));
 };
 
-const setYuukalerieStatus = (user) => {
+const setYuukalerieStatus = () => {
   if (yuukalerieEls.syncStatus) {
-    const synced = user && firebaseReady;
+    const synced = firebaseReady;
     yuukalerieEls.syncStatus.innerHTML = synced
-      ? '<i class="fa-solid fa-wifi"></i> Sync Firebase active'
-      : '<i class="fa-solid fa-plug-circle-xmark"></i> Mode invité';
+      ? '<i class="fa-solid fa-wifi"></i> Sync Firebase public'
+      : '<i class="fa-solid fa-plug-circle-xmark"></i> Mode local';
     yuukalerieEls.syncStatus.classList.toggle("success", synced);
     yuukalerieEls.syncStatus.classList.toggle("warning", !synced);
   }
   if (yuukalerieEls.storageStatus) {
-    yuukalerieEls.storageStatus.innerHTML = user && firebaseReady
-      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase'
+    yuukalerieEls.storageStatus.innerHTML = firebaseReady
+      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase partagé'
       : '<i class="fa-solid fa-cloud-slash"></i> Stockage local temporaire';
   }
 };
+
+const getGalleryCollection = (collectionName) => (
+  firestoreApi.collection(db, "yuukalerie_public", yuukalerieGalleryId, collectionName)
+);
+
+const getGalleryDoc = (collectionName, docId) => (
+  firestoreApi.doc(db, "yuukalerie_public", yuukalerieGalleryId, collectionName, docId)
+);
 
 const getAlbumLabel = (albumId) => {
   const album = yuukalerieState.albums.find((item) => item.id === albumId);
@@ -558,7 +572,7 @@ const updatePhoto = async (photoId, updates) => {
   }
   if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
     try {
-      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photoId);
+      const docRef = getGalleryDoc("yuukalerie_photos", photoId);
       await firestoreApi.setDoc(docRef, updates, { merge: true });
     } catch (error) {
       console.error("Mise à jour Yuukalerie impossible", error);
@@ -587,7 +601,7 @@ const removePhoto = async (photoId) => {
   renderDetails(null);
   if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
     try {
-      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photoId);
+      const docRef = getGalleryDoc("yuukalerie_photos", photoId);
       await firestoreApi.deleteDoc(docRef);
     } catch (error) {
       console.error("Suppression Yuukalerie impossible", error);
@@ -618,7 +632,7 @@ const createAlbum = async () => {
   buildAlbumOptions();
   if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
     try {
-      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_albums", album.id);
+      const docRef = getGalleryDoc("yuukalerie_albums", album.id);
       await firestoreApi.setDoc(docRef, album);
     } catch (error) {
       console.error("Création d'album impossible", error);
@@ -633,7 +647,7 @@ const persistPhoto = async (photo) => {
   renderGallery();
   if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
     try {
-      const docRef = firestoreApi.doc(db, "users", yuukalerieUserId, "yuukalerie_photos", photo.id);
+      const docRef = getGalleryDoc("yuukalerie_photos", photo.id);
       await firestoreApi.setDoc(docRef, photo);
     } catch (error) {
       console.error("Sauvegarde Yuukalerie impossible", error);
@@ -642,7 +656,7 @@ const persistPhoto = async (photo) => {
   }
 };
 
-const handleUploadFiles = async (files, user) => {
+const handleUploadFiles = async (files) => {
   if (!files?.length) return;
   const fileList = Array.from(files);
   for (const file of fileList) {
@@ -656,9 +670,9 @@ const handleUploadFiles = async (files, user) => {
       isFavorite: false,
       isDeleted: false,
     };
-    if (firebaseReady && storageApi && storage && user) {
+    if (firebaseReady && storageApi && storage) {
       try {
-        const path = `users/${user.uid}/yuukalerie/${basePhoto.id}_${file.name}`;
+        const path = `public/yuukalerie/${basePhoto.id}_${file.name}`;
         const storageRef = storageApi.ref(storage, path);
         await storageApi.uploadBytes(storageRef, file);
         const url = await storageApi.getDownloadURL(storageRef);
@@ -676,11 +690,11 @@ const handleUploadFiles = async (files, user) => {
   }
 };
 
-const loadGalleryFromCloud = async (user) => {
-  if (!firebaseReady || !firestoreApi || !db || !user) return false;
+const loadGalleryFromCloud = async () => {
+  if (!firebaseReady || !firestoreApi || !db) return false;
   try {
-    const albumsSnap = await firestoreApi.getDocs(firestoreApi.collection(db, "users", user.uid, "yuukalerie_albums"));
-    const photosSnap = await firestoreApi.getDocs(firestoreApi.collection(db, "users", user.uid, "yuukalerie_photos"));
+    const albumsSnap = await firestoreApi.getDocs(getGalleryCollection("yuukalerie_albums"));
+    const photosSnap = await firestoreApi.getDocs(getGalleryCollection("yuukalerie_photos"));
     yuukalerieState.albums = albumsSnap.docs.map((doc) => doc.data());
     yuukalerieState.photos = photosSnap.docs.map((doc) => doc.data());
     saveGalleryLocal();
@@ -692,14 +706,14 @@ const loadGalleryFromCloud = async (user) => {
   }
 };
 
-const initYuukalerie = async (user) => {
+const initYuukalerie = async () => {
   if (!isYuukaleriePage) return;
   if (!yuukalerieBooted) {
     yuukalerieEls.uploadTriggers.forEach((button) => {
       button.addEventListener("click", () => yuukalerieEls.uploadInput?.click());
     });
     yuukalerieEls.uploadInput?.addEventListener("change", (event) => {
-      handleUploadFiles(event.target.files, yuukalerieCurrentUser);
+      handleUploadFiles(event.target.files);
     });
     yuukalerieEls.createAlbumButtons.forEach((button) => {
       button.addEventListener("click", createAlbum);
@@ -727,7 +741,7 @@ const initYuukalerie = async (user) => {
     yuukalerieEls.dropzone?.addEventListener("drop", (event) => {
       event.preventDefault();
       yuukalerieEls.dropzone.classList.remove("is-dragging");
-      handleUploadFiles(event.dataTransfer.files, yuukalerieCurrentUser);
+      handleUploadFiles(event.dataTransfer.files);
     });
     yuukalerieEls.detailAlbum?.addEventListener("change", (event) => {
       if (!yuukalerieState.selectedId) return;
@@ -743,18 +757,16 @@ const initYuukalerie = async (user) => {
     });
     yuukalerieBooted = true;
   }
-  yuukalerieCurrentUser = user || null;
-  setYuukalerieStatus(user);
+  yuukalerieCurrentUser = null;
+  setYuukalerieStatus();
   const localData = readGalleryLocal();
-  if (localData && (!yuukalerieUserId || yuukalerieUserId === user?.uid)) {
+  if (localData && (!yuukalerieUserId || yuukalerieUserId === yuukalerieGalleryId)) {
     yuukalerieState.albums = localData.albums || [];
     yuukalerieState.photos = localData.photos || [];
   }
-  if (!user) {
-    yuukalerieUserId = null;
-  } else if (user.uid !== yuukalerieUserId) {
-    yuukalerieUserId = user.uid;
-    await loadGalleryFromCloud(user);
+  if (yuukalerieGalleryId !== yuukalerieUserId) {
+    yuukalerieUserId = yuukalerieGalleryId;
+    await loadGalleryFromCloud();
   }
   buildAlbumOptions();
   setActiveFilterButton(yuukalerieState.filter);
@@ -784,7 +796,7 @@ const bindAuthObservers = () => {
     }
     await mergeProgress(user);
     if (isYuukaleriePage) {
-      await initYuukalerie(user);
+      await initYuukalerie();
     }
   });
 
@@ -838,24 +850,27 @@ const initFirebase = async () => {
     import("https://www.gstatic.com/firebasejs/10.3.1/firebase-storage.js"),
   ]);
 
-  if (appModule.status !== "fulfilled" || authModule.status !== "fulfilled" || firestoreModule.status !== "fulfilled" || storageModule.status !== "fulfilled") {
+  const authReady = authEnabled ? authModule.status === "fulfilled" : true;
+  if (appModule.status !== "fulfilled" || !authReady || firestoreModule.status !== "fulfilled" || storageModule.status !== "fulfilled") {
     setProgressStatus("Local (hors ligne)");
     setMessage("Connexion distante indisponible. Tes données restent en local.", "warning");
     return false;
   }
 
   const { initializeApp } = appModule.value;
-  authApi = authModule.value;
+  authApi = authModule.status === "fulfilled" ? authModule.value : null;
   firestoreApi = firestoreModule.value;
   storageApi = storageModule.value;
 
   const app = initializeApp(firebaseConfig);
-  auth = authApi.getAuth(app);
-  try {
-    await authApi.setPersistence(auth, authApi.browserLocalPersistence);
-  } catch (error) {
-    console.error("Persistance Firebase impossible", error);
-    setMessage("Connexion persistante indisponible. Mode local activé.", "warning");
+  if (authEnabled && authApi) {
+    auth = authApi.getAuth(app);
+    try {
+      await authApi.setPersistence(auth, authApi.browserLocalPersistence);
+    } catch (error) {
+      console.error("Persistance Firebase impossible", error);
+      setMessage("Connexion persistante indisponible. Mode local activé.", "warning");
+    }
   }
   db = firestoreApi.getFirestore(app);
   storage = storageApi.getStorage(app);
@@ -1189,6 +1204,8 @@ const init = async () => {
   initParallax();
   initScrollColors();
   hydrateLoginBanner();
+  updateUserChips(null);
+  updateProfileMenu(null);
   const storedTheme = localStorage.getItem(themeStorageKey);
   if (storedTheme && themePresets[storedTheme]) {
     applyTheme(storedTheme, false);
@@ -1197,9 +1214,14 @@ const init = async () => {
   }
   const ready = await initFirebase();
   if (ready) {
-    bindAuthObservers();
+    if (authEnabled) {
+      bindAuthObservers();
+    }
+    if (isYuukaleriePage) {
+      await initYuukalerie();
+    }
   } else if (isYuukaleriePage) {
-    await initYuukalerie(null);
+    await initYuukalerie();
   }
 };
 
