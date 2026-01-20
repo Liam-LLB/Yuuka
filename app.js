@@ -378,6 +378,10 @@ const getAlbumLabel = (albumId) => {
   return album?.name || "Sans album";
 };
 
+const getAlbumPhotoCount = (albumId) => (
+  yuukalerieState.photos.filter((photo) => !photo.isDeleted && photo.albumId === albumId).length
+);
+
 const buildAlbumOptions = () => {
   if (!yuukalerieEls.detailAlbum) return;
   yuukalerieEls.detailAlbum.innerHTML = "";
@@ -432,22 +436,50 @@ const renderAlbums = () => {
     { id: "deleted", name: "Supprimés récemment", subtitle: "Récupérables" },
   ];
   const renderAlbum = (album) => {
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "yuukalerie-album";
-    button.dataset.albumId = album.id;
-    button.innerHTML = `<strong>${album.name}</strong><span>${album.subtitle || "Album personnalisé"}</span>`;
+    const wrapper = document.createElement("div");
+    wrapper.className = "yuukalerie-album";
+    wrapper.dataset.albumId = album.id;
     if (yuukalerieState.activeAlbumId === album.id) {
-      button.classList.add("is-active");
+      wrapper.classList.add("is-active");
     }
-    button.addEventListener("click", () => {
+    const mainButton = document.createElement("button");
+    mainButton.type = "button";
+    mainButton.className = "yuukalerie-album-main";
+    const photoCount = getAlbumPhotoCount(album.id);
+    const subtitle = album.subtitle || `${photoCount} photo${photoCount > 1 ? "s" : ""}`;
+    mainButton.innerHTML = `<strong>${album.name}</strong><span>${subtitle}</span>`;
+    mainButton.addEventListener("click", () => {
       yuukalerieState.activeAlbumId = album.id;
       yuukalerieState.filter = album.id === "deleted" ? "deleted" : album.id === "favorites" ? "favorites" : "all";
       setActiveFilterButton(yuukalerieState.filter);
       renderAlbums();
       renderGallery();
     });
-    yuukalerieEls.albumList.append(button);
+    wrapper.append(mainButton);
+    if (!baseAlbums.find((item) => item.id === album.id)) {
+      const actions = document.createElement("div");
+      actions.className = "yuukalerie-album-actions";
+      const renameButton = document.createElement("button");
+      renameButton.type = "button";
+      renameButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+      renameButton.setAttribute("aria-label", "Renommer l'album");
+      renameButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        renameAlbum(album.id);
+      });
+      const deleteButton = document.createElement("button");
+      deleteButton.type = "button";
+      deleteButton.className = "danger";
+      deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      deleteButton.setAttribute("aria-label", "Supprimer l'album");
+      deleteButton.addEventListener("click", (event) => {
+        event.stopPropagation();
+        deleteAlbum(album.id);
+      });
+      actions.append(renameButton, deleteButton);
+      wrapper.append(actions);
+    }
+    yuukalerieEls.albumList.append(wrapper);
   };
   baseAlbums.forEach(renderAlbum);
   yuukalerieState.albums.forEach((album) => renderAlbum(album));
@@ -620,10 +652,10 @@ const removePhoto = async (photoId) => {
 
 const createAlbum = async () => {
   const name = window.prompt("Nom du nouvel album :");
-  if (!name) return;
+  if (!name?.trim()) return;
   const album = {
     id: crypto.randomUUID(),
-    name,
+    name: name.trim(),
     createdAt: new Date().toISOString(),
   };
   yuukalerieState.albums.push(album);
@@ -637,6 +669,71 @@ const createAlbum = async () => {
     } catch (error) {
       console.error("Création d'album impossible", error);
       setMessage("Création d'album distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const updateAlbum = async (albumId, updates) => {
+  const albumIndex = yuukalerieState.albums.findIndex((item) => item.id === albumId);
+  if (albumIndex === -1) return;
+  yuukalerieState.albums[albumIndex] = { ...yuukalerieState.albums[albumIndex], ...updates };
+  saveGalleryLocal();
+  renderAlbums();
+  buildAlbumOptions();
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = getGalleryDoc("yuukalerie_albums", albumId);
+      await firestoreApi.setDoc(docRef, updates, { merge: true });
+    } catch (error) {
+      console.error("Mise à jour d'album impossible", error);
+      setMessage("Mise à jour d'album distante indisponible. Mode local activé.", "warning");
+    }
+  }
+};
+
+const renameAlbum = async (albumId) => {
+  const album = yuukalerieState.albums.find((item) => item.id === albumId);
+  if (!album) return;
+  const name = window.prompt("Nouveau nom de l'album :", album.name);
+  if (!name?.trim() || name.trim() === album.name) return;
+  await updateAlbum(albumId, { name: name.trim() });
+};
+
+const deleteAlbum = async (albumId) => {
+  const album = yuukalerieState.albums.find((item) => item.id === albumId);
+  if (!album) return;
+  const confirmed = window.confirm(`Supprimer l'album "${album.name}" ? Les photos resteront disponibles.`);
+  if (!confirmed) return;
+  const affectedPhotos = yuukalerieState.photos.filter((photo) => photo.albumId === albumId);
+  const updatedPhotos = yuukalerieState.photos.map((photo) => (
+    photo.albumId === albumId ? { ...photo, albumId: "" } : photo
+  ));
+  yuukalerieState.photos = updatedPhotos;
+  yuukalerieState.albums = yuukalerieState.albums.filter((item) => item.id !== albumId);
+  if (yuukalerieState.activeAlbumId === albumId) {
+    yuukalerieState.activeAlbumId = "all";
+    yuukalerieState.filter = "all";
+    setActiveFilterButton("all");
+  }
+  saveGalleryLocal();
+  renderAlbums();
+  buildAlbumOptions();
+  renderGallery();
+  if (yuukalerieState.selectedId) {
+    const selectedPhoto = yuukalerieState.photos.find((item) => item.id === yuukalerieState.selectedId);
+    renderDetails(selectedPhoto);
+  }
+  if (firebaseReady && firestoreApi && db && yuukalerieUserId) {
+    try {
+      const docRef = getGalleryDoc("yuukalerie_albums", albumId);
+      await firestoreApi.deleteDoc(docRef);
+      const updatePromises = affectedPhotos.map((photo) => (
+        firestoreApi.setDoc(getGalleryDoc("yuukalerie_photos", photo.id), { albumId: "" }, { merge: true })
+      ));
+      await Promise.all(updatePromises);
+    } catch (error) {
+      console.error("Suppression d'album impossible", error);
+      setMessage("Suppression d'album distante indisponible. Mode local activé.", "warning");
     }
   }
 };
