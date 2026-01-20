@@ -1859,6 +1859,46 @@ button.showcase-card {
   padding: 18px;
 }
 
+.yuukalerie-phone-frame {
+  background: linear-gradient(180deg, #f8fafc 0%, #eef2ff 100%);
+  border-radius: 36px;
+  padding: 18px;
+  box-shadow: 0 32px 60px rgba(15, 23, 42, 0.35);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.yuukalerie-phone-header {
+  display: grid;
+  gap: 12px;
+  padding: 8px 8px 16px;
+  color: #0f172a;
+}
+
+.yuukalerie-phone-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.yuukalerie-phone-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+}
+
+.yuukalerie-phone-title h2 {
+  margin: 4px 0 0;
+  font-size: 1.6rem;
+  color: #0f172a;
+}
+
+.yuukalerie-phone-title .subtitle {
+  color: #475569;
+}
+
 .yuukalerie-shell {
   display: grid;
   grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2fr) minmax(240px, 1fr);
@@ -1929,6 +1969,20 @@ button.showcase-card {
 .yuukalerie-album span {
   color: var(--muted);
   font-size: 0.85rem;
+}
+
+.yuukalerie-album-actions {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.yuukalerie-album-actions button {
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 6px 8px;
+  cursor: pointer;
 }
 
 .yuukalerie-main {
@@ -2187,7 +2241,8 @@ button.showcase-card {
 }
 
 .btn.danger,
-.yuukalerie-menu-list .danger {
+.yuukalerie-card-actions .danger,
+.yuukalerie-album-actions .danger {
   color: #fecaca;
   background: rgba(239, 68, 68, 0.18);
 }
@@ -2214,9 +2269,19 @@ button.showcase-card {
   flex-wrap: wrap;
 }
 
+body[data-page="Yuukalerie"] .yuukalerie-shell {
+  grid-template-columns: 1fr;
+  max-width: 420px;
+  margin: 0 auto;
+  gap: 18px;
+}
+
 body[data-page="Yuukalerie"] .yuukalerie-sidebar,
 body[data-page="Yuukalerie"] .yuukalerie-main,
 body[data-page="Yuukalerie"] .yuukalerie-inspector {
+  background: #ffffff;
+  border: 1px solid rgba(148, 163, 184, 0.3);
+  box-shadow: 0 18px 32px rgba(15, 23, 42, 0.15);
   color: #0f172a;
 }
 
@@ -2255,7 +2320,8 @@ body[data-page="Yuukalerie"] .pill.is-active {
   border-color: #0f172a;
 }
 
-body[data-page="Yuukalerie"] .yuukalerie-menu-trigger {
+body[data-page="Yuukalerie"] .yuukalerie-card-actions button,
+body[data-page="Yuukalerie"] .yuukalerie-album-actions button {
   background: rgba(15, 23, 42, 0.08);
   color: #0f172a;
 }

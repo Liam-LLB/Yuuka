@@ -66,8 +66,25 @@
       </div>
     </section>
 
-    <section class="yuukalerie-shell">
-      <aside class="card yuukalerie-sidebar">
+    <section class="yuukalerie-phone-frame">
+      <header class="yuukalerie-phone-header">
+        <div class="yuukalerie-phone-status">
+          <span class="yuukalerie-phone-time">9:41</span>
+          <span class="yuukalerie-phone-icons">
+            <i class="fa-solid fa-signal"></i>
+            <i class="fa-solid fa-wifi"></i>
+            <i class="fa-solid fa-battery-full"></i>
+          </span>
+        </div>
+        <div class="yuukalerie-phone-title">
+          <span class="eyebrow"><i class="fa-solid fa-images"></i> Photos</span>
+          <h2>Yuukalerie</h2>
+          <p class="subtitle">Une expérience inspirée d'iOS pour parcourir et gérer tes albums.</p>
+        </div>
+      </header>
+
+      <section class="yuukalerie-shell">
+        <aside class="card yuukalerie-sidebar">
         <div class="yuukalerie-sidebar-header">
           <h2 class="section-title">Albums</h2>
           <button class="btn ghost small" type="button" data-yuuka-create-album><i class="fa-solid fa-plus"></i></button>
@@ -77,9 +94,9 @@
           <div class="badge" data-yuuka-photo-count>0 photos</div>
           <p class="subtitle">Synchronisé avec ton compte Google via Firebase Storage.</p>
         </div>
-      </aside>
+        </aside>
 
-      <section class="yuukalerie-main">
+        <section class="yuukalerie-main">
         <div class="card yuukalerie-toolbar">
           <div class="yuukalerie-toolbar-left">
             <div class="yuukalerie-search">
@@ -113,9 +130,9 @@
           <h3>Aucune photo pour le moment</h3>
           <p class="subtitle">Importe des photos pour remplir ta galerie et les retrouver sur tous tes appareils.</p>
         </div>
-      </section>
+        </section>
 
-      <aside class="card yuukalerie-inspector">
+        <aside class="card yuukalerie-inspector">
         <div class="yuukalerie-inspector-header">
           <h2 class="section-title">Détails</h2>
           <span class="badge" data-yuuka-detail-status>—</span>
@@ -153,7 +170,8 @@
           <h3>Supprimés récemment</h3>
           <div class="yuukalerie-deleted-list" data-yuuka-deleted-list></div>
         </div>
-      </aside>
+        </aside>
+      </section>
     </section>
   </main>
 

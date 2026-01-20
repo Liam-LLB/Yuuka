@@ -472,39 +472,27 @@ const renderAlbums = () => {
     });
     wrapper.append(mainButton);
     if (!baseAlbums.find((item) => item.id === album.id)) {
-      const menu = document.createElement("div");
-      menu.className = "yuukalerie-menu";
-      const trigger = document.createElement("button");
-      trigger.type = "button";
-      trigger.className = "yuukalerie-menu-trigger";
-      trigger.setAttribute("aria-label", "Options de l'album");
-      trigger.innerHTML = '<i class="fa-solid fa-ellipsis"></i>';
-      const menuList = document.createElement("div");
-      menuList.className = "yuukalerie-menu-list";
+      const actions = document.createElement("div");
+      actions.className = "yuukalerie-album-actions";
       const renameButton = document.createElement("button");
       renameButton.type = "button";
-      renameButton.textContent = "Renommer";
+      renameButton.innerHTML = '<i class="fa-solid fa-pen"></i>';
+      renameButton.setAttribute("aria-label", "Renommer l'album");
       renameButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        closeYuukalerieMenus();
         renameAlbum(album.id);
       });
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
       deleteButton.className = "danger";
-      deleteButton.textContent = "Supprimer";
+      deleteButton.innerHTML = '<i class="fa-solid fa-trash"></i>';
+      deleteButton.setAttribute("aria-label", "Supprimer l'album");
       deleteButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        closeYuukalerieMenus();
         deleteAlbum(album.id);
       });
-      menuList.append(renameButton, deleteButton);
-      trigger.addEventListener("click", (event) => {
-        event.stopPropagation();
-        toggleYuukalerieMenu(menuList);
-      });
-      menu.append(trigger, menuList);
-      wrapper.append(menu);
+      actions.append(renameButton, deleteButton);
+      wrapper.append(actions);
     }
     yuukalerieEls.albumList.append(wrapper);
   };
