@@ -289,6 +289,7 @@ const yuukalerieEls = {
   filterButtons: document.querySelectorAll("[data-yuuka-filter]"),
   dropzone: document.querySelector("[data-yuuka-dropzone]"),
   photoCount: document.querySelector("[data-yuuka-photo-count]"),
+  inspector: document.querySelector("[data-yuuka-inspector]"),
   detailStatus: document.querySelector("[data-yuuka-detail-status]"),
   preview: document.querySelector("[data-yuuka-preview]"),
   detailName: document.querySelector("[data-yuuka-detail-name]"),
@@ -302,6 +303,7 @@ const yuukalerieEls = {
   deletedList: document.querySelector("[data-yuuka-deleted-list]"),
   syncStatus: document.querySelector("[data-yuuka-sync-status]"),
   storageStatus: document.querySelector("[data-yuuka-storage-status]"),
+  inspectorClose: document.querySelector("[data-yuuka-inspector-close]"),
 };
 
 const yuukalerieState = {
@@ -602,6 +604,7 @@ const renderDeletedList = () => {
 
 const renderDetails = (photo) => {
   if (!photo) {
+    yuukalerieEls.inspector?.classList.add("is-hidden");
     if (yuukalerieEls.preview) yuukalerieEls.preview.innerHTML = "<span>Choisis une photo</span>";
     if (yuukalerieEls.detailName) yuukalerieEls.detailName.textContent = "—";
     if (yuukalerieEls.detailDate) yuukalerieEls.detailDate.textContent = "—";
@@ -610,6 +613,7 @@ const renderDetails = (photo) => {
     if (yuukalerieEls.detailStatus) yuukalerieEls.detailStatus.textContent = "—";
     return;
   }
+  yuukalerieEls.inspector?.classList.remove("is-hidden");
   if (yuukalerieEls.preview) {
     yuukalerieEls.preview.innerHTML = `<img src="${photo.url || photo.localUrl || ""}" alt="${photo.name || "Photo"}" />`;
   }
@@ -631,6 +635,11 @@ const selectPhoto = (photoId) => {
   yuukalerieState.selectedId = photoId;
   const photo = yuukalerieState.photos.find((item) => item.id === photoId);
   renderDetails(photo);
+};
+
+const clearSelectedPhoto = () => {
+  yuukalerieState.selectedId = null;
+  renderDetails(null);
 };
 
 const updatePhoto = async (photoId, updates) => {
@@ -889,6 +898,7 @@ const initYuukalerie = async () => {
       if (!yuukalerieState.selectedId) return;
       updatePhoto(yuukalerieState.selectedId, { albumId: event.target.value || "" });
     });
+    yuukalerieEls.inspectorClose?.addEventListener("click", clearSelectedPhoto);
     yuukalerieEls.toggleFavorite?.addEventListener("click", () => {
       if (!yuukalerieState.selectedId) return;
       toggleFavorite(yuukalerieState.selectedId);
