@@ -2301,10 +2301,6 @@ body[data-page="Yuukalerie"] .yuukalerie-inspector {
   position: static;
 }
 
-body[data-page="Yuukalerie"] .yuukalerie-inspector.is-hidden {
-  display: none;
-}
-
 body[data-page="Yuukalerie"] .yuukalerie-inspector-content {
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
