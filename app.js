@@ -1184,67 +1184,27 @@ const initScrollColors = () => {
 const initThreeExperience = async () => {
   const sceneRoot = document.querySelector("[data-3d-scene]");
   if (!sceneRoot) return;
-  if (sceneRoot.dataset.threeReady === "true") return;
   const loader = sceneRoot.querySelector("[data-3d-loader]");
-  const errorPanel = sceneRoot.querySelector("[data-3d-error]");
-  const retryButton = sceneRoot.querySelector("[data-3d-retry]");
   const labelEl = document.querySelector("[data-3d-label]");
   const descEl = document.querySelector("[data-3d-desc]");
   const hintEl = document.querySelector("[data-3d-hint]");
   const resetButton = document.querySelector("[data-3d-reset]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const showError = () => {
-    if (loader) loader.classList.add("is-hidden");
-    if (errorPanel) errorPanel.hidden = false;
-  };
+  const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js");
+  const { OrbitControls } = await import("https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js");
 
-  retryButton?.addEventListener("click", () => {
-    window.location.reload();
-  });
+  const canvas = document.createElement("canvas");
+  sceneRoot.insertBefore(canvas, sceneRoot.firstChild);
 
-  if (!window.WebGLRenderingContext) {
-    showError();
-    return;
-  }
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  const loadThree = () => Promise.race([
-    Promise.all([
-      import("https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js"),
-      import("https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js"),
-    ]),
-    new Promise((resolve) => {
-      window.setTimeout(() => resolve(null), 8000);
-    }),
-  ]).catch(() => null);
+  const scene = new THREE.Scene();
+  scene.fog = new THREE.Fog(0x05080f, 6, 20);
 
-  const loaded = await loadThree();
-  if (!loaded) {
-    showError();
-    return;
-  }
-
-  let THREE;
-  let OrbitControls;
-  let renderer;
-  let scene;
-  let camera;
-  try {
-    [THREE] = loaded;
-    ({ OrbitControls } = loaded[1]);
-    const canvas = document.createElement("canvas");
-    sceneRoot.insertBefore(canvas, sceneRoot.firstChild);
-    renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x05080f, 6, 20);
-    camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-    camera.position.set(0, 4.5, 10);
-  } catch (error) {
-    console.error("Initialisation 3D impossible", error);
-    showError();
-    return;
-  }
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.set(0, 4.5, 10);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.enablePan = false;
@@ -1455,8 +1415,6 @@ const initThreeExperience = async () => {
   window.addEventListener("resize", resize);
 
   loader?.classList.add("is-hidden");
-  if (errorPanel) errorPanel.hidden = true;
-  sceneRoot.dataset.threeReady = "true";
 
   const clock = new THREE.Clock();
   const animate = () => {
