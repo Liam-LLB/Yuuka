@@ -32,34 +32,128 @@
   </nav>
 
   <main class="container">
-    <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</span>
-      <h1 class="main-title">Galerie des souvenirs</h1>
-      <p class="subtitle">Une nouvelle présentation des photos arrive bientôt pour garder chaque moment en mémoire.</p>
-      <div class="tabs">
-        <span class="badge warning"><i class="fa-solid fa-hammer"></i> En construction</span>
-        <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
+    <section class="card hero hero-3d yuukalerie-hero">
+      <div class="hero-copy">
+        <span class="eyebrow"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</span>
+        <h1 class="main-title">Galerie connectée façon Apple</h1>
+        <p class="subtitle">Upload, albums intelligents, détails de prise de vue et synchronisation Firebase en un seul espace inspiré de l'univers Apple.</p>
+        <div class="tabs">
+          <button class="btn" type="button" data-yuuka-upload-trigger><i class="fa-solid fa-cloud-arrow-up"></i> Importer des photos</button>
+          <button class="btn ghost" type="button" data-yuuka-create-album><i class="fa-solid fa-folder-plus"></i> Nouvel album</button>
+          <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
+        </div>
+        <div class="yuukalerie-hero-status">
+          <span class="badge success" data-yuuka-sync-status><i class="fa-solid fa-wifi"></i> Sync Firebase prête</span>
+          <span class="badge" data-yuuka-storage-status><i class="fa-solid fa-hard-drive"></i> Stockage connecté</span>
+        </div>
+      </div>
+      <div class="hero-stage" aria-hidden="true">
+        <div class="floating-card glass yuukalerie-hero-card">
+          <span class="badge">Live</span>
+          <strong>Upload instantané</strong>
+          <span class="subtitle">Glisse-dépose ou sélectionne depuis l'appareil.</span>
+        </div>
+        <div class="floating-card neon yuukalerie-hero-card">
+          <span class="badge warning">Albums</span>
+          <strong>Organisation fluide</strong>
+          <span class="subtitle">Déplace tes photos en un clic.</span>
+        </div>
+        <div class="floating-card core yuukalerie-hero-card">
+          <span class="badge success">Détails</span>
+          <strong>Métadonnées visibles</strong>
+          <span class="subtitle">Date, poids, appareil, état.</span>
+        </div>
       </div>
     </section>
 
-    <section class="grid-2">
-      <div class="card">
-        <h2 class="section-title">Ce qui arrive</h2>
-        <ul class="info-list">
-          <li>Mosaïque responsive pour toutes les photos.</li>
-          <li>Collections par date et par thème.</li>
-          <li>Commentaires partagés avec ton compte.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h2 class="section-title">Ambiance</h2>
-        <p class="subtitle">Une galerie pensée comme un studio photo immersif.</p>
-        <ul class="info-list">
-          <li>Transitions douces entre chaque collection.</li>
-          <li>Mises en avant thématiques.</li>
-          <li>Navigation rapide entre les albums.</li>
-        </ul>
-      </div>
+    <section class="yuukalerie-shell">
+      <aside class="card yuukalerie-sidebar">
+        <div class="yuukalerie-sidebar-header">
+          <h2 class="section-title">Albums</h2>
+          <button class="btn ghost small" type="button" data-yuuka-create-album><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div class="yuukalerie-album-list" data-yuuka-album-list></div>
+        <div class="yuukalerie-sidebar-footer">
+          <div class="badge" data-yuuka-photo-count>0 photos</div>
+          <p class="subtitle">Synchronisé avec ton compte Google via Firebase Storage.</p>
+        </div>
+      </aside>
+
+      <section class="yuukalerie-main">
+        <div class="card yuukalerie-toolbar">
+          <div class="yuukalerie-toolbar-left">
+            <div class="yuukalerie-search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="search" placeholder="Rechercher une photo, un album..." data-yuuka-search />
+            </div>
+            <div class="yuukalerie-filters">
+              <button class="pill is-active" type="button" data-yuuka-filter="all">Tout</button>
+              <button class="pill" type="button" data-yuuka-filter="favorites">Favoris</button>
+              <button class="pill" type="button" data-yuuka-filter="recent">Récents</button>
+              <button class="pill" type="button" data-yuuka-filter="deleted">Supprimés récemment</button>
+            </div>
+          </div>
+          <div class="yuukalerie-toolbar-right">
+            <button class="btn ghost" type="button" data-yuuka-upload-trigger><i class="fa-solid fa-arrow-up-from-bracket"></i> Importer</button>
+            <label class="btn apple" for="yuuka-upload-input"><i class="fa-solid fa-photo-film"></i> Parcourir</label>
+            <input id="yuuka-upload-input" class="sr-only" type="file" multiple accept="image/*" data-yuuka-upload />
+          </div>
+        </div>
+
+        <div class="yuukalerie-dropzone card" data-yuuka-dropzone>
+          <div>
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <p>Glisse tes photos ici pour les ajouter à Yuukalerie.</p>
+            <span class="subtitle">Formats supportés : JPEG, PNG, HEIC. Synchronisation Firebase après connexion.</span>
+          </div>
+        </div>
+
+        <div class="yuukalerie-grid" data-yuuka-grid></div>
+        <div class="yuukalerie-empty card" data-yuuka-empty hidden>
+          <h3>Aucune photo pour le moment</h3>
+          <p class="subtitle">Importe des photos pour remplir ta galerie et les retrouver sur tous tes appareils.</p>
+        </div>
+      </section>
+
+      <aside class="card yuukalerie-inspector">
+        <div class="yuukalerie-inspector-header">
+          <h2 class="section-title">Détails</h2>
+          <span class="badge" data-yuuka-detail-status>—</span>
+        </div>
+        <div class="yuukalerie-preview" data-yuuka-preview>
+          <span>Choisis une photo</span>
+        </div>
+        <div class="yuukalerie-detail-list" data-yuuka-details>
+          <div>
+            <span>Nom</span>
+            <strong data-yuuka-detail-name>—</strong>
+          </div>
+          <div>
+            <span>Date d'upload</span>
+            <strong data-yuuka-detail-date>—</strong>
+          </div>
+          <div>
+            <span>Taille</span>
+            <strong data-yuuka-detail-size>—</strong>
+          </div>
+          <div>
+            <span>Album</span>
+            <select data-yuuka-detail-album></select>
+          </div>
+          <div>
+            <span>Statut</span>
+            <strong data-yuuka-detail-meta>—</strong>
+          </div>
+        </div>
+        <div class="yuukalerie-detail-actions">
+          <button class="btn ghost" type="button" data-yuuka-toggle-favorite><i class="fa-solid fa-star"></i> Favori</button>
+          <button class="btn ghost danger" type="button" data-yuuka-delete-photo><i class="fa-solid fa-trash"></i> Supprimer</button>
+        </div>
+        <div class="yuukalerie-recently-deleted" data-yuuka-deleted hidden>
+          <h3>Supprimés récemment</h3>
+          <div class="yuukalerie-deleted-list" data-yuuka-deleted-list></div>
+        </div>
+      </aside>
     </section>
   </main>
 

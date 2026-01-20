@@ -1023,6 +1023,13 @@ button.showcase-card {
   transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
 }
 
+.btn.small {
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border-radius: 12px;
+  box-shadow: none;
+}
+
 .btn:hover { transform: translateY(-2px); box-shadow: 0 12px 24px var(--btn-shadow); }
 
 .btn.ghost {
@@ -1805,6 +1812,342 @@ button.showcase-card {
   }
   50% {
     transform: translateX(-6px) translateY(-8px);
+  }
+}
+
+.yuukalerie-hero {
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  align-items: center;
+}
+
+.yuukalerie-hero-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.yuukalerie-hero-card {
+  min-width: 200px;
+  padding: 18px;
+}
+
+.yuukalerie-shell {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.9fr) minmax(0, 2fr) minmax(240px, 1fr);
+  gap: 22px;
+  margin-top: 24px;
+}
+
+.yuukalerie-sidebar {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.yuukalerie-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.yuukalerie-sidebar-footer {
+  display: grid;
+  gap: 8px;
+}
+
+.yuukalerie-album-list {
+  display: grid;
+  gap: 10px;
+}
+
+.yuukalerie-album {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.04);
+  transition: transform 0.2s ease, border 0.2s ease, background 0.2s ease;
+}
+
+.yuukalerie-album:hover,
+.yuukalerie-album.is-active {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.yuukalerie-album strong {
+  font-size: 1rem;
+}
+
+.yuukalerie-album span {
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.yuukalerie-main {
+  display: grid;
+  gap: 16px;
+}
+
+.yuukalerie-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.yuukalerie-toolbar-left {
+  display: grid;
+  gap: 12px;
+  min-width: min(380px, 100%);
+}
+
+.yuukalerie-search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.6);
+}
+
+.yuukalerie-search input {
+  background: transparent;
+  border: none;
+  color: var(--text);
+  flex: 1;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.yuukalerie-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.pill {
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text);
+  padding: 8px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pill.is-active {
+  background: linear-gradient(120deg, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.08));
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.yuukalerie-toolbar-right {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.btn.apple {
+  background: linear-gradient(120deg, #f8fafc, #e2e8f0);
+  color: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.5);
+  box-shadow: 0 12px 24px rgba(148, 163, 184, 0.35);
+}
+
+.btn.apple:hover {
+  transform: translateY(-1px);
+}
+
+.yuukalerie-dropzone {
+  display: grid;
+  place-items: center;
+  text-align: center;
+  padding: 24px;
+  border: 1px dashed rgba(255, 255, 255, 0.2);
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.yuukalerie-dropzone.is-dragging {
+  border-color: rgba(96, 165, 250, 0.6);
+  background: rgba(96, 165, 250, 0.12);
+}
+
+.yuukalerie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.yuukalerie-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 18px 35px rgba(0, 0, 0, 0.35);
+  display: grid;
+  gap: 8px;
+  transition: transform 0.2s ease, border 0.2s ease;
+}
+
+.yuukalerie-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.yuukalerie-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.yuukalerie-card-body {
+  display: grid;
+  gap: 6px;
+  padding: 12px 14px 16px;
+}
+
+.yuukalerie-card-body h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.yuukalerie-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.85rem;
+}
+
+.yuukalerie-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.yuukalerie-card-actions button {
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+.yuukalerie-empty {
+  text-align: center;
+  padding: 32px;
+}
+
+.yuukalerie-inspector {
+  display: grid;
+  gap: 16px;
+  position: sticky;
+  top: 100px;
+  height: fit-content;
+}
+
+.yuukalerie-inspector-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.yuukalerie-preview {
+  border-radius: 18px;
+  min-height: 180px;
+  background: rgba(15, 23, 42, 0.5);
+  display: grid;
+  place-items: center;
+  color: var(--muted);
+  overflow: hidden;
+}
+
+.yuukalerie-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.yuukalerie-detail-list {
+  display: grid;
+  gap: 12px;
+}
+
+.yuukalerie-detail-list div {
+  display: grid;
+  gap: 4px;
+  font-size: 0.9rem;
+}
+
+.yuukalerie-detail-list select {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.yuukalerie-detail-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.btn.danger,
+.yuukalerie-card-actions .danger {
+  color: #fecaca;
+  background: rgba(239, 68, 68, 0.18);
+}
+
+.yuukalerie-recently-deleted {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 12px;
+  display: grid;
+  gap: 10px;
+}
+
+.yuukalerie-deleted-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.yuukalerie-deleted-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 1080px) {
+  .yuukalerie-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .yuukalerie-sidebar,
+  .yuukalerie-inspector {
+    position: static;
   }
 }
 
