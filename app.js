@@ -289,6 +289,7 @@ const yuukalerieEls = {
   filterButtons: document.querySelectorAll("[data-yuuka-filter]"),
   dropzone: document.querySelector("[data-yuuka-dropzone]"),
   photoCount: document.querySelector("[data-yuuka-photo-count]"),
+  inspector: document.querySelector("[data-yuuka-inspector]"),
   detailStatus: document.querySelector("[data-yuuka-detail-status]"),
   preview: document.querySelector("[data-yuuka-preview]"),
   detailName: document.querySelector("[data-yuuka-detail-name]"),
@@ -602,6 +603,7 @@ const renderDeletedList = () => {
 
 const renderDetails = (photo) => {
   if (!photo) {
+    yuukalerieEls.inspector?.classList.add("is-hidden");
     if (yuukalerieEls.preview) yuukalerieEls.preview.innerHTML = "<span>Choisis une photo</span>";
     if (yuukalerieEls.detailName) yuukalerieEls.detailName.textContent = "—";
     if (yuukalerieEls.detailDate) yuukalerieEls.detailDate.textContent = "—";
@@ -610,6 +612,7 @@ const renderDetails = (photo) => {
     if (yuukalerieEls.detailStatus) yuukalerieEls.detailStatus.textContent = "—";
     return;
   }
+  yuukalerieEls.inspector?.classList.remove("is-hidden");
   if (yuukalerieEls.preview) {
     yuukalerieEls.preview.innerHTML = `<img src="${photo.url || photo.localUrl || ""}" alt="${photo.name || "Photo"}" />`;
   }

@@ -47,35 +47,10 @@
           <span class="badge" data-yuuka-storage-status><i class="fa-solid fa-hard-drive"></i> Stockage connecté</span>
         </div>
       </div>
-      <div class="hero-stage" aria-hidden="true">
-        <div class="floating-card glass yuukalerie-hero-card">
-          <span class="badge">Live</span>
-          <strong>Upload instantané</strong>
-          <span class="subtitle">Glisse-dépose ou sélectionne depuis l'appareil.</span>
-        </div>
-        <div class="floating-card neon yuukalerie-hero-card">
-          <span class="badge warning">Albums</span>
-          <strong>Organisation fluide</strong>
-          <span class="subtitle">Déplace tes photos en un clic.</span>
-        </div>
-        <div class="floating-card core yuukalerie-hero-card">
-          <span class="badge success">Détails</span>
-          <strong>Métadonnées visibles</strong>
-          <span class="subtitle">Date, poids, appareil, état.</span>
-        </div>
-      </div>
     </section>
 
     <section class="yuukalerie-phone-frame">
       <header class="yuukalerie-phone-header">
-        <div class="yuukalerie-phone-status">
-          <span class="yuukalerie-phone-time">9:41</span>
-          <span class="yuukalerie-phone-icons">
-            <i class="fa-solid fa-signal"></i>
-            <i class="fa-solid fa-wifi"></i>
-            <i class="fa-solid fa-battery-full"></i>
-          </span>
-        </div>
         <div class="yuukalerie-phone-title">
           <span class="eyebrow"><i class="fa-solid fa-images"></i> Photos</span>
           <h2>Yuukalerie</h2>
@@ -132,34 +107,39 @@
         </div>
         </section>
 
-        <aside class="card yuukalerie-inspector">
+        <aside class="card yuukalerie-inspector is-hidden" data-yuuka-inspector>
         <div class="yuukalerie-inspector-header">
-          <h2 class="section-title">Détails</h2>
-          <span class="badge" data-yuuka-detail-status>—</span>
+          <h2 class="section-title">Aperçu</h2>
         </div>
-        <div class="yuukalerie-preview" data-yuuka-preview>
-          <span>Choisis une photo</span>
-        </div>
-        <div class="yuukalerie-detail-list" data-yuuka-details>
-          <div>
-            <span>Nom</span>
-            <strong data-yuuka-detail-name>—</strong>
+        <div class="yuukalerie-inspector-content">
+          <div class="yuukalerie-preview" data-yuuka-preview>
+            <span>Choisis une photo</span>
           </div>
-          <div>
-            <span>Date d'upload</span>
-            <strong data-yuuka-detail-date>—</strong>
-          </div>
-          <div>
-            <span>Taille</span>
-            <strong data-yuuka-detail-size>—</strong>
-          </div>
-          <div>
-            <span>Album</span>
-            <select data-yuuka-detail-album></select>
-          </div>
-          <div>
-            <span>Statut</span>
-            <strong data-yuuka-detail-meta>—</strong>
+          <div class="yuukalerie-detail-list" data-yuuka-details>
+            <div>
+              <span>Nom</span>
+              <strong data-yuuka-detail-name>—</strong>
+            </div>
+            <div>
+              <span>Date d'upload</span>
+              <strong data-yuuka-detail-date>—</strong>
+            </div>
+            <div>
+              <span>Taille</span>
+              <strong data-yuuka-detail-size>—</strong>
+            </div>
+            <div>
+              <span>Album</span>
+              <select data-yuuka-detail-album></select>
+            </div>
+            <div>
+              <span>Statut</span>
+              <strong data-yuuka-detail-meta>—</strong>
+            </div>
+            <div>
+              <span>Synchronisation</span>
+              <strong data-yuuka-detail-status>—</strong>
+            </div>
           </div>
         </div>
         <div class="yuukalerie-detail-actions">
