@@ -3,7 +3,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyCGQDW5I7kRgZR3wgQ1UeB4GRtVCPxstOs",
   authDomain: "yuukalerie.firebaseapp.com",
   projectId: "yuukalerie",
-  storageBucket: "yuukalerie.firebasestorage.app",
+  storageBucket: "yuukalerie.appspot.com",
   messagingSenderId: "323287958771",
   appId: "1:323287958771:web:3b304cc81fd312e4f8a386"
 };
