@@ -1184,43 +1184,15 @@ const initScrollColors = () => {
 const initThreeExperience = async () => {
   const sceneRoot = document.querySelector("[data-3d-scene]");
   if (!sceneRoot) return;
-  if (sceneRoot.dataset.threeReady === "true") return;
   const loader = sceneRoot.querySelector("[data-3d-loader]");
-  const errorPanel = sceneRoot.querySelector("[data-3d-error]");
-  const retryButton = sceneRoot.querySelector("[data-3d-retry]");
   const labelEl = document.querySelector("[data-3d-label]");
   const descEl = document.querySelector("[data-3d-desc]");
   const hintEl = document.querySelector("[data-3d-hint]");
   const resetButton = document.querySelector("[data-3d-reset]");
   const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const showError = () => {
-    if (loader) loader.classList.add("is-hidden");
-    if (errorPanel) errorPanel.hidden = false;
-  };
-
-  retryButton?.addEventListener("click", () => {
-    window.location.reload();
-  });
-
-  if (!window.WebGLRenderingContext) {
-    showError();
-    return;
-  }
-
-  const loadThree = () => Promise.all([
-    import("https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js"),
-    import("https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js"),
-  ]).catch(() => null);
-
-  const loaded = await loadThree();
-  if (!loaded) {
-    showError();
-    return;
-  }
-
-  const [THREE, controlsModule] = loaded;
-  const { OrbitControls } = controlsModule;
+  const THREE = await import("https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js");
+  const { OrbitControls } = await import("https://cdn.jsdelivr.net/npm/three@0.161.0/examples/jsm/controls/OrbitControls.js");
 
   const canvas = document.createElement("canvas");
   sceneRoot.insertBefore(canvas, sceneRoot.firstChild);
@@ -1443,8 +1415,6 @@ const initThreeExperience = async () => {
   window.addEventListener("resize", resize);
 
   loader?.classList.add("is-hidden");
-  if (errorPanel) errorPanel.hidden = true;
-  sceneRoot.dataset.threeReady = "true";
 
   const clock = new THREE.Clock();
   const animate = () => {
