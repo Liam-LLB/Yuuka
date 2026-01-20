@@ -303,6 +303,7 @@ const yuukalerieEls = {
   deletedList: document.querySelector("[data-yuuka-deleted-list]"),
   syncStatus: document.querySelector("[data-yuuka-sync-status]"),
   storageStatus: document.querySelector("[data-yuuka-storage-status]"),
+  inspectorClose: document.querySelector("[data-yuuka-inspector-close]"),
 };
 
 const yuukalerieState = {
@@ -636,6 +637,11 @@ const selectPhoto = (photoId) => {
   renderDetails(photo);
 };
 
+const clearSelectedPhoto = () => {
+  yuukalerieState.selectedId = null;
+  renderDetails(null);
+};
+
 const updatePhoto = async (photoId, updates) => {
   const photoIndex = yuukalerieState.photos.findIndex((item) => item.id === photoId);
   if (photoIndex === -1) return;
@@ -892,6 +898,7 @@ const initYuukalerie = async () => {
       if (!yuukalerieState.selectedId) return;
       updatePhoto(yuukalerieState.selectedId, { albumId: event.target.value || "" });
     });
+    yuukalerieEls.inspectorClose?.addEventListener("click", clearSelectedPhoto);
     yuukalerieEls.toggleFavorite?.addEventListener("click", () => {
       if (!yuukalerieState.selectedId) return;
       toggleFavorite(yuukalerieState.selectedId);

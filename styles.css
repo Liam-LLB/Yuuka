@@ -2298,7 +2298,41 @@ body[data-page="Yuukalerie"] .yuukalerie-sidebar {
 }
 
 body[data-page="Yuukalerie"] .yuukalerie-inspector {
-  position: static;
+  position: fixed;
+  top: 110px;
+  right: 32px;
+  width: min(520px, calc(100% - 64px));
+  max-height: calc(100vh - 160px);
+  overflow-y: auto;
+  z-index: 12;
+  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: linear-gradient(160deg, rgba(241, 245, 249, 0.95), rgba(226, 232, 240, 0.9));
+  box-shadow: 0 28px 60px rgba(15, 23, 42, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+body[data-page="Yuukalerie"] .yuukalerie-inspector.is-hidden {
+  display: none;
+}
+
+body[data-page="Yuukalerie"] .yuukalerie-inspector-content {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+@media (max-width: 720px) {
+  body[data-page="Yuukalerie"] .yuukalerie-inspector {
+    top: 90px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+    max-height: calc(100vh - 140px);
+  }
+  body[data-page="Yuukalerie"] .yuukalerie-inspector-content {
+    grid-template-columns: 1fr;
+  }
 }
 
 body[data-page="Yuukalerie"] .yuukalerie-inspector-content {
