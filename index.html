@@ -68,6 +68,7 @@
         </div>
         <div class="tabs">
           <button class="btn" type="button" data-account-trigger><i class="fa-solid fa-right-to-bracket"></i> Ouvrir l'espace compte</button>
+          <a class="btn" href="#experience-3d"><i class="fa-solid fa-cube"></i> Entrer en 3D</a>
           <a class="btn ghost" href="#hub"><i class="fa-solid fa-compass"></i> Explorer les pages</a>
         </div>
       </div>
@@ -95,6 +96,48 @@
             <span class="subtitle">Garde le rythme, même sur un autre appareil.</span>
           </div>
         </div>
+      </div>
+    </section>
+
+    <section class="immersive-3d" id="experience-3d">
+      <div class="showcase-header">
+        <h2 class="section-title">Cockpit 3D interactif</h2>
+        <p class="subtitle">Un vrai environnement en volume : tourne autour des modules et clique sur chaque objet pour entrer dans un univers.</p>
+      </div>
+      <div class="scene-3d" data-3d-scene>
+        <div class="scene-overlay">
+          <div class="scene-hud" aria-live="polite">
+            <span class="badge">Navigation 3D</span>
+            <strong data-3d-label>Yuukalerie</strong>
+            <span class="subtitle" data-3d-desc>Collections visuelles immersives.</span>
+          </div>
+          <div class="scene-hint" data-3d-hint>Glisse pour tourner · Clique pour ouvrir</div>
+          <button class="btn ghost scene-reset" type="button" data-3d-reset>
+            <i class="fa-solid fa-rotate-left"></i> Recentrer
+          </button>
+        </div>
+        <div class="scene-loader" data-3d-loader>
+          <span class="badge">Chargement</span>
+          <strong>Préparation de l'environnement 3D…</strong>
+          <span class="subtitle">Les modules apparaissent en quelques secondes.</span>
+        </div>
+        <div class="scene-error" data-3d-error hidden>
+          <span class="badge warning">3D indisponible</span>
+          <strong>Impossible de charger l'environnement 3D.</strong>
+          <span class="subtitle">Vérifie ta connexion ou recharge la page pour réessayer.</span>
+          <button class="btn ghost" type="button" data-3d-retry>
+            <i class="fa-solid fa-rotate-right"></i> Relancer la scène
+          </button>
+        </div>
+      </div>
+      <div class="scene-legend">
+        <span><span class="legend-dot" style="--legend-color:#60a5fa"></span> Yuukalerie</span>
+        <span><span class="legend-dot" style="--legend-color:#a855f7"></span> Yuusiques</span>
+        <span><span class="legend-dot" style="--legend-color:#22c55e"></span> Yuugars</span>
+        <span><span class="legend-dot" style="--legend-color:#f59e0b"></span> Yuukafe</span>
+        <span><span class="legend-dot" style="--legend-color:#38bdf8"></span> Yuukalendrier</span>
+        <span><span class="legend-dot" style="--legend-color:#f472b6"></span> Yuukajeux</span>
+        <span><span class="legend-dot" style="--legend-color:#cbd5f5"></span> Console Yuuka</span>
       </div>
     </section>
 
