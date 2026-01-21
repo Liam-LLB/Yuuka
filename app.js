@@ -15,7 +15,7 @@ let authApi = null;
 let firestoreApi = null;
 let storageApi = null;
 let firebaseReady = false;
-const authEnabled = false;
+const authEnabled = true;
 
 const progressKey = "yuuka_progress_v1";
 
@@ -108,10 +108,10 @@ const updateProfileMenu = (user) => {
     profileSettings.hidden = !signedIn;
   }
   googleSignInButtons.forEach((button) => {
-    button.hidden = true;
+    button.hidden = signedIn || !authEnabled;
   });
   signOutButtons.forEach((button) => {
-    button.hidden = true;
+    button.hidden = !signedIn;
   });
   if (accountState) {
     accountState.textContent = signedIn ? "En ligne" : "Public";
@@ -368,16 +368,21 @@ const saveGalleryLocal = () => {
 
 const setYuukalerieStatus = () => {
   if (yuukalerieEls.syncStatus) {
-    const synced = firebaseReady;
-    yuukalerieEls.syncStatus.innerHTML = synced
-      ? '<i class="fa-solid fa-wifi"></i> Sync Firebase public'
-      : '<i class="fa-solid fa-plug-circle-xmark"></i> Mode local';
+    const signedIn = !authEnabled || Boolean(auth?.currentUser);
+    const synced = firebaseReady && signedIn;
+    const message = !firebaseReady
+      ? '<i class="fa-solid fa-plug-circle-xmark"></i> Mode local'
+      : signedIn
+        ? '<i class="fa-solid fa-wifi"></i> Sync Firebase active'
+        : '<i class="fa-solid fa-user-clock"></i> Connexion requise';
+    yuukalerieEls.syncStatus.innerHTML = message;
     yuukalerieEls.syncStatus.classList.toggle("success", synced);
     yuukalerieEls.syncStatus.classList.toggle("warning", !synced);
   }
   if (yuukalerieEls.storageStatus) {
-    yuukalerieEls.storageStatus.innerHTML = firebaseReady
-      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase partagé'
+    const signedIn = !authEnabled || Boolean(auth?.currentUser);
+    yuukalerieEls.storageStatus.innerHTML = firebaseReady && signedIn
+      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase actif'
       : '<i class="fa-solid fa-cloud-slash"></i> Stockage local temporaire';
   }
 };
