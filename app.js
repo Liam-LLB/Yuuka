@@ -15,7 +15,7 @@ let authApi = null;
 let firestoreApi = null;
 let storageApi = null;
 let firebaseReady = false;
-const authEnabled = false;
+const authEnabled = true;
 
 const progressKey = "yuuka_progress_v1";
 
@@ -108,10 +108,10 @@ const updateProfileMenu = (user) => {
     profileSettings.hidden = !signedIn;
   }
   googleSignInButtons.forEach((button) => {
-    button.hidden = true;
+    button.hidden = signedIn || !authEnabled;
   });
   signOutButtons.forEach((button) => {
-    button.hidden = true;
+    button.hidden = !signedIn;
   });
   if (accountState) {
     accountState.textContent = signedIn ? "En ligne" : "Public";
@@ -289,6 +289,7 @@ const yuukalerieEls = {
   filterButtons: document.querySelectorAll("[data-yuuka-filter]"),
   dropzone: document.querySelector("[data-yuuka-dropzone]"),
   photoCount: document.querySelector("[data-yuuka-photo-count]"),
+  inspector: document.querySelector("[data-yuuka-inspector]"),
   detailStatus: document.querySelector("[data-yuuka-detail-status]"),
   preview: document.querySelector("[data-yuuka-preview]"),
   detailName: document.querySelector("[data-yuuka-detail-name]"),
@@ -302,6 +303,7 @@ const yuukalerieEls = {
   deletedList: document.querySelector("[data-yuuka-deleted-list]"),
   syncStatus: document.querySelector("[data-yuuka-sync-status]"),
   storageStatus: document.querySelector("[data-yuuka-storage-status]"),
+  inspectorClose: document.querySelector("[data-yuuka-inspector-close]"),
 };
 
 const yuukalerieState = {
@@ -366,16 +368,21 @@ const saveGalleryLocal = () => {
 
 const setYuukalerieStatus = () => {
   if (yuukalerieEls.syncStatus) {
-    const synced = firebaseReady;
-    yuukalerieEls.syncStatus.innerHTML = synced
-      ? '<i class="fa-solid fa-wifi"></i> Sync Firebase public'
-      : '<i class="fa-solid fa-plug-circle-xmark"></i> Mode local';
+    const signedIn = !authEnabled || Boolean(auth?.currentUser);
+    const synced = firebaseReady && signedIn;
+    const message = !firebaseReady
+      ? '<i class="fa-solid fa-plug-circle-xmark"></i> Mode local'
+      : signedIn
+        ? '<i class="fa-solid fa-wifi"></i> Sync Firebase active'
+        : '<i class="fa-solid fa-user-clock"></i> Connexion requise';
+    yuukalerieEls.syncStatus.innerHTML = message;
     yuukalerieEls.syncStatus.classList.toggle("success", synced);
     yuukalerieEls.syncStatus.classList.toggle("warning", !synced);
   }
   if (yuukalerieEls.storageStatus) {
-    yuukalerieEls.storageStatus.innerHTML = firebaseReady
-      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase partagé'
+    const signedIn = !authEnabled || Boolean(auth?.currentUser);
+    yuukalerieEls.storageStatus.innerHTML = firebaseReady && signedIn
+      ? '<i class="fa-solid fa-cloud"></i> Stockage Firebase actif'
       : '<i class="fa-solid fa-cloud-slash"></i> Stockage local temporaire';
   }
 };
@@ -602,6 +609,7 @@ const renderDeletedList = () => {
 
 const renderDetails = (photo) => {
   if (!photo) {
+    yuukalerieEls.inspector?.classList.add("is-hidden");
     if (yuukalerieEls.preview) yuukalerieEls.preview.innerHTML = "<span>Choisis une photo</span>";
     if (yuukalerieEls.detailName) yuukalerieEls.detailName.textContent = "—";
     if (yuukalerieEls.detailDate) yuukalerieEls.detailDate.textContent = "—";
@@ -610,6 +618,7 @@ const renderDetails = (photo) => {
     if (yuukalerieEls.detailStatus) yuukalerieEls.detailStatus.textContent = "—";
     return;
   }
+  yuukalerieEls.inspector?.classList.remove("is-hidden");
   if (yuukalerieEls.preview) {
     yuukalerieEls.preview.innerHTML = `<img src="${photo.url || photo.localUrl || ""}" alt="${photo.name || "Photo"}" />`;
   }
@@ -631,6 +640,11 @@ const selectPhoto = (photoId) => {
   yuukalerieState.selectedId = photoId;
   const photo = yuukalerieState.photos.find((item) => item.id === photoId);
   renderDetails(photo);
+};
+
+const clearSelectedPhoto = () => {
+  yuukalerieState.selectedId = null;
+  renderDetails(null);
 };
 
 const updatePhoto = async (photoId, updates) => {
@@ -889,6 +903,7 @@ const initYuukalerie = async () => {
       if (!yuukalerieState.selectedId) return;
       updatePhoto(yuukalerieState.selectedId, { albumId: event.target.value || "" });
     });
+    yuukalerieEls.inspectorClose?.addEventListener("click", clearSelectedPhoto);
     yuukalerieEls.toggleFavorite?.addEventListener("click", () => {
       if (!yuukalerieState.selectedId) return;
       toggleFavorite(yuukalerieState.selectedId);
