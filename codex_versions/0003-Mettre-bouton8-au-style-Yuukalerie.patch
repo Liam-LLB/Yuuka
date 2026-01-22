@@ -1,0 +1,716 @@
+From 199ad11222c2e0af1704a1fa532252e281172d54 Mon Sep 17 00:00:00 2001
+From: Liam-LLB <liamleclaircie@gmail.com>
+Date: Thu, 22 Jan 2026 06:58:10 +0100
+Subject: [PATCH 3/4] Mettre bouton8 au style Yuukalerie
+
+---
+ bouton8.html | 632 ++++++++++++++++-----------------------------------
+ styles.css   |  32 +++
+ 2 files changed, 223 insertions(+), 441 deletions(-)
+
+diff --git a/bouton8.html b/bouton8.html
+index 1e38bd9..a04f2c8 100644
+--- a/bouton8.html
++++ b/bouton8.html
+@@ -3,464 +3,214 @@
+ <head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+-  <title>Yuukaphotos - Photos</title>
++  <title>Yuukalerie - Galerie</title>
+   <link rel="stylesheet" href="styles.css" />
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+-  <style>
+-    :root {
+-      --bg: #07090f;
+-      --bg-soft: #0f172a;
+-      --panel: rgba(15, 23, 42, 0.82);
+-      --card: rgba(30, 41, 59, 0.75);
+-      --muted: #94a3b8;
+-      --text: #e2e8f0;
+-      --accent: #a78bfa;
+-      --accent-2: #60a5fa;
+-      --border: rgba(148, 163, 184, 0.22);
+-      --success: #22c55e;
+-      --danger: #f87171;
+-    }
+-
+-    * { box-sizing: border-box; }
+-
+-    body {
+-      margin: 0;
+-      background:
+-        radial-gradient(circle at 20% 10%, rgba(96, 165, 250, 0.15), transparent 35%),
+-        radial-gradient(circle at 85% 15%, rgba(168, 85, 247, 0.18), transparent 30%),
+-        radial-gradient(circle at 20% 85%, rgba(34, 197, 94, 0.12), transparent 32%),
+-        linear-gradient(135deg, var(--bg) 0%, var(--bg-soft) 55%, var(--bg) 100%);
+-      color: var(--text);
+-      font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+-      min-height: 100vh;
+-    }
+-
+-    .photos-shell {
+-      min-height: 100vh;
+-      display: flex;
+-      flex-direction: column;
+-      position: relative;
+-      padding-bottom: 90px;
+-    }
+-
+-    .photos-header {
+-      position: sticky;
+-      top: 0;
+-      z-index: 10;
+-      backdrop-filter: blur(16px);
+-      background: rgba(7, 9, 15, 0.75);
+-      border-bottom: 1px solid var(--border);
+-    }
+-
+-    .photos-header-inner {
+-      display: flex;
+-      align-items: center;
+-      justify-content: space-between;
+-      padding: 18px 24px;
+-      gap: 16px;
+-    }
+-
+-    .photos-title {
+-      display: flex;
+-      flex-direction: column;
+-    }
+-
+-    .photos-title span {
+-      font-size: 12px;
+-      letter-spacing: 0.16em;
+-      text-transform: uppercase;
+-      color: var(--muted);
+-    }
+-
+-    .photos-title strong {
+-      font-size: 24px;
+-      font-weight: 700;
+-    }
+-
+-    .photos-actions {
+-      display: flex;
+-      gap: 12px;
+-      align-items: center;
+-    }
+-
+-    .pill-btn {
+-      border: 1px solid var(--border);
+-      background: rgba(255, 255, 255, 0.05);
+-      color: var(--text);
+-      padding: 8px 14px;
+-      border-radius: 999px;
+-      font-size: 13px;
+-      display: inline-flex;
+-      align-items: center;
+-      gap: 8px;
+-      cursor: pointer;
+-      transition: transform 0.2s ease, border 0.2s ease;
+-    }
+-
+-    .pill-btn:hover {
+-      transform: translateY(-1px);
+-      border-color: rgba(255, 255, 255, 0.35);
+-    }
+-
+-    .avatar {
+-      width: 34px;
+-      height: 34px;
+-      border-radius: 50%;
+-      border: 1px solid var(--border);
+-      background: linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(96, 165, 250, 0.6));
+-      display: grid;
+-      place-items: center;
+-      font-size: 14px;
+-    }
+-
+-    .photos-content {
+-      padding: 18px 20px 40px;
+-    }
+-
+-    .photos-meta {
+-      display: grid;
+-      gap: 8px;
+-      margin-bottom: 18px;
+-    }
+-
+-    .photos-meta p {
+-      margin: 0;
+-      color: var(--muted);
+-      font-size: 14px;
+-    }
+-
+-    .grid-shell {
+-      display: grid;
+-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+-      gap: 10px;
+-    }
+-
+-    .photo-tile {
+-      position: relative;
+-      border-radius: 14px;
+-      overflow: hidden;
+-      aspect-ratio: 1 / 1;
+-      border: 1px solid rgba(255, 255, 255, 0.1);
+-      background: rgba(255, 255, 255, 0.04);
+-      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.35);
+-      cursor: pointer;
+-      transform-style: preserve-3d;
+-      transition: transform 0.15s ease, box-shadow 0.2s ease;
+-    }
+-
+-    .photo-tile img {
+-      width: 100%;
+-      height: 100%;
+-      object-fit: cover;
+-      transition: transform 0.2s ease;
+-    }
+-
+-    .photo-tile:hover img {
+-      transform: scale(1.05);
+-    }
+-
+-    .empty-state {
+-      padding: 40px 32px;
+-      border-radius: 20px;
+-      border: 1px solid var(--border);
+-      background: rgba(15, 23, 42, 0.55);
+-      display: grid;
+-      gap: 12px;
+-    }
+-
+-    .empty-state h3 {
+-      margin: 0;
+-      font-size: 20px;
+-    }
+-
+-    .empty-state p {
+-      margin: 0;
+-      color: var(--muted);
+-      font-size: 14px;
+-    }
+-
+-    .add-button {
+-      position: fixed;
+-      right: 22px;
+-      bottom: 92px;
+-      border: 1px solid var(--border);
+-      background: rgba(255, 255, 255, 0.1);
+-      color: var(--text);
+-      padding: 12px 18px;
+-      border-radius: 999px;
+-      font-weight: 600;
+-      cursor: pointer;
+-      display: flex;
+-      align-items: center;
+-      gap: 8px;
+-      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.3);
+-      backdrop-filter: blur(12px);
+-    }
+-
+-    .upload-sheet {
+-      position: fixed;
+-      inset: 0;
+-      z-index: 30;
+-      display: none;
+-    }
+-
+-    .upload-sheet.active {
+-      display: block;
+-    }
+-
+-    .sheet-backdrop {
+-      position: absolute;
+-      inset: 0;
+-      background: rgba(0, 0, 0, 0.65);
+-    }
+-
+-    .sheet-panel {
+-      position: absolute;
+-      left: 0;
+-      right: 0;
+-      bottom: 0;
+-      background: rgba(8, 12, 22, 0.95);
+-      border-top-left-radius: 28px;
+-      border-top-right-radius: 28px;
+-      border-top: 1px solid var(--border);
+-      padding: 20px 24px 28px;
+-      display: grid;
+-      gap: 16px;
+-      backdrop-filter: blur(14px);
+-    }
+-
+-    .sheet-handle {
+-      width: 48px;
+-      height: 5px;
+-      border-radius: 999px;
+-      background: rgba(255, 255, 255, 0.2);
+-      margin: 0 auto;
+-    }
+-
+-    .sheet-title {
+-      display: flex;
+-      align-items: center;
+-      justify-content: space-between;
+-      font-weight: 600;
+-    }
+-
+-    .sheet-title button {
+-      background: transparent;
+-      border: none;
+-      color: var(--muted);
+-      cursor: pointer;
+-    }
+-
+-    .sheet-input,
+-    .sheet-select {
+-      border-radius: 14px;
+-      border: 1px solid var(--border);
+-      background: rgba(255, 255, 255, 0.04);
+-      color: var(--text);
+-      padding: 12px 14px;
+-      width: 100%;
+-      font-size: 14px;
+-    }
+-
+-    .sheet-cta {
+-      border-radius: 16px;
+-      padding: 12px 16px;
+-      font-weight: 700;
+-      border: none;
+-      background: linear-gradient(135deg, #ffffff, #cbd5f5);
+-      color: #0f172a;
+-      cursor: pointer;
+-    }
+-
+-    .sheet-note {
+-      font-size: 12px;
+-      color: var(--muted);
+-    }
+-
+-    .viewer {
+-      position: fixed;
+-      inset: 0;
+-      z-index: 40;
+-      background: #03050b;
+-      display: none;
+-    }
+-
+-    .viewer.active {
+-      display: block;
+-    }
+-
+-    .viewer-toolbar {
+-      position: absolute;
+-      top: 0;
+-      left: 0;
+-      right: 0;
+-      padding: 18px 22px;
+-      display: flex;
+-      justify-content: space-between;
+-      align-items: center;
+-      border-bottom: 1px solid var(--border);
+-      background: rgba(3, 5, 11, 0.65);
+-      backdrop-filter: blur(12px);
+-    }
+-
+-    .viewer-toolbar button {
+-      background: transparent;
+-      border: none;
+-      color: var(--text);
+-      font-size: 14px;
+-      cursor: pointer;
+-    }
+-
+-    .viewer-toolbar .danger {
+-      color: var(--danger);
+-    }
+-
+-    .viewer-media {
+-      width: 100%;
+-      height: 100%;
+-      display: grid;
+-      place-items: center;
+-      padding: 60px 24px 24px;
+-    }
+-
+-    .viewer-media img {
+-      max-width: 100%;
+-      max-height: 100%;
+-      border-radius: 16px;
+-      box-shadow: 0 24px 50px rgba(0, 0, 0, 0.5);
+-    }
+-
+-    .bottom-nav {
+-      position: fixed;
+-      left: 0;
+-      right: 0;
+-      bottom: 0;
+-      z-index: 5;
+-      background: rgba(7, 9, 15, 0.85);
+-      border-top: 1px solid var(--border);
+-      backdrop-filter: blur(16px);
+-    }
+-
+-    .bottom-nav .nav-grid {
+-      display: grid;
+-      grid-template-columns: repeat(4, 1fr);
+-      text-align: center;
+-      font-size: 12px;
+-      color: var(--muted);
+-    }
+-
+-    .bottom-nav a {
+-      text-decoration: none;
+-      color: inherit;
+-      padding: 14px 10px;
+-      display: grid;
+-      gap: 4px;
+-      font-weight: 500;
+-    }
+-
+-    .bottom-nav a.active {
+-      color: var(--text);
+-    }
+-
+-    @media (max-width: 640px) {
+-      .photos-header-inner {
+-        padding: 16px 18px;
+-      }
+-
+-      .photos-content {
+-        padding: 16px 16px 40px;
+-      }
+-
+-      .grid-shell {
+-        grid-template-columns: repeat(3, minmax(0, 1fr));
+-      }
+-    }
+-  </style>
+ </head>
+-<body data-page="Photos">
+-  <main class="photos-shell">
+-    <header class="photos-header">
+-      <div class="photos-header-inner">
+-        <div class="photos-title">
+-          <span>Collection privée</span>
+-          <strong>Photos</strong>
+-        </div>
+-        <div class="photos-actions">
+-          <button class="pill-btn" type="button"><i class="fa-solid fa-magnifying-glass"></i> Rechercher</button>
+-          <div class="avatar"><i class="fa-solid fa-user"></i></div>
+-        </div>
++<body data-page="Yuukalerie">
++  <nav class="site-nav">
++    <div class="nav-inner">
++      <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
++      <div class="nav-links">
++        <a href="bouton1.html"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</a>
++        <a href="bouton2.html"><i class="fa-solid fa-music"></i> Yuusiques</a>
++        <a href="bouton3.html"><i class="fa-solid fa-mars"></i> Yuugars</a>
++        <a href="bouton4.html"><i class="fa-solid fa-heart"></i> Yuukafe place</a>
++        <a href="bouton5.html"><i class="fa-solid fa-calendar"></i> Yuukalendrier</a>
++        <a href="bouton6.html"><i class="fa-solid fa-gamepad"></i> Yuukajeux</a>
++        <a href="finale.html"><i class="fa-solid fa-trophy"></i> Finale</a>
+       </div>
+-    </header>
+-
+-    <section class="photos-content">
+-      <div class="photos-meta">
+-        <p>Synchronisé avec Firebase Storage + Firestore · Effet 3D léger sur les vignettes.</p>
+-        <p id="firebaseStatus">Connexion Firebase : en attente.</p>
++      <div class="nav-actions">
++        <span class="user-chip" data-user-chip>Invité</span>
++        <button class="btn ghost profile-trigger" type="button" data-account-trigger>
++          <i class="fa-solid fa-user"></i>
++          <span data-profile-trigger-label>Se connecter</span>
++        </button>
+       </div>
++    </div>
++  </nav>
+ 
+-      <div id="emptyState" class="empty-state" hidden>
+-        <h3>Aucune photo pour l'instant</h3>
+-        <p>Ajoute des images via le bouton + Add pour remplir ta grille.</p>
++  <main class="container">
++    <section class="card hero hero-3d yuukalerie-hero">
++      <div class="hero-copy">
++        <span class="eyebrow"><i class="fa-solid fa-camera-retro"></i> Yuukalerie</span>
++        <h1 class="main-title">Ta galerie complète</h1>
++        <p class="subtitle">Retrouve toutes tes photos, tes albums et ta corbeille dans une interface Yuukalerie unifiée.</p>
++        <div class="tabs">
++          <button class="btn" type="button" data-yuuka-upload-trigger><i class="fa-solid fa-cloud-arrow-up"></i> Importer des photos</button>
++          <button class="btn ghost" type="button" data-yuuka-create-album><i class="fa-solid fa-folder-plus"></i> Nouvel album</button>
++          <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
++        </div>
++        <div class="yuukalerie-hero-status">
++          <span class="badge success" data-yuuka-sync-status><i class="fa-solid fa-wifi"></i> Sync Firebase prête</span>
++          <span class="badge" data-yuuka-storage-status><i class="fa-solid fa-hard-drive"></i> Stockage connecté</span>
++        </div>
+       </div>
++    </section>
+ 
+-      <div id="photoGrid" class="grid-shell" aria-live="polite"></div>
++    <section class="yuukalerie-phone-frame">
++      <header class="yuukalerie-phone-header">
++        <div class="yuukalerie-phone-title">
++          <span class="eyebrow"><i class="fa-solid fa-images"></i> Galerie</span>
++          <h2>Yuukalerie</h2>
++          <p class="subtitle">Toutes tes photos réunies, avec accès rapide aux albums et à la corbeille.</p>
++        </div>
++      </header>
++
++      <section class="yuukalerie-shell">
++        <aside class="card yuukalerie-sidebar">
++          <div class="yuukalerie-sidebar-header">
++            <h2 class="section-title">Albums</h2>
++            <button class="btn ghost small" type="button" data-yuuka-create-album><i class="fa-solid fa-plus"></i></button>
++          </div>
++          <div class="yuukalerie-album-list" data-yuuka-album-list></div>
++          <div class="yuukalerie-sidebar-footer">
++            <div class="badge" data-yuuka-photo-count>0 photos</div>
++            <p class="subtitle">Synchronisé avec ton compte Google via Firebase Storage.</p>
++          </div>
++        </aside>
++
++        <section class="yuukalerie-main">
++          <div class="card yuukalerie-toolbar">
++            <div class="yuukalerie-toolbar-left">
++              <div class="yuukalerie-search">
++                <i class="fa-solid fa-magnifying-glass"></i>
++                <input type="search" placeholder="Rechercher une photo, un album..." data-yuuka-search />
++              </div>
++              <div class="yuukalerie-filters">
++                <button class="pill is-active" type="button" data-yuuka-filter="all">Galerie</button>
++                <button class="pill" type="button" data-yuuka-filter="favorites">Favoris</button>
++                <button class="pill" type="button" data-yuuka-filter="recent">Récents</button>
++                <button class="pill" type="button" data-yuuka-filter="deleted">Corbeille</button>
++              </div>
++            </div>
++            <div class="yuukalerie-toolbar-right">
++              <button class="btn ghost" type="button" data-yuuka-upload-trigger><i class="fa-solid fa-arrow-up-from-bracket"></i> Importer</button>
++              <label class="btn apple" for="yuuka-upload-input"><i class="fa-solid fa-photo-film"></i> Parcourir</label>
++              <input id="yuuka-upload-input" class="sr-only" type="file" multiple accept="image/*" data-yuuka-upload />
++            </div>
++          </div>
++
++          <div class="yuukalerie-dropzone card" data-yuuka-dropzone>
++            <div>
++              <i class="fa-solid fa-cloud-arrow-up"></i>
++              <p>Glisse tes photos ici pour les ajouter à Yuukalerie.</p>
++              <span class="subtitle">Formats supportés : JPEG, PNG, HEIC. Synchronisation Firebase après connexion.</span>
++            </div>
++          </div>
++
++          <div class="yuukalerie-grid" data-yuuka-grid></div>
++          <div class="yuukalerie-empty card" data-yuuka-empty hidden>
++            <h3>Aucune photo pour le moment</h3>
++            <p class="subtitle">Importe des photos pour remplir ta galerie et les retrouver sur tous tes appareils.</p>
++          </div>
++        </section>
++
++        <aside class="card yuukalerie-inspector is-hidden" data-yuuka-inspector>
++          <div class="yuukalerie-inspector-header">
++            <h2 class="section-title">Aperçu</h2>
++          </div>
++          <div class="yuukalerie-inspector-content">
++            <div class="yuukalerie-preview" data-yuuka-preview>
++              <span>Choisis une photo</span>
++            </div>
++            <div class="yuukalerie-detail-list" data-yuuka-details>
++              <div>
++                <span>Nom</span>
++                <strong data-yuuka-detail-name>—</strong>
++              </div>
++              <div>
++                <span>Date d'upload</span>
++                <strong data-yuuka-detail-date>—</strong>
++              </div>
++              <div>
++                <span>Taille</span>
++                <strong data-yuuka-detail-size>—</strong>
++              </div>
++              <div>
++                <span>Album</span>
++                <select data-yuuka-detail-album></select>
++              </div>
++              <div>
++                <span>Statut</span>
++                <strong data-yuuka-detail-meta>—</strong>
++              </div>
++              <div>
++                <span>Synchronisation</span>
++                <strong data-yuuka-detail-status>—</strong>
++              </div>
++            </div>
++          </div>
++          <div class="yuukalerie-detail-actions">
++            <button class="btn ghost" type="button" data-yuuka-toggle-favorite><i class="fa-solid fa-star"></i> Favori</button>
++            <button class="btn ghost danger" type="button" data-yuuka-delete-photo><i class="fa-solid fa-trash"></i> Supprimer</button>
++          </div>
++          <div class="yuukalerie-recently-deleted" data-yuuka-deleted hidden>
++            <h3>Supprimés récemment</h3>
++            <div class="yuukalerie-deleted-list" data-yuuka-deleted-list></div>
++          </div>
++        </aside>
++      </section>
+     </section>
+   </main>
+ 
+-  <button class="add-button" id="openUploader" type="button">
+-    <i class="fa-solid fa-plus"></i> Add
+-  </button>
++  <footer class="footer">Yuukonline · Yuukalerie en préparation.</footer>
+ 
+-  <div class="upload-sheet" id="uploadSheet" aria-hidden="true">
+-    <div class="sheet-backdrop" id="sheetBackdrop"></div>
+-    <div class="sheet-panel">
+-      <div class="sheet-handle"></div>
+-      <div class="sheet-title">
+-        <span>Importer</span>
+-        <button type="button" id="closeUploader">Fermer</button>
+-      </div>
+-      <label class="sheet-label" for="albumSelect">Album</label>
+-      <select id="albumSelect" class="sheet-select">
+-        <option value="">Toutes les photos</option>
+-        <option value="vacances">Vacances</option>
+-        <option value="soirees">Soirées</option>
+-      </select>
+-      <input id="photoInput" class="sheet-input" type="file" accept="image/*" multiple />
+-      <button class="sheet-cta" id="uploadBtn" type="button">Choisir des photos</button>
+-      <p class="sheet-note">Stockage: Firebase Storage · Métadonnées: Firestore</p>
+-    </div>
+-  </div>
+-
+-  <div class="viewer" id="viewer" aria-hidden="true">
+-    <div class="viewer-toolbar">
+-      <button type="button" id="closeViewer">Fermer</button>
+-      <button class="danger" type="button" id="deletePhoto">Supprimer</button>
+-    </div>
+-    <div class="viewer-media">
+-      <img id="viewerImage" src="" alt="Photo" />
+-    </div>
+-  </div>
+-
+-  <nav class="bottom-nav">
++  <nav class="bottom-nav" aria-label="Navigation Yuukalerie">
+     <div class="nav-grid">
+-      <a href="bouton8.html" class="active"><i class="fa-regular fa-images"></i> Photos</a>
++      <a href="bouton8.html" class="active"><i class="fa-regular fa-images"></i> Galerie</a>
+       <a href="bouton1.html"><i class="fa-solid fa-layer-group"></i> Albums</a>
+-      <a href="bouton2.html"><i class="fa-solid fa-magnifying-glass"></i> Search</a>
+-      <a href="bouton3.html"><i class="fa-solid fa-user"></i> Profile</a>
++      <a href="bouton8.html#corbeille"><i class="fa-solid fa-trash"></i> Corbeille</a>
+     </div>
+   </nav>
+ 
+-  <script>
+-    window.YUUKA_FIREBASE_CONFIG = {
+-      apiKey: "",
+-      authDomain: "",
+-      projectId: "",
+-      storageBucket: "",
+-      appId: "",
+-    };
+-    window.YUUKA_DEMO_OWNER_ID = "demo-user";
+-  </script>
+-  <script type="module" src="photos.js"></script>
++  <div class="account-overlay" data-account-modal>
++    <div class="account-panel">
++      <button class="modal-close" type="button" data-account-close aria-label="Fermer">
++        <i class="fa-solid fa-xmark"></i>
++      </button>
++      <div class="account-header">
++        <span class="eyebrow"><i class="fa-solid fa-user-astronaut"></i> Centre de connexion</span>
++        <h2 class="section-title">Espace compte</h2>
++        <p class="subtitle">Connexion Google, statut en ligne et historique de navigation réunis ici.</p>
++      </div>
++      <div class="account-grid">
++        <div class="card-tile depth-card">
++          <span class="badge">Profil</span>
++          <strong data-profile-name>Invité</strong>
++          <span class="subtitle" data-profile-email>Connecte-toi avec Google.</span>
++        </div>
++        <div class="card-tile depth-card">
++          <span class="badge">État</span>
++          <strong data-account-state>Invité</strong>
++          <span class="subtitle">Synchronisation disponible après connexion.</span>
++        </div>
++        <div class="card-tile depth-card">
++          <span class="badge">Dernière actualisation</span>
++          <strong id="progressPage">-</strong>
++          <span class="subtitle">Mise à jour : <span id="progressTime">-</span></span>
++        </div>
++        <div class="card-tile depth-card">
++          <span class="badge">Statut de sync</span>
++          <strong id="progressStatus">Local</strong>
++          <span class="subtitle">Passe en ligne dès la connexion.</span>
++        </div>
++      </div>
++      <div class="account-actions">
++        <div id="authMessage" class="alert">Bienvenue ! Connecte-toi avec Google pour synchroniser ta progression.</div>
++        <div class="form-grid">
++          <button type="button" class="btn" data-google-signin><i class="fa-brands fa-google"></i> Se connecter avec Google</button>
++          <button class="btn ghost" type="button" data-signout><i class="fa-solid fa-arrow-right-from-bracket"></i> Se déconnecter</button>
++        </div>
++        <div class="card-tile depth-card">
++          <span class="badge">Compte connecté</span>
++          <strong id="userEmail">Aucun compte connecté</strong>
++          <span class="subtitle">Connexion Google requise pour la sauvegarde.</span>
++        </div>
++      </div>
++    </div>
++  </div>
++  <script type="module" src="app.js"></script>
+ </body>
+ </html>
+diff --git a/styles.css b/styles.css
+index 9542431..8fd3b88 100644
+--- a/styles.css
++++ b/styles.css
+@@ -114,6 +114,38 @@ a { color: inherit; text-decoration: none; }
+   backdrop-filter: blur(10px);
+ }
+ 
++.bottom-nav {
++  position: fixed;
++  left: 0;
++  right: 0;
++  bottom: 0;
++  z-index: 12;
++  background: rgba(9, 14, 24, 0.9);
++  border-top: 1px solid rgba(148, 163, 184, 0.18);
++  backdrop-filter: blur(16px);
++}
++
++.bottom-nav .nav-grid {
++  display: grid;
++  grid-template-columns: repeat(3, 1fr);
++  text-align: center;
++  font-size: 12px;
++  color: rgba(226, 232, 240, 0.6);
++}
++
++.bottom-nav a {
++  text-decoration: none;
++  color: inherit;
++  padding: 14px 10px;
++  display: grid;
++  gap: 4px;
++  font-weight: 500;
++}
++
++.bottom-nav a.active {
++  color: #e2e8f0;
++}
++
+ .nav-inner {
+   display: flex;
+   align-items: center;
+-- 
+2.43.0
+
