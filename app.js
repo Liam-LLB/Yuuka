@@ -1263,7 +1263,7 @@ const initHistoryModal = () => {
       closeModal();
     }
   });
-  const currentVersion = "v3.1";
+  const currentVersion = "v3.2";
   const currentLabel = historyModal.querySelector("[data-current-version]");
   if (currentLabel) currentLabel.textContent = currentVersion;
   historyModal.querySelectorAll("[data-version]").forEach((item) => {
