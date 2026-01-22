@@ -1,0 +1,55 @@
+From fac4fa0bd5529f28c81913962c87f45bba8e5712 Mon Sep 17 00:00:00 2001
+From: Liam-LLB <liamleclaircie@gmail.com>
+Date: Thu, 22 Jan 2026 07:31:32 +0100
+Subject: [PATCH 4/4] Remove January 22 update entry
+
+---
+ app.js     |  2 +-
+ index.html | 11 ++---------
+ 2 files changed, 3 insertions(+), 10 deletions(-)
+
+diff --git a/app.js b/app.js
+index 624cee0..ed1f5de 100644
+--- a/app.js
++++ b/app.js
+@@ -1263,7 +1263,7 @@ const initHistoryModal = () => {
+       closeModal();
+     }
+   });
+-  const currentVersion = "v3.2";
++  const currentVersion = "v3.1";
+   const currentLabel = historyModal.querySelector("[data-current-version]");
+   if (currentLabel) currentLabel.textContent = currentVersion;
+   historyModal.querySelectorAll("[data-version]").forEach((item) => {
+diff --git a/index.html b/index.html
+index d667ab3..be66548 100644
+--- a/index.html
++++ b/index.html
+@@ -304,8 +304,8 @@
+       <p class="subtitle">Quelques jalons clés, avec un focus sur les évolutions majeures.</p>
+       <div class="version-highlight">
+         <span class="badge">Version actuelle</span>
+-        <strong data-current-version>v3.2</strong>
+-        <span class="subtitle">Palette harmonisée, historique enrichi et lisibilité renforcée.</span>
++        <strong data-current-version>v3.1</strong>
++        <span class="subtitle">Harmonisation des couleurs, bulles agrandies et contraste renforcé.</span>
+       </div>
+       <div class="version-list" role="list">
+         <div class="version-item" data-version="v1.0">
+@@ -350,13 +350,6 @@
+             <p class="subtitle">Harmonisation des couleurs, bulles agrandies et contraste renforcé.</p>
+           </div>
+         </div>
+-        <div class="version-item is-major" data-version="v3.2">
+-          <span class="version-tag">v3.2</span>
+-          <div>
+-            <strong>Confort &amp; détails</strong>
+-            <p class="subtitle">Historique enrichi, couleurs unifiées et bulles repositionnées.</p>
+-          </div>
+-        </div>
+       </div>
+     </div>
+   </div>
+-- 
+2.43.0
+
