@@ -145,7 +145,7 @@ async function softDeletePhoto(photoId) {
 
 async function initFirebase() {
   if (!firebaseConfig || !firebaseConfig.apiKey) {
-    setStatus("Ajoute tes identifiants Firebase dans bouton8.html pour activer la synchronisation.", false);
+    setStatus("Ajoute tes identifiants Firebase dans la page de galerie pour activer la synchronisation.", false);
     updateEmptyState();
     return;
   }
