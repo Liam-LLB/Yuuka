@@ -1313,6 +1313,27 @@ button.showcase-card {
   gap: 12px;
 }
 
+.spotify-playlists {
+  display: grid;
+  gap: 16px;
+  padding: 16px;
+  border-radius: 20px;
+  border: 1px solid rgba(29, 185, 84, 0.18);
+  background: rgba(15, 23, 42, 0.55);
+}
+
+.playlist-card {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(29, 185, 84, 0.18);
+  background: rgba(9, 18, 14, 0.7);
+}
+
 .chip {
   display: inline-flex;
   align-items: center;
