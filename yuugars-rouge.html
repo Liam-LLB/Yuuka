@@ -6,7 +6,7 @@
   <title>Yuugars · Rouge</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 <body data-page="Yuugars-Rouge">
   <nav class="site-nav">
@@ -31,93 +31,77 @@
     </div>
   </nav>
 
-  <main class="container">
-    <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-triangle-exclamation"></i> Zone rouge</span>
-      <h1 class="main-title">Personnes à éviter</h1>
-      <p class="subtitle">Dossiers classés haut risque. Présence toxique ou nuisible, zéro tolérance.</p>
-      <div class="tabs">
-        <span class="badge danger"><i class="fa-solid fa-skull"></i> Danger critique</span>
+  <main class="container dossier dossier--rouge">
+    <header class="dossier-hero">
+      <div>
+        <span class="dossier-eyebrow"><i class="fa-solid fa-triangle-exclamation"></i> Division Rouge</span>
+        <h1>Fichiers Interpol · Menaces critiques</h1>
+        <p>Accès restreint. Fiches d'individus à contourner immédiatement.</p>
+      </div>
+      <div class="dossier-hero-actions">
+        <span class="dossier-badge dossier-badge--danger"><i class="fa-solid fa-skull"></i> Niveau 5</span>
         <a class="btn ghost" href="bouton3.html"><i class="fa-solid fa-arrow-left"></i> Retour aux bulles</a>
       </div>
-    </section>
+    </header>
 
-    <section class="profile-grid">
-      <details class="profile-card" open>
-        <summary>
-          <div class="profile-summary">
-            <span class="profile-code">Dossier #R-014</span>
-            <h2 class="section-title">"Spectre"</h2>
-            <p class="subtitle">Manipulation émotionnelle, isolement social.</p>
-          </div>
-          <span class="profile-level level-danger">Interdiction</span>
-        </summary>
-        <div class="profile-details">
-          <div class="profile-photo profile-photo--danger">S</div>
-          <div class="profile-info">
-            <h3>Notice Interpol</h3>
-            <ul class="info-list">
-              <li><strong>Alias :</strong> Spectre, Ombre grise</li>
-              <li><strong>Signalements :</strong> 8 alertes majeures</li>
-              <li><strong>Comportement :</strong> Gaslighting, contrôle, humiliation publique</li>
-              <li><strong>Dernière alerte :</strong> 3 jours</li>
-            </ul>
-            <p class="subtitle">Consigne : couper tout contact, éviter les interactions directes, protéger l'entourage.</p>
-          </div>
+    <section class="dossier-grid">
+      <article class="dossier-card dossier-card--danger">
+        <header>
+          <span class="dossier-tag">Dossier #R-014</span>
+          <h2>“Spectre”</h2>
+          <p>Manipulation émotionnelle, isolement social.</p>
+        </header>
+        <div class="dossier-body">
+          <div class="dossier-avatar dossier-avatar--danger">S</div>
+          <ul>
+            <li><strong>Alias :</strong> Spectre, Ombre grise</li>
+            <li><strong>Signalements :</strong> 8 alertes majeures</li>
+            <li><strong>Comportement :</strong> Gaslighting, contrôle, humiliation publique</li>
+            <li><strong>Dernière alerte :</strong> 3 jours</li>
+          </ul>
         </div>
-      </details>
+        <footer>Consigne : couper tout contact, éviter les interactions directes.</footer>
+      </article>
 
-      <details class="profile-card">
-        <summary>
-          <div class="profile-summary">
-            <span class="profile-code">Dossier #R-022</span>
-            <h2 class="section-title">"Cortex"</h2>
-            <p class="subtitle">Double discours et sabotage régulier.</p>
-          </div>
-          <span class="profile-level level-danger">Fuite</span>
-        </summary>
-        <div class="profile-details">
-          <div class="profile-photo profile-photo--danger">C</div>
-          <div class="profile-info">
-            <h3>Notice Interpol</h3>
-            <ul class="info-list">
-              <li><strong>Alias :</strong> Cortex, Le stratège</li>
-              <li><strong>Signalements :</strong> 5 incidents critiques</li>
-              <li><strong>Comportement :</strong> Sabotage, mensonges, alliances destructrices</li>
-              <li><strong>Dernière alerte :</strong> 1 semaine</li>
-            </ul>
-            <p class="subtitle">Consigne : blocage permanent et suppression des accès personnels.</p>
-          </div>
+      <article class="dossier-card dossier-card--danger">
+        <header>
+          <span class="dossier-tag">Dossier #R-022</span>
+          <h2>“Cortex”</h2>
+          <p>Double discours et sabotage régulier.</p>
+        </header>
+        <div class="dossier-body">
+          <div class="dossier-avatar dossier-avatar--danger">C</div>
+          <ul>
+            <li><strong>Alias :</strong> Cortex, Le stratège</li>
+            <li><strong>Signalements :</strong> 5 incidents critiques</li>
+            <li><strong>Comportement :</strong> Sabotage, mensonges, alliances destructrices</li>
+            <li><strong>Dernière alerte :</strong> 1 semaine</li>
+          </ul>
         </div>
-      </details>
+        <footer>Consigne : blocage permanent et suppression des accès personnels.</footer>
+      </article>
 
-      <details class="profile-card">
-        <summary>
-          <div class="profile-summary">
-            <span class="profile-code">Dossier #R-031</span>
-            <h2 class="section-title">"Volt"</h2>
-            <p class="subtitle">Violence verbale et menaces répétées.</p>
-          </div>
-          <span class="profile-level level-danger">Isolement</span>
-        </summary>
-        <div class="profile-details">
-          <div class="profile-photo profile-photo--danger">V</div>
-          <div class="profile-info">
-            <h3>Notice Interpol</h3>
-            <ul class="info-list">
-              <li><strong>Alias :</strong> Volt, Tonnerre noir</li>
-              <li><strong>Signalements :</strong> 12 incidents critiques</li>
-              <li><strong>Comportement :</strong> Menaces, intimidation, pression collective</li>
-              <li><strong>Dernière alerte :</strong> 48 heures</li>
-            </ul>
-            <p class="subtitle">Consigne : garder des preuves, alerter les proches, distance absolue.</p>
-          </div>
+      <article class="dossier-card dossier-card--danger">
+        <header>
+          <span class="dossier-tag">Dossier #R-031</span>
+          <h2>“Volt”</h2>
+          <p>Violence verbale et menaces répétées.</p>
+        </header>
+        <div class="dossier-body">
+          <div class="dossier-avatar dossier-avatar--danger">V</div>
+          <ul>
+            <li><strong>Alias :</strong> Volt, Tonnerre noir</li>
+            <li><strong>Signalements :</strong> 12 incidents critiques</li>
+            <li><strong>Comportement :</strong> Menaces, intimidation, pression collective</li>
+            <li><strong>Dernière alerte :</strong> 48 heures</li>
+          </ul>
         </div>
-      </details>
+        <footer>Consigne : garder des preuves, alerter les proches.</footer>
+      </article>
     </section>
   </main>
 
-  <footer class="footer">Yuukonline · Dossiers rouges confidentiels.</footer>
+  <footer class="footer">Yuukonline · Interpol rouge.</footer>
 
   <div class="account-overlay" data-account-modal>
     <div class="account-panel">
