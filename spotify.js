@@ -22,12 +22,7 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   const toggleButton = document.querySelector("[data-spotify-toggle]");
   const toggleIcon = toggleButton?.querySelector("i");
   const toggleLabel = toggleButton?.querySelector("span");
-  const playlistButtons = document.querySelectorAll("[data-spotify-playlist]");
-  const playlistStatus = document.querySelector("[data-spotify-playlist-status]");
-  const playlistList = document.querySelector("[data-spotify-playlist-list]");
-  const loadPlaylistsButton = document.querySelector("[data-spotify-load-playlists]");
   const token = getSpotifyToken();
-  let deviceId = null;
 
   if (!token) {
     setStatus(statusBadge, "Token manquant", "danger");
@@ -44,7 +39,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   });
 
   player.addListener("ready", ({ device_id }) => {
-    deviceId = device_id;
     setStatus(statusBadge, "Connecté à Spotify", "success");
     if (deviceLabel) {
       deviceLabel.textContent = `Appareil Spotify : ${device_id}`;
@@ -55,9 +49,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
   });
 
   player.addListener("not_ready", ({ device_id }) => {
-    if (deviceId === device_id) {
-      deviceId = null;
-    }
     setStatus(statusBadge, "Hors ligne", "warning");
     if (deviceLabel) {
       deviceLabel.textContent = `Appareil déconnecté : ${device_id}`;
@@ -95,118 +86,6 @@ window.onSpotifyWebPlaybackSDKReady = () => {
       player.togglePlay();
     });
   }
-
-  const setPlaylistStatus = (message) => {
-    if (playlistStatus) {
-      playlistStatus.textContent = message;
-    }
-  };
-
-  const createPlaylistEntry = (playlist) => {
-    const item = document.createElement("li");
-    const meta = document.createElement("div");
-    meta.className = "playlist-meta";
-    const name = document.createElement("strong");
-    name.textContent = playlist.name;
-    const owner = document.createElement("span");
-    owner.textContent = playlist.owner?.display_name
-      ? `Par ${playlist.owner.display_name}`
-      : "Playlist Spotify";
-    meta.append(name, owner);
-    const button = document.createElement("button");
-    button.className = "btn ghost";
-    button.type = "button";
-    button.innerHTML = '<i class="fa-solid fa-circle-play"></i> Lire';
-    button.addEventListener("click", () => {
-      startPlaylist(playlist.uri);
-    });
-    item.append(meta, button);
-    return item;
-  };
-
-  const renderPlaylists = (playlists = []) => {
-    if (!playlistList) return;
-    playlistList.innerHTML = "";
-    if (playlists.length === 0) {
-      const empty = document.createElement("li");
-      empty.textContent = "Aucune playlist trouvée.";
-      playlistList.append(empty);
-      return;
-    }
-    playlists.forEach((playlist) => {
-      playlistList.append(createPlaylistEntry(playlist));
-    });
-  };
-
-  const loadPlaylists = async () => {
-    if (!token) {
-      setPlaylistStatus("Token manquant pour charger les playlists.");
-      return;
-    }
-    setPlaylistStatus("Chargement des playlists...");
-    try {
-      const response = await fetch("https://api.spotify.com/v1/me/playlists?limit=20", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (!response.ok) {
-        setPlaylistStatus("Impossible de charger tes playlists. Vérifie le token.");
-        console.error("Spotify playlists error", response.status, await response.text());
-        renderPlaylists([]);
-        return;
-      }
-      const data = await response.json();
-      renderPlaylists(data.items || []);
-      setPlaylistStatus("Playlists chargées.");
-    } catch (error) {
-      console.error("Spotify playlists error", error);
-      setPlaylistStatus("Erreur réseau pendant le chargement.");
-    }
-  };
-
-  const startPlaylist = async (playlistUri) => {
-    if (!deviceId) {
-      setPlaylistStatus("Active d'abord Spotify Connect pour utiliser ce lecteur.");
-      return;
-    }
-    if (!playlistUri) {
-      setPlaylistStatus("Playlist introuvable.");
-      return;
-    }
-    setPlaylistStatus("Lancement de la playlist...");
-    try {
-      const response = await fetch(
-        `https://api.spotify.com/v1/me/player/play?device_id=${encodeURIComponent(deviceId)}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ context_uri: playlistUri }),
-        }
-      );
-      if (!response.ok) {
-        setPlaylistStatus("Impossible de démarrer la playlist. Vérifie ton token.");
-        console.error("Spotify play error", response.status, await response.text());
-        return;
-      }
-      setPlaylistStatus("Lecture lancée dans Yuusiques.");
-    } catch (error) {
-      console.error("Spotify play error", error);
-      setPlaylistStatus("Erreur réseau. Réessaie après avoir relancé Spotify.");
-    }
-  };
-
-  playlistButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      const playlistUri = button.dataset.spotifyPlaylistUri;
-      startPlaylist(playlistUri);
-    });
-  });
-
-  loadPlaylistsButton?.addEventListener("click", loadPlaylists);
 
   player.connect();
 };

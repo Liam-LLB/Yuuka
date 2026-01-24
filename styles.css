@@ -1334,49 +1334,6 @@ button.showcase-card {
   background: rgba(9, 18, 14, 0.7);
 }
 
-.playlist-browser {
-  display: grid;
-  gap: 12px;
-  padding-top: 8px;
-}
-
-.playlist-browser-header {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.playlist-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 10px;
-}
-
-.playlist-list li {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 10px 12px;
-  border-radius: 14px;
-  border: 1px solid rgba(29, 185, 84, 0.14);
-  background: rgba(8, 16, 12, 0.7);
-}
-
-.playlist-meta {
-  display: grid;
-  gap: 4px;
-}
-
-.playlist-meta span {
-  color: var(--muted);
-  font-size: 0.85rem;
-}
-
 .chip {
   display: inline-flex;
   align-items: center;
