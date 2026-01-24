@@ -32,131 +32,154 @@
   </nav>
 
   <main class="container">
-    <section class="card hero spotify-hero">
+    <header class="spotify-header">
       <div>
         <span class="eyebrow"><i class="fa-brands fa-spotify"></i> Yuusiques</span>
-        <h1 class="main-title">Studio Spotify Yuusiques</h1>
+        <h1 class="main-title">Web Player Spotify repensé</h1>
         <p class="subtitle">
-          Une interface immersive pensée comme un player Spotify : playlists, favoris et sessions live
-          depuis une fenêtre interactive directement dans la page.
+          Recherche, navigation et lecture directement depuis Yuusiques. Plus besoin d'ouvrir Spotify pour explorer.
         </p>
-        <div class="tabs">
-          <button class="btn" type="button"><i class="fa-solid fa-headphones"></i> Lancer une session</button>
-          <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
-        </div>
       </div>
-      <div class="spotify-hero-card">
-        <div class="spotify-hero-top">
-          <span class="badge success" data-spotify-status><i class="fa-solid fa-bolt"></i> Connexion en cours</span>
-          <span class="hero-time" data-spotify-device>Appareil Spotify : en attente</span>
-        </div>
-        <div class="spotify-now">
-          <div class="spotify-cover">
-            <i class="fa-solid fa-record-vinyl"></i>
-          </div>
+      <div class="spotify-header-stats">
+        <span class="badge" data-spotify-auth-status><i class="fa-solid fa-circle"></i> Non connecté</span>
+        <span class="subtitle" data-spotify-user>Connecte ton compte Spotify premium.</span>
+      </div>
+    </header>
+
+    <section class="spotify-shell">
+      <aside class="spotify-sidebar card">
+        <div class="spotify-sidebar-brand">
+          <i class="fa-brands fa-spotify"></i>
           <div>
-            <strong>Vibe du moment</strong>
-            <p class="subtitle">Nuances néon &amp; basses lentes</p>
+            <strong>Yuusiques</strong>
+            <span class="subtitle">Contrôle complet en page</span>
           </div>
         </div>
-        <div class="spotify-bars">
-          <span></span><span></span><span></span><span></span><span></span>
-        </div>
-        <div class="spotify-actions">
-          <button class="btn ghost" type="button"><i class="fa-solid fa-backward-step"></i></button>
-          <button class="btn" type="button" data-spotify-toggle>
-            <i class="fa-solid fa-play"></i>
-            <span>Play</span>
+        <nav class="spotify-nav">
+          <button class="spotify-nav-item is-active" type="button" data-spotify-view="home">
+            <i class="fa-solid fa-house"></i> Accueil
           </button>
-          <button class="btn ghost" type="button"><i class="fa-solid fa-forward-step"></i></button>
+          <button class="spotify-nav-item" type="button" data-spotify-view="search">
+            <i class="fa-solid fa-magnifying-glass"></i> Recherche
+          </button>
+          <button class="spotify-nav-item" type="button" data-spotify-view="library">
+            <i class="fa-solid fa-layer-group"></i> Bibliothèque
+          </button>
+        </nav>
+
+        <div class="spotify-sidebar-section">
+          <h3 class="section-title">Bibliothèque rapide</h3>
+          <ul class="spotify-mini-list" data-spotify-library-preview>
+            <li>Connecte-toi pour voir tes playlists.</li>
+          </ul>
+        </div>
+
+        <div class="spotify-auth-panel">
+          <h3 class="section-title">Connexion Spotify</h3>
+          <p class="subtitle">
+            Ajoute un token ou configure l'app Spotify pour activer la recherche, la navigation et la lecture.
+          </p>
+          <div class="form-grid">
+            <label class="spotify-label" for="spotifyClientId">Client ID (Spotify App)</label>
+            <input id="spotifyClientId" class="spotify-input" type="text" placeholder="Ton Client ID" data-spotify-client-id />
+            <label class="spotify-label" for="spotifyRedirect">Redirect URI (doit être déclarée)</label>
+            <input id="spotifyRedirect" class="spotify-input" type="text" placeholder="https://ton-site/yuusiques" data-spotify-redirect-uri />
+            <label class="spotify-label" for="spotifyToken">Token d'accès (optionnel)</label>
+            <input id="spotifyToken" class="spotify-input" type="password" placeholder="Colle ton token ici" data-spotify-token />
+          </div>
+          <div class="spotify-auth-actions">
+            <button class="btn" type="button" data-spotify-connect><i class="fa-solid fa-link"></i> Lancer la connexion</button>
+            <button class="btn ghost" type="button" data-spotify-save><i class="fa-solid fa-floppy-disk"></i> Enregistrer</button>
+            <button class="btn ghost" type="button" data-spotify-clear><i class="fa-solid fa-trash"></i> Effacer</button>
+          </div>
+          <p class="subtitle" data-spotify-hint>
+            Active l'accès depuis Spotify Connect pour jouer tes titres directement dans Yuusiques.
+          </p>
+        </div>
+      </aside>
+
+      <div class="spotify-main">
+        <div class="spotify-topbar card">
+          <div class="spotify-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="search" placeholder="Rechercher un titre, un artiste ou une playlist" data-spotify-search-input />
+          </div>
+          <div class="spotify-topbar-actions">
+            <button class="btn ghost" type="button" data-spotify-refresh><i class="fa-solid fa-rotate"></i> Rafraîchir</button>
+          </div>
+        </div>
+
+        <div class="spotify-content">
+          <section class="spotify-view is-active" data-spotify-view-pane="home">
+            <div class="card spotify-welcome">
+              <h2 class="section-title">Ton cockpit Yuusiques</h2>
+              <p class="subtitle">
+                Explore les nouveautés, les playlists recommandées et lance la lecture sans quitter cette page.
+              </p>
+            </div>
+            <div class="spotify-grid" data-spotify-featured-grid>
+              <div class="spotify-empty">
+                <i class="fa-solid fa-circle-notch"></i>
+                <p>Connecte Spotify pour charger les sélections.</p>
+              </div>
+            </div>
+            <div class="spotify-grid" data-spotify-release-grid></div>
+          </section>
+
+          <section class="spotify-view" data-spotify-view-pane="search" hidden>
+            <div class="spotify-result-group">
+              <h2 class="section-title">Titres</h2>
+              <ul class="spotify-track-list" data-spotify-search-tracks>
+                <li>Utilise la barre de recherche pour afficher des titres.</li>
+              </ul>
+            </div>
+            <div class="spotify-result-group">
+              <h2 class="section-title">Playlists</h2>
+              <div class="spotify-grid" data-spotify-search-playlists></div>
+            </div>
+          </section>
+
+          <section class="spotify-view" data-spotify-view-pane="library" hidden>
+            <div class="card spotify-library-summary">
+              <h2 class="section-title">Ta bibliothèque Spotify</h2>
+              <p class="subtitle">Retrouve tes playlists et relance la lecture sans quitter Yuusiques.</p>
+            </div>
+            <div class="spotify-grid" data-spotify-library-grid>
+              <div class="spotify-empty">
+                <i class="fa-solid fa-music"></i>
+                <p>Connecte-toi pour afficher ta bibliothèque.</p>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </section>
 
-    <section class="spotify-layout">
-      <div class="card spotify-panel">
-        <div class="spotify-panel-header">
-          <div>
-            <h2 class="section-title">Fenêtre Spotify interactive</h2>
-            <p class="subtitle">
-              L'embed Spotify Web Player permet une écoute immédiate. Pour le contrôle avancé, branche
-              l'API Spotify + Web Playback SDK côté backend.
-            </p>
-          </div>
-          <a class="btn ghost" href="https://developer.spotify.com/documentation/web-playback-sdk" target="_blank" rel="noreferrer">
-            <i class="fa-solid fa-link"></i> API Spotify
-          </a>
+    <section class="spotify-player card">
+      <div class="spotify-player-now">
+        <div class="spotify-now-cover" data-spotify-now-cover>
+          <i class="fa-solid fa-record-vinyl"></i>
         </div>
-        <div class="spotify-embed">
-          <iframe
-            title="Spotify Player"
-            src="https://open.spotify.com/embed/playlist/37i9dQZF1DX0XUsuxWHRQd?utm_source=generator&theme=0"
-            loading="lazy"
-            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-          ></iframe>
+        <div>
+          <strong data-spotify-now-title>Lecture en attente</strong>
+          <span class="subtitle" data-spotify-now-artist>Choisis un titre pour commencer.</span>
+          <span class="subtitle" data-spotify-now-album></span>
         </div>
-        <div class="spotify-panel-footer">
-          <span class="chip"><i class="fa-solid fa-wifi"></i> Streaming actif</span>
-          <span class="chip"><i class="fa-solid fa-heart"></i> Likes en temps réel</span>
-          <span class="chip"><i class="fa-solid fa-users"></i> Mode collaboratif</span>
-        </div>
-        <p class="subtitle" data-spotify-hint>
-          Connecte-toi avec Spotify Connect puis clique sur Play pour lancer la lecture dans le navigateur.
-        </p>
       </div>
-
-      <aside class="spotify-side">
-        <div class="card spotify-card">
-          <h3 class="section-title">Files d'attente</h3>
-          <p class="subtitle">Des sélections qui s'enchaînent comme un set live.</p>
-          <ul class="track-list">
-            <li>
-              <span class="track-index">01</span>
-              <div class="track-info">
-                <strong>Cosmic Drift</strong>
-                <span>Yuukonline Radio</span>
-              </div>
-              <span class="track-tag">Focus</span>
-            </li>
-            <li>
-              <span class="track-index">02</span>
-              <div class="track-info">
-                <strong>Nightwave</strong>
-                <span>Yuusiques Original</span>
-              </div>
-              <span class="track-tag">New</span>
-            </li>
-            <li>
-              <span class="track-index">03</span>
-              <div class="track-info">
-                <strong>Pulse &amp; Glow</strong>
-                <span>Chill Studio</span>
-              </div>
-              <span class="track-tag">Loop</span>
-            </li>
-          </ul>
-        </div>
-
-        <div class="card spotify-card">
-          <h3 class="section-title">Ambiance Yuusiques</h3>
-          <p class="subtitle">Palette verte, noire et néon pour rester cohérent avec Spotify.</p>
-          <div class="mood-grid">
-            <div class="mood-tile">
-              <i class="fa-solid fa-seedling"></i>
-              <span>Chill naturel</span>
-            </div>
-            <div class="mood-tile">
-              <i class="fa-solid fa-wave-square"></i>
-              <span>Énergie modulée</span>
-            </div>
-            <div class="mood-tile">
-              <i class="fa-solid fa-star"></i>
-              <span>Glow nocturne</span>
-            </div>
-          </div>
-          <button class="btn ghost" type="button"><i class="fa-solid fa-sliders"></i> Ajuster l'ambiance</button>
-        </div>
-      </aside>
+      <div class="spotify-player-controls">
+        <button class="btn ghost" type="button" data-spotify-prev><i class="fa-solid fa-backward-step"></i></button>
+        <button class="btn" type="button" data-spotify-toggle>
+          <i class="fa-solid fa-play"></i>
+          <span>Play</span>
+        </button>
+        <button class="btn ghost" type="button" data-spotify-next><i class="fa-solid fa-forward-step"></i></button>
+        <button class="btn ghost" type="button" data-spotify-shuffle><i class="fa-solid fa-shuffle"></i></button>
+        <button class="btn ghost" type="button" data-spotify-repeat><i class="fa-solid fa-repeat"></i></button>
+      </div>
+      <div class="spotify-player-meta">
+        <span class="badge" data-spotify-device>Appareil Spotify : en attente</span>
+        <button class="btn ghost" type="button" data-spotify-transfer><i class="fa-solid fa-tower-broadcast"></i> Activer la sortie Yuusiques</button>
+      </div>
     </section>
   </main>
 
