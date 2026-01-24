@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yuugars</title>
+  <title>Yuugars · Orange</title>
   <link rel="stylesheet" href="styles.css" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body data-page="Yuugars">
+<body data-page="Yuugars-Orange">
   <nav class="site-nav">
     <div class="nav-inner">
       <a class="brand" href="index.html"><i class="fa-solid fa-sparkles"></i> Yuukonline</a>
@@ -33,55 +33,91 @@
 
   <main class="container">
     <section class="card hero">
-      <span class="eyebrow"><i class="fa-solid fa-user-group"></i> Yuugars</span>
-      <h1 class="main-title">Radar des relations</h1>
-      <p class="subtitle">Trois cercles, trois niveaux de vigilance. Choisis une couleur pour parcourir les profils et leurs fiches détaillées.</p>
+      <span class="eyebrow"><i class="fa-solid fa-shield-halved"></i> Zone orange</span>
+      <h1 class="main-title">Sous surveillance</h1>
+      <p class="subtitle">Relations fréquentes mais instables. Attitude parfois limite, à surveiller attentivement.</p>
       <div class="tabs">
-        <span class="badge"><i class="fa-solid fa-circle-nodes"></i> Classification intuitive</span>
-        <a class="btn ghost" href="index.html#hub"><i class="fa-solid fa-compass"></i> Revenir au hub</a>
+        <span class="badge warning"><i class="fa-solid fa-eye"></i> Vigilance constante</span>
+        <a class="btn ghost" href="bouton3.html"><i class="fa-solid fa-arrow-left"></i> Retour aux bulles</a>
       </div>
     </section>
 
-    <section class="yuugars-bubbles" aria-label="Catégories Yuugars">
-      <a class="yuugars-bubble yuugars-bubble--rouge" href="yuugars-rouge.html">
-        <span class="bubble-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
-        <span class="bubble-title">Rouge</span>
-        <span class="bubble-subtitle">À éviter absolument</span>
-      </a>
-      <a class="yuugars-bubble yuugars-bubble--orange" href="yuugars-orange.html">
-        <span class="bubble-icon"><i class="fa-solid fa-shield-halved"></i></span>
-        <span class="bubble-title">Orange</span>
-        <span class="bubble-subtitle">Vigilance permanente</span>
-      </a>
-      <a class="yuugars-bubble yuugars-bubble--vert" href="yuugars-vert.html">
-        <span class="bubble-icon"><i class="fa-solid fa-seedling"></i></span>
-        <span class="bubble-title">Vert</span>
-        <span class="bubble-subtitle">Présences positives</span>
-      </a>
-    </section>
+    <section class="profile-grid">
+      <details class="profile-card" open>
+        <summary>
+          <div class="profile-summary">
+            <span class="profile-code">Dossier #O-006</span>
+            <h2 class="section-title">"Fumé"</h2>
+            <p class="subtitle">Présent mais imprévisible, sarcasmes lourds.</p>
+          </div>
+          <span class="profile-level level-warning">Méfie-toi</span>
+        </summary>
+        <div class="profile-details">
+          <div class="profile-photo profile-photo--warning">F</div>
+          <div class="profile-info">
+            <h3>Notice Interpol</h3>
+            <ul class="info-list">
+              <li><strong>Alias :</strong> Fumé, Nuage</li>
+              <li><strong>Signalements :</strong> 3 alertes modérées</li>
+              <li><strong>Comportement :</strong> Ironie blessante, changements d'humeur</li>
+              <li><strong>Dernière alerte :</strong> 2 semaines</li>
+            </ul>
+            <p class="subtitle">Consigne : limiter la proximité, rester clair sur les limites.</p>
+          </div>
+        </div>
+      </details>
 
-    <section class="grid-2">
-      <div class="card">
-        <h2 class="section-title">Mode d'emploi</h2>
-        <ul class="info-list">
-          <li>Choisis une bulle pour accéder à sa salle dédiée.</li>
-          <li>Chaque fiche est cliquable pour révéler la notice complète.</li>
-          <li>Un bouton retour te ramène toujours au tri principal.</li>
-        </ul>
-      </div>
-      <div class="card">
-        <h2 class="section-title">Format Interpol</h2>
-        <p class="subtitle">Chaque profil est présenté comme un dossier confidentiel : alias, niveau d'alerte, historique et notes d'observation.</p>
-        <ul class="info-list">
-          <li>Photos et identités visuelles par fiche.</li>
-          <li>Codes couleur dynamiques selon la dangerosité.</li>
-          <li>Navigation claire et directe.</li>
-        </ul>
-      </div>
+      <details class="profile-card">
+        <summary>
+          <div class="profile-summary">
+            <span class="profile-code">Dossier #O-011</span>
+            <h2 class="section-title">"Pixel"</h2>
+            <p class="subtitle">Dépendance aux dramas et aux rumeurs.</p>
+          </div>
+          <span class="profile-level level-warning">Surveillance</span>
+        </summary>
+        <div class="profile-details">
+          <div class="profile-photo profile-photo--warning">P</div>
+          <div class="profile-info">
+            <h3>Notice Interpol</h3>
+            <ul class="info-list">
+              <li><strong>Alias :</strong> Pixel, Regard fuyant</li>
+              <li><strong>Signalements :</strong> 4 alertes modérées</li>
+              <li><strong>Comportement :</strong> Ragots, intensité sociale excessive</li>
+              <li><strong>Dernière alerte :</strong> 1 semaine</li>
+            </ul>
+            <p class="subtitle">Consigne : filtrer les confidences, garder la distance émotionnelle.</p>
+          </div>
+        </div>
+      </details>
+
+      <details class="profile-card">
+        <summary>
+          <div class="profile-summary">
+            <span class="profile-code">Dossier #O-019</span>
+            <h2 class="section-title">"Tempo"</h2>
+            <p class="subtitle">Hyper présent, parfois étouffant.</p>
+          </div>
+          <span class="profile-level level-warning">À cadrer</span>
+        </summary>
+        <div class="profile-details">
+          <div class="profile-photo profile-photo--warning">T</div>
+          <div class="profile-info">
+            <h3>Notice Interpol</h3>
+            <ul class="info-list">
+              <li><strong>Alias :</strong> Tempo, Loop social</li>
+              <li><strong>Signalements :</strong> 2 alertes modérées</li>
+              <li><strong>Comportement :</strong> Dépendance, intrusion, demandes répétées</li>
+              <li><strong>Dernière alerte :</strong> 4 jours</li>
+            </ul>
+            <p class="subtitle">Consigne : poser des règles de contact claires.</p>
+          </div>
+        </div>
+      </details>
     </section>
   </main>
 
-  <footer class="footer">Yuukonline · Yuugars, tri relationnel.</footer>
+  <footer class="footer">Yuukonline · Zone orange sous contrôle.</footer>
 
   <div class="account-overlay" data-account-modal>
     <div class="account-panel">
