@@ -758,6 +758,7 @@ a { color: inherit; text-decoration: none; }
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
   margin: 32px 0;
+  justify-items: center;
 }
 
 .yuugars-bubble {
@@ -773,7 +774,9 @@ a { color: inherit; text-decoration: none; }
   background: radial-gradient(circle at top, rgba(255, 255, 255, 0.12), transparent 55%),
     linear-gradient(140deg, var(--panel), var(--card));
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-  min-height: 220px;
+  width: min(320px, 100%);
+  aspect-ratio: 1 / 1;
+  align-content: center;
 }
 
 .yuugars-bubble:hover {
