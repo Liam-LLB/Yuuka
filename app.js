@@ -54,6 +54,7 @@ const currentPath = window.location.pathname;
 const isHomePage = currentPath.endsWith("/") || currentPath.endsWith("index.html");
 const isAuthPage = window.location.pathname.endsWith("connexion.html");
 const isYuukaleriePage = document.body?.dataset?.page === "Yuukalerie";
+const isYuugarsPage = document.body?.dataset?.page === "Yuugars";
 const loginBanner = document.querySelector("[data-login-banner]");
 
 const setMessage = (message, tone = "") => {
@@ -1353,6 +1354,26 @@ const initScrollColors = () => {
   window.addEventListener("resize", update);
 };
 
+const initYuugarsEffects = () => {
+  if (!isYuugarsPage) return;
+  const bubbles = document.querySelectorAll(".yuugars-bubble");
+  if (!bubbles.length) return;
+  const body = document.body;
+  const triggerBurst = () => {
+    body.classList.remove("yuugars-color-burst");
+    void body.offsetWidth;
+    body.classList.add("yuugars-color-burst");
+  };
+  bubbles.forEach((bubble) => {
+    bubble.addEventListener("click", triggerBurst, { passive: true });
+  });
+  body.addEventListener("animationend", (event) => {
+    if (event.animationName === "yuugars-burst") {
+      body.classList.remove("yuugars-color-burst");
+    }
+  });
+};
+
 const init = async () => {
   initAccessGate();
   initAccountModal();
@@ -1360,6 +1381,7 @@ const init = async () => {
   initHistoryModal();
   initParallax();
   initScrollColors();
+  initYuugarsEffects();
   hydrateLoginBanner();
   updateUserChips(null);
   updateProfileMenu(null);
