@@ -32,6 +32,11 @@
   --ambient-1: 96 165 250;
   --ambient-2: 168 85 247;
   --ambient-3: 34 197 94;
+  --dossier-accent: #93c5fd;
+  --dossier-accent-strong: #60a5fa;
+  --dossier-paper: rgba(30, 41, 59, 0.92);
+  --dossier-paper-strong: rgba(15, 23, 42, 0.92);
+  --dossier-line: rgba(148, 163, 184, 0.35);
   --scroll-hue: 218;
   --scroll-hue-2: 278;
   --scroll-shift: 0px;
@@ -70,13 +75,19 @@ body[data-page="Yuugars"] {
   --ambient-1: 59 130 246;
   --ambient-2: 168 85 247;
   --ambient-3: 34 197 94;
+  --yuugars-hue: 220;
+  --yuugars-hue-2: 282;
+  --yuugars-hue-3: 150;
+  --yuugars-rotation: 0deg;
+  --yuugars-glow: 0.65;
   position: relative;
+  overflow: hidden;
   background:
-    radial-gradient(circle at 12% 20%, rgba(125, 211, 252, 0.25), transparent 45%),
-    radial-gradient(circle at 82% 12%, rgba(168, 85, 247, 0.22), transparent 40%),
-    radial-gradient(circle at 70% 82%, rgba(34, 197, 94, 0.16), transparent 48%),
-    linear-gradient(140deg, #06040f 0%, #12061f 45%, #0a0f2a 100%);
-  animation: yuugars-background 16s ease-in-out infinite;
+    linear-gradient(140deg,
+      hsl(var(--yuugars-hue) 45% 10%),
+      hsl(var(--yuugars-hue-2) 40% 14%) 55%,
+      hsl(var(--yuugars-hue-3) 45% 12%) 100%);
+  transition: background 0.6s ease;
 }
 
 body[data-page="Yuugars"]::before,
@@ -85,21 +96,26 @@ body[data-page="Yuugars"]::after {
   position: absolute;
   inset: -20%;
   background:
-    radial-gradient(circle at 20% 30%, rgba(59, 130, 246, 0.35), transparent 40%),
-    radial-gradient(circle at 85% 25%, rgba(168, 85, 247, 0.3), transparent 45%),
-    radial-gradient(circle at 40% 80%, rgba(34, 197, 94, 0.28), transparent 45%);
-  opacity: 0.6;
-  filter: blur(10px);
-  animation: yuugars-aurora 10s ease-in-out infinite;
+    radial-gradient(circle at 20% 30%, hsl(var(--yuugars-hue) 70% 65% / 0.28), transparent 45%),
+    radial-gradient(circle at 85% 25%, hsl(var(--yuugars-hue-2) 70% 65% / 0.28), transparent 50%),
+    radial-gradient(circle at 40% 80%, hsl(var(--yuugars-hue-3) 70% 55% / 0.24), transparent 45%),
+    conic-gradient(from var(--yuugars-rotation), hsl(var(--yuugars-hue) 70% 35% / 0.35), transparent, hsl(var(--yuugars-hue-2) 70% 35% / 0.28), transparent);
+  opacity: var(--yuugars-glow);
+  filter: blur(16px);
+  transform: rotate(var(--yuugars-rotation));
   pointer-events: none;
   z-index: 0;
 }
 
 body[data-page="Yuugars"]::after {
   background:
-    conic-gradient(from 140deg, rgba(59, 130, 246, 0.25), rgba(168, 85, 247, 0.18), rgba(34, 197, 94, 0.2), rgba(59, 130, 246, 0.25));
+    conic-gradient(from calc(var(--yuugars-rotation) + 90deg),
+      hsl(var(--yuugars-hue) 70% 45% / 0.25),
+      hsl(var(--yuugars-hue-2) 70% 45% / 0.18),
+      hsl(var(--yuugars-hue-3) 70% 45% / 0.2),
+      hsl(var(--yuugars-hue) 70% 45% / 0.25));
   opacity: 0.35;
-  animation: yuugars-aurora 14s linear infinite reverse;
+  filter: blur(22px);
 }
 
 body[data-page="Yuugars"].yuugars-color-burst {
@@ -183,6 +199,11 @@ body[data-page="Yuugars-Rouge"] {
   --ambient-1: 239 68 68;
   --ambient-2: 127 29 29;
   --ambient-3: 248 113 113;
+  --dossier-accent: #f87171;
+  --dossier-accent-strong: #dc2626;
+  --dossier-paper: rgba(58, 12, 12, 0.94);
+  --dossier-paper-strong: rgba(23, 4, 4, 0.94);
+  --dossier-line: rgba(248, 113, 113, 0.35);
   background:
     radial-gradient(circle at 15% 18%, rgba(239, 68, 68, 0.2), transparent 45%),
     radial-gradient(circle at 85% 12%, rgba(248, 113, 113, 0.2), transparent 40%),
@@ -210,6 +231,11 @@ body[data-page="Yuugars-Orange"] {
   --ambient-1: 245 158 11;
   --ambient-2: 120 53 15;
   --ambient-3: 251 146 60;
+  --dossier-accent: #fbbf24;
+  --dossier-accent-strong: #f59e0b;
+  --dossier-paper: rgba(61, 33, 9, 0.94);
+  --dossier-paper-strong: rgba(22, 12, 3, 0.94);
+  --dossier-line: rgba(251, 146, 60, 0.35);
   background:
     radial-gradient(circle at 12% 20%, rgba(245, 158, 11, 0.22), transparent 40%),
     radial-gradient(circle at 88% 18%, rgba(251, 146, 60, 0.2), transparent 45%),
@@ -237,6 +263,11 @@ body[data-page="Yuugars-Vert"] {
   --ambient-1: 34 197 94;
   --ambient-2: 20 83 45;
   --ambient-3: 74 222 128;
+  --dossier-accent: #4ade80;
+  --dossier-accent-strong: #22c55e;
+  --dossier-paper: rgba(10, 41, 25, 0.94);
+  --dossier-paper-strong: rgba(3, 18, 11, 0.94);
+  --dossier-line: rgba(74, 222, 128, 0.35);
   background:
     radial-gradient(circle at 15% 18%, rgba(34, 197, 94, 0.2), transparent 45%),
     radial-gradient(circle at 85% 12%, rgba(74, 222, 128, 0.2), transparent 40%),
@@ -269,11 +300,14 @@ a { color: inherit; text-decoration: none; }
 
 .yuugars-main {
   display: grid;
-  gap: 32px;
+  gap: 28px;
   perspective: 1200px;
   position: relative;
-  min-height: calc(100vh - 200px);
+  min-height: calc(100vh - 160px);
   align-content: center;
+  justify-items: center;
+  padding-top: 12px;
+  padding-bottom: 32px;
 }
 
 .yuugars-scene {
@@ -281,7 +315,10 @@ a { color: inherit; text-decoration: none; }
   inset: 0;
   min-height: 100vh;
   border-radius: 0;
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.7), rgba(10, 6, 28, 0.9));
+  background:
+    linear-gradient(135deg,
+      hsl(var(--yuugars-hue) 40% 12% / 0.75),
+      hsl(var(--yuugars-hue-2) 35% 15% / 0.85));
   border: none;
   box-shadow: none;
   overflow: hidden;
@@ -296,10 +333,27 @@ a { color: inherit; text-decoration: none; }
   width: 180px;
   height: 180px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(125, 211, 252, 0.3), rgba(14, 116, 144, 0.15));
-  transform: translate(-50%, -50%) translateZ(80px);
-  box-shadow: 0 0 60px rgba(59, 130, 246, 0.55), 0 0 120px rgba(168, 85, 247, 0.45);
+  transform: translate(-50%, -50%) translateZ(80px) rotateZ(var(--yuugars-rotation));
+  box-shadow: 0 0 60px rgba(59, 130, 246, 0.45), 0 0 120px rgba(168, 85, 247, 0.35);
   animation: yuugars-pulse 4s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+.yuugars-core-inner {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.92), rgba(125, 211, 252, 0.35), rgba(14, 116, 144, 0.18));
+  box-shadow: inset 0 0 40px rgba(14, 116, 144, 0.55);
+}
+
+.yuugars-core-ring {
+  position: absolute;
+  inset: -24px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.35);
+  transform: rotateX(65deg) rotateY(20deg);
 }
 
 .yuugars-orbit {
@@ -374,6 +428,125 @@ a { color: inherit; text-decoration: none; }
   --prism-transform: translateZ(80px) rotateX(30deg) rotateY(-20deg);
 }
 
+.yuugars-shard,
+.yuugars-satellite,
+.yuugars-helix,
+.yuugars-aura {
+  position: absolute;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.yuugars-shard {
+  width: 110px;
+  height: 50px;
+  border-radius: 18px;
+  background: linear-gradient(120deg, rgba(59, 130, 246, 0.6), rgba(168, 85, 247, 0.25));
+  box-shadow: 0 18px 40px rgba(8, 10, 24, 0.45);
+  animation: yuugars-drift 12s ease-in-out infinite;
+}
+
+.yuugars-shard--one {
+  top: 12%;
+  left: 12%;
+  transform: rotateX(25deg) rotateY(12deg);
+}
+
+.yuugars-shard--two {
+  bottom: 18%;
+  right: 16%;
+  width: 140px;
+  height: 60px;
+  background: linear-gradient(120deg, rgba(34, 197, 94, 0.5), rgba(14, 116, 144, 0.25));
+  animation-delay: -3s;
+  transform: rotateX(-22deg) rotateZ(18deg);
+}
+
+.yuugars-shard--three {
+  top: 25%;
+  right: 12%;
+  width: 90px;
+  height: 40px;
+  background: linear-gradient(120deg, rgba(236, 72, 153, 0.5), rgba(168, 85, 247, 0.3));
+  animation-delay: -6s;
+  transform: rotateX(16deg) rotateZ(-20deg);
+}
+
+.yuugars-satellite {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 0 24px rgba(255, 255, 255, 0.1), 0 0 40px rgba(59, 130, 246, 0.35);
+  animation: yuugars-orbit-sway 14s ease-in-out infinite;
+}
+
+.yuugars-satellite--one {
+  top: 32%;
+  left: 6%;
+  animation-delay: -2s;
+}
+
+.yuugars-satellite--two {
+  top: 16%;
+  right: 8%;
+  width: 120px;
+  height: 120px;
+  animation-delay: -6s;
+}
+
+.yuugars-satellite--three {
+  bottom: 14%;
+  left: 30%;
+  width: 100px;
+  height: 100px;
+  animation-delay: -4s;
+}
+
+.yuugars-helix {
+  width: 140px;
+  height: 140px;
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(168, 85, 247, 0.15));
+  animation: yuugars-helix 16s linear infinite;
+}
+
+.yuugars-helix--one {
+  bottom: 22%;
+  right: 35%;
+}
+
+.yuugars-helix--two {
+  top: 38%;
+  right: 24%;
+  width: 110px;
+  height: 110px;
+  animation-delay: -8s;
+}
+
+.yuugars-aura {
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59, 130, 246, 0.35), transparent 60%);
+  filter: blur(4px);
+  opacity: 0.6;
+  animation: yuugars-aura 10s ease-in-out infinite;
+}
+
+.yuugars-aura--one {
+  top: -60px;
+  left: 20%;
+}
+
+.yuugars-aura--two {
+  bottom: -80px;
+  right: 10%;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.3), transparent 60%);
+  animation-delay: -5s;
+}
+
 .yuugars-glow {
   position: absolute;
   border-radius: 999px;
@@ -399,9 +572,123 @@ a { color: inherit; text-decoration: none; }
   animation-delay: -3s;
 }
 
+.dossier-scene {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.dossier-orb,
+.dossier-plate,
+.dossier-shard,
+.dossier-ring {
+  position: absolute;
+  transform-style: preserve-3d;
+  opacity: 0.65;
+}
+
+.dossier-orb {
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, color-mix(in srgb, var(--dossier-accent) 70%, transparent), transparent 65%);
+  animation: dossier-orb 12s ease-in-out infinite;
+  filter: blur(2px);
+}
+
+.dossier-orb--one {
+  top: 6%;
+  left: 6%;
+}
+
+.dossier-orb--two {
+  bottom: 12%;
+  right: 8%;
+  width: 260px;
+  height: 260px;
+  animation-delay: -5s;
+}
+
+.dossier-orb--three {
+  top: 55%;
+  right: 18%;
+  width: 180px;
+  height: 180px;
+  animation-delay: -8s;
+}
+
+.dossier-plate {
+  width: 180px;
+  height: 80px;
+  border-radius: 24px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--dossier-accent) 55%, transparent), rgba(0, 0, 0, 0.35));
+  border: 1px solid var(--dossier-line);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  animation: dossier-plate 14s ease-in-out infinite;
+}
+
+.dossier-plate--one {
+  top: 18%;
+  right: 10%;
+}
+
+.dossier-plate--two {
+  bottom: 18%;
+  left: 12%;
+  width: 220px;
+  animation-delay: -6s;
+}
+
+.dossier-shard {
+  width: 120px;
+  height: 50px;
+  border-radius: 16px;
+  background: linear-gradient(140deg, color-mix(in srgb, var(--dossier-accent-strong) 65%, transparent), rgba(0, 0, 0, 0.35));
+  box-shadow: 0 16px 32px rgba(0, 0, 0, 0.4);
+  animation: dossier-shard 10s ease-in-out infinite;
+}
+
+.dossier-shard--one {
+  top: 38%;
+  left: 4%;
+}
+
+.dossier-shard--two {
+  bottom: 30%;
+  right: 6%;
+  width: 150px;
+  animation-delay: -4s;
+}
+
+.dossier-ring {
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 10px solid color-mix(in srgb, var(--dossier-accent) 55%, transparent);
+  box-shadow: inset 0 0 20px color-mix(in srgb, var(--dossier-accent) 55%, transparent);
+  animation: dossier-ring 16s linear infinite;
+}
+
+.dossier-ring--one {
+  top: 14%;
+  left: 42%;
+}
+
+.dossier-ring--two {
+  bottom: 14%;
+  right: 40%;
+  width: 160px;
+  height: 160px;
+  animation-delay: -8s;
+}
+
 .dossier {
   display: grid;
   gap: 32px;
+  position: relative;
+  z-index: 1;
 }
 
 .dossier-hero {
@@ -411,9 +698,11 @@ a { color: inherit; text-decoration: none; }
   align-items: center;
   gap: 18px;
   padding: 28px;
-  border-radius: 24px;
-  background: rgba(15, 23, 42, 0.68);
-  border: 1px solid var(--border);
+  border-radius: 12px;
+  background:
+    linear-gradient(140deg, var(--dossier-paper), var(--dossier-paper-strong)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.04) 1px, transparent 1px, transparent 8px);
+  border: 1px solid var(--dossier-line);
   box-shadow: 0 24px 40px rgba(0, 0, 0, 0.35);
 }
 
@@ -421,7 +710,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.85rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--dossier-accent) 65%, var(--muted));
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -430,6 +719,8 @@ a { color: inherit; text-decoration: none; }
 .dossier-hero h1 {
   margin: 10px 0 6px;
   font-size: clamp(26px, 4vw, 38px);
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  letter-spacing: 2px;
 }
 
 .dossier-hero p {
@@ -451,8 +742,9 @@ a { color: inherit; text-decoration: none; }
   padding: 8px 14px;
   border-radius: 999px;
   font-weight: 600;
-  background: var(--badge-bg);
+  background: color-mix(in srgb, var(--dossier-accent) 18%, var(--badge-bg));
   color: var(--badge-text);
+  border: 1px solid var(--dossier-line);
 }
 
 .dossier-badge--warning {
@@ -478,18 +770,38 @@ a { color: inherit; text-decoration: none; }
 
 .dossier-card {
   padding: 22px;
-  border-radius: 24px;
-  background: var(--card);
-  border: 1px solid var(--border);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.02), transparent 55%),
+    linear-gradient(150deg, var(--dossier-paper), var(--dossier-paper-strong));
+  border: 1px solid var(--dossier-line);
   display: grid;
   gap: 16px;
   min-height: 100%;
   box-shadow: 0 20px 36px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+}
+
+.dossier-card::before {
+  content: "";
+  position: absolute;
+  inset: 12px 12px auto 12px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--dossier-line), transparent);
+  opacity: 0.8;
 }
 
 .dossier-card header h2 {
   margin: 8px 0 6px;
   font-size: 1.4rem;
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  letter-spacing: 1.5px;
+}
+
+.dossier-card header {
+  border-bottom: 1px solid var(--dossier-line);
+  padding-bottom: 12px;
 }
 
 .dossier-card header p {
@@ -501,7 +813,7 @@ a { color: inherit; text-decoration: none; }
   font-size: 0.75rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--muted);
+  color: color-mix(in srgb, var(--dossier-accent) 60%, var(--muted));
 }
 
 .dossier-body {
@@ -560,6 +872,8 @@ a { color: inherit; text-decoration: none; }
 .dossier-card footer {
   color: var(--muted);
   font-style: italic;
+  border-top: 1px solid var(--dossier-line);
+  padding-top: 12px;
 }
 
 .site-nav {
@@ -1099,10 +1413,11 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 24px;
-  margin: 8px 0 32px;
+  margin: 0;
   justify-items: center;
   position: relative;
   z-index: 1;
+  align-self: center;
 }
 
 .yuugars-bubble {
@@ -1205,10 +1520,10 @@ a { color: inherit; text-decoration: none; }
 @keyframes yuugars-pulse {
   0%,
   100% {
-    transform: translate(-50%, -50%) translateZ(80px) scale(1);
+    transform: translate(-50%, -50%) translateZ(80px) rotateZ(var(--yuugars-rotation)) scale(1);
   }
   50% {
-    transform: translate(-50%, -50%) translateZ(100px) scale(1.08);
+    transform: translate(-50%, -50%) translateZ(100px) rotateZ(var(--yuugars-rotation)) scale(1.08);
   }
 }
 
@@ -1241,6 +1556,47 @@ a { color: inherit; text-decoration: none; }
   }
 }
 
+@keyframes yuugars-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateZ(0deg);
+  }
+  50% {
+    transform: translate3d(12px, -10px, 0) rotateZ(8deg);
+  }
+}
+
+@keyframes yuugars-orbit-sway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(20deg);
+  }
+  50% {
+    transform: translate3d(-12px, 8px, 0) rotateX(35deg);
+  }
+}
+
+@keyframes yuugars-helix {
+  0% {
+    transform: rotateX(55deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(55deg) rotateZ(360deg);
+  }
+}
+
+@keyframes yuugars-aura {
+  0%,
+  100% {
+    transform: scale(1) translate3d(0, 0, 0);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.08) translate3d(10px, -8px, 0);
+    opacity: 0.7;
+  }
+}
+
 @keyframes yuugars-burst {
   0% {
     filter: saturate(1) hue-rotate(0deg);
@@ -1253,6 +1609,47 @@ a { color: inherit; text-decoration: none; }
   }
   100% {
     filter: saturate(1) hue-rotate(0deg);
+  }
+}
+
+@keyframes dossier-orb {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate3d(18px, -12px, 0) scale(1.08);
+    opacity: 0.75;
+  }
+}
+
+@keyframes dossier-plate {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateX(18deg) rotateZ(0deg);
+  }
+  50% {
+    transform: translate3d(-16px, 10px, 0) rotateX(28deg) rotateZ(8deg);
+  }
+}
+
+@keyframes dossier-shard {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotateZ(0deg);
+  }
+  50% {
+    transform: translate3d(10px, -6px, 0) rotateZ(12deg);
+  }
+}
+
+@keyframes dossier-ring {
+  0% {
+    transform: rotateX(65deg) rotateZ(0deg);
+  }
+  100% {
+    transform: rotateX(65deg) rotateZ(360deg);
   }
 }
 

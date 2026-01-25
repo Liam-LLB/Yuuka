@@ -1359,6 +1359,22 @@ const initYuugarsEffects = () => {
   const bubbles = document.querySelectorAll(".yuugars-bubble");
   if (!bubbles.length) return;
   const body = document.body;
+  const startTime = performance.now();
+  const animateBackground = (now) => {
+    const elapsed = (now - startTime) / 1000;
+    const rotation = (elapsed * 10) % 360;
+    const hue = 215 + Math.sin(elapsed / 4) * 18;
+    const hue2 = 282 + Math.cos(elapsed / 5) * 16;
+    const hue3 = 150 + Math.sin(elapsed / 6) * 14;
+    const glow = 0.55 + Math.sin(elapsed / 3) * 0.15;
+    body.style.setProperty("--yuugars-rotation", `${rotation.toFixed(1)}deg`);
+    body.style.setProperty("--yuugars-hue", hue.toFixed(1));
+    body.style.setProperty("--yuugars-hue-2", hue2.toFixed(1));
+    body.style.setProperty("--yuugars-hue-3", hue3.toFixed(1));
+    body.style.setProperty("--yuugars-glow", glow.toFixed(2));
+    window.requestAnimationFrame(animateBackground);
+  };
+  window.requestAnimationFrame(animateBackground);
   const triggerBurst = () => {
     body.classList.remove("yuugars-color-burst");
     void body.offsetWidth;
